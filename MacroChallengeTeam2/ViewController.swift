@@ -6,14 +6,24 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        view.backgroundColor = .darkGray
     }
 
 
 }
 
+struct ViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        UIViewControllerPreview {
+            return ViewController()
+        }
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+    }
+}
