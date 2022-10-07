@@ -11,5 +11,8 @@ struct Submission: Identifiable, Codable {
     let id: UUID
     let code: String
     let input: String
-    // let type: RunResponse & SubmitResponse -> yang ini gua belom tahu gimana caranya bisa 2 protocol sekaligus
+    enum SubmissionType {
+        case run
+        case submit
+    }
 }
