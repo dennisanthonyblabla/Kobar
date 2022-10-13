@@ -8,6 +8,9 @@ packages:
   SnapKit:
     url: https://github.com/SnapKit/SnapKit
     from: 5.6.0
+  SocketIO:
+    url: https://github.com/socketio/socket.io-client-swift
+    from: 16.0.1
 targets:
   Macro Challenge Team2:
     type: application
@@ -30,3 +33,4 @@ targets:
     dependencies:
       - package: RxSwift
       - package: SnapKit
+      - package: SocketIO
