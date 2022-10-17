@@ -16,51 +16,71 @@ final class ProfileTanding: UIView {
         case opponent
     }
 
-    var role: Role = .user
+    var role: Role = .user {
+        didSet {
+            switch role {
+            case .user:
+                self.profileBG.layer.borderColor = UIColor(named: "kobarGreen")?.cgColor
+                self.ratingHolder.backgroundColor = UIColor(named: "kobarGreen")
+            case .opponent:
+                self.profileBG.layer.borderColor = UIColor(named: "kobarRed")?.cgColor
+                self.ratingHolder.backgroundColor = UIColor(named: "kobarRed")
+            }
+        }
+    }
+    var name: String? {
+        didSet {
+            self.playerName.text = name
+        }
+    }
+    var rating: Int? {
+        didSet {
+            self.ratingLabel.text = String(rating ?? 1)
+        }
+    }
 
     private lazy var playerName: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.text = "Nama"
         label.textColor = .white
         label.font = UIFont(name: "SFProRounded-Medium", size: 22)
+        label.text = name ?? "Player"
         return label
     }()
     private lazy var profileBG: UIView = {
         let view = UIView()
+        view.layer.borderColor = UIColor(named: "kobarGreen")?.cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(named: "kobarGray")
         view.layer.cornerRadius = 25
         view.layer.borderWidth = 7
-        view.layer.borderColor = UIColor(named: "kobarYellow")?.cgColor
         return view
     }()
     private lazy var profileView: UIImageView = {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
-        let profile = UIImage(systemName: "person.fill", withConfiguration: config)?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
-        imageView.image = profile
+        let profile = UIImage(systemName: "person.fill", withConfiguration: config)
+        imageView.image = profile?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
         return imageView
     }()
      private lazy var ratingHolder: UIView = {
          let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
-         view.backgroundColor = UIColor(named: "kobarYellow")
+         view.backgroundColor = UIColor(named: "kobarGreen")
          view.layer.cornerRadius = 22
-         view.addSubview(ratingStarView)
-         view.addSubview(rating)
+         view.addSubview(ratingStar)
+         view.addSubview(ratingLabel)
          return view
      }()
-    private lazy var ratingStarView: UIImageView = {
+    private lazy var ratingStar: UIImageView = {
         let imageView = UIImageView()
         var ratingStar = UIImage(named: "ratingStar")
         imageView.image = ratingStar
         return imageView
     }()
-    private lazy var rating: UILabel = {
+    private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.text = "0"
         label.textColor = .white
         label.font = UIFont(name: "SFProRounded-Bold", size: 28)
         return label
@@ -88,22 +108,22 @@ final class ProfileTanding: UIView {
              make.centerX.equalTo(profileBG)
              make.bottom.equalTo(profileBG).inset(-20)
          }
-         ratingStarView.snp.makeConstraints { (make) in
+         ratingStar.snp.makeConstraints { (make) in
              make.width.equalTo(26.73)
              make.height.equalTo(25.61)
              make.leading.equalTo(ratingHolder.snp.leading).inset(20)
              make.centerY.equalToSuperview()
          }
-         rating.snp.makeConstraints { (make) in
-             make.width.equalTo(rating.snp.width)
-             make.height.equalTo(rating.snp.height)
+         ratingLabel.snp.makeConstraints { (make) in
+             make.width.equalTo(ratingLabel.snp.width)
+             make.height.equalTo(ratingLabel.snp.height)
              make.trailing.equalTo(ratingHolder.snp.trailing).inset(20)
              make.centerY.equalToSuperview()
          }
          playerName.snp.makeConstraints { (make) in
              make.width.equalTo(playerName.snp.width)
              make.height.equalTo(playerName.snp.height)
-             make.bottom.equalTo(profileBG.snp.top).inset(-23)
+             make.bottom.equalTo(profileBG.snp.top).inset(-18)
              make.centerX.equalToSuperview()
          }
          profileView.snp.makeConstraints { (make) in
@@ -113,4 +133,3 @@ final class ProfileTanding: UIView {
          }
      }
  }
-

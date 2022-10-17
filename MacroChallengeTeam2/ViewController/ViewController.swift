@@ -10,19 +10,22 @@ import SwiftUI
 import SnapKit
 
 class ViewController: UIViewController {
-    private lazy var profileTanding: ProfileTanding = {
+    private lazy var profileUser: ProfileTanding = {
         let view = ProfileTanding()
         view.role = .opponent
+        view.name = "Michael"
+        view.rating = 256
         return view
     }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "kobarGray")
-        view.addSubview(profileTanding)
+        view.addSubview(profileUser)
         setupAutoLayout()
     }
     private func setupAutoLayout() {
-        profileTanding.snp.makeConstraints { (make) in
+        profileUser.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
         }
     }
