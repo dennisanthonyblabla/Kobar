@@ -20,11 +20,11 @@ final class ProfileTanding: UIView {
         didSet {
             switch role {
             case .user:
-                self.profileBG.layer.borderColor = UIColor(named: "kobarGreen")?.cgColor
-                self.ratingHolder.backgroundColor = UIColor(named: "kobarGreen")
+                self.profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+                self.ratingHolder.backgroundColor = UIColor.kobarGreen
             case .opponent:
-                self.profileBG.layer.borderColor = UIColor(named: "kobarRed")?.cgColor
-                self.ratingHolder.backgroundColor = UIColor(named: "kobarRed")
+                self.profileBG.layer.borderColor = UIColor.kobarRed.cgColor
+                self.ratingHolder.backgroundColor = UIColor.kobarRed
             }
         }
     }
@@ -43,15 +43,15 @@ final class ProfileTanding: UIView {
         let label = UILabel()
         label.textAlignment = .right
         label.textColor = .white
-        label.font = UIFont(name: "SFProRounded-Medium", size: 22)
+        label.font = .medium22
         label.text = name ?? "Player"
         return label
     }()
     private lazy var profileBG: UIView = {
         let view = UIView()
-        view.layer.borderColor = UIColor(named: "kobarGreen")?.cgColor
+        view.layer.borderColor = UIColor.kobarGreen.cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(named: "kobarGray")
+        view.backgroundColor = UIColor.kobarGray
         view.layer.cornerRadius = 25
         view.layer.borderWidth = 7
         return view
@@ -66,7 +66,7 @@ final class ProfileTanding: UIView {
      private lazy var ratingHolder: UIView = {
          let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
-         view.backgroundColor = UIColor(named: "kobarGreen")
+         view.backgroundColor = UIColor.kobarGreen
          view.layer.cornerRadius = 22
          view.addSubview(ratingStar)
          view.addSubview(ratingLabel)
@@ -82,7 +82,7 @@ final class ProfileTanding: UIView {
         let label = UILabel()
         label.textAlignment = .right
         label.textColor = .white
-        label.font = UIFont(name: "SFProRounded-Bold", size: 28)
+        label.font = .bold28
         return label
     }()
     override init(frame: CGRect) {

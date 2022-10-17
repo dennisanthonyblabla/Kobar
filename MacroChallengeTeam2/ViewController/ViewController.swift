@@ -20,7 +20,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "kobarGray")
+        view.backgroundColor = UIColor.kobarGray
         view.addSubview(profileUser)
         setupAutoLayout()
     }
