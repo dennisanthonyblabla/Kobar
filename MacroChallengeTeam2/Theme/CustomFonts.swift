@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 extension UIFont {
+    static let regular22 = UIFont(name: "SFProRounded-Regular", size: 17)
     static let medium22 = UIFont(name: "SFProRounded-Medium", size: 22)
+    static let bold22 = UIFont(name: "SFProRounded-Bold", size: 22)
     static let bold28 = UIFont(name: "SFProRounded-Bold", size: 28)
 }
