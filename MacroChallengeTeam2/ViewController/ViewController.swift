@@ -7,21 +7,34 @@
 
 import UIKit
 import SwiftUI
+import SnapKit
 
 class ViewController: UIViewController {
+    private lazy var profileUser: ProfileTandingView = {
+        let view = ProfileTandingView()
+        view.role = .opponent
+        view.name = "Michael"
+        view.rating = 256
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.kobarGray
+        view.addSubview(profileUser)
+        setupAutoLayout()
     }
-
+    private func setupAutoLayout() {
+        profileUser.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+        }
+    }
 }
-
 struct ViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
             return ViewController()
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeRight)
     }
 }
