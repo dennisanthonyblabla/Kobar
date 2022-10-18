@@ -10,8 +10,11 @@ import SwiftUI
 import SnapKit
 
 class ViewController: UIViewController {
-    private lazy var profileInvite: ProfileInvite = {
-        let view = ProfileInvite()
+    private lazy var profileUser: ProfileTandingView = {
+        let view = ProfileTandingView()
+        view.role = .opponent
+        view.name = "Michael"
+        view.rating = 256
         return view
     }()
 
