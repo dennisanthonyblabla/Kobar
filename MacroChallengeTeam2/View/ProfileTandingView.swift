@@ -9,7 +9,7 @@ import Foundation
 import SnapKit
 import UIKit
 
-final class ProfileTanding: UIView {
+final class ProfileTandingView: UIView {
 
     enum Role {
         case user
