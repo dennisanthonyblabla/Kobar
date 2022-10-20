@@ -10,21 +10,30 @@ import SwiftUI
 import SnapKit
 
 class ViewController: UIViewController {
-    private lazy var profileUser: ProfileInvite = {
-        let view = ProfileInvite()
-        return view
+    private lazy var smallBackButton: SmallBackButtonView = {
+        let btn = SmallBackButtonView()
+        btn.variant = .variant2
+        return btn
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        view.addSubview(profileUser)
+        view.backgroundColor = .gray
+        view.addSubview(smallBackButton)
         setupAutoLayout()
+        addActionToButton()
     }
     private func setupAutoLayout() {
-        profileUser.snp.makeConstraints { (make) in
+        smallBackButton.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
         }
+    }
+
+    func addActionToButton() {
+        smallBackButton.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
+    }
+    @objc func clickBack() {
+        print("Clicked")
     }
 }
 struct ViewControllerPreviews: PreviewProvider {
