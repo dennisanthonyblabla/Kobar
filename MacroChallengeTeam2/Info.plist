@@ -29,7 +29,6 @@
 		<string>SF-Pro-Rounded-Semibold.otf</string>
 		<string>SF-Pro-Rounded-Thin.otf</string>
 		<string>SF-Pro-Rounded-Ultralight.otf</string>
-		<string>FiraCode-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -48,9 +47,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
 </dict>
 </plist>

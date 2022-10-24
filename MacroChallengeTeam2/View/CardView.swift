@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class CardView: UIView {
+final class CardView: UIView, UITextViewDelegate {
 
     enum CardType {
         case codingCard
@@ -21,18 +21,42 @@ final class CardView: UIView {
         didSet {
             switch cardType {
             case .codingCard:
-                
+                self.titleLabel.textColor = .kobarBlueActive
+//                self.textInput.attributedText = NSMutableAttributedString(
+//                    string: "Placeholder",
+//                    attributes: [NSAttributedString.Key.font: UIFont.code17 ?? .systemFont(ofSize: 17),
+//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
+//                )
             case .inputCard:
+                self.titleLabel.textColor = .kobarBlueActive
+//                self.textInput.attributedText = NSMutableAttributedString(
+//                    string: "Placeholder",
+//                    attributes: [NSAttributedString.Key.font: UIFont.regular17 ?? .systemFont(ofSize: 17),
+//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
+//                )
             case .outputCard:
+                self.titleLabel.textColor = .kobarBlack
+//                self.textInput.attributedText = NSMutableAttributedString(
+//                    string: "Placeholder",
+//                    attributes: [NSAttributedString.Key.font: UIFont.regular17 ?? .systemFont(ofSize: 17),
+//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
+//                )
             }
         }
     }
 
+    var title: String? {
+        didSet {
+            self.titleLabel.text = title ?? "Title"
+        }
+    }
+
     private lazy var textInput: UITextView = {
-        let textView = UITextView()
-        let add = "Placeholder"
-        let attributeText = NSMutableAttributedString(string: add, attributes: [NSAttributedString.Key.font: UIFont.regular17, NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray])
-        textView.attributedText = attributeText
+        let textView = UITextView.init()
+        textView.delegate = self
+        textView.text = "placeholder text here..."
+        textView.textColor = .lightGray
+        textView.font = UIFont.regular17
         textView.textAlignment = .left
         textView.isEditable = true
         textView.isScrollEnabled = true
@@ -58,9 +82,7 @@ final class CardView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.textColor = .kobarBlack
         label.font = .bold17
-        label.text = "Title"
         return label
     }()
     private lazy var textViewBG: UIView = {
@@ -103,5 +125,24 @@ final class CardView: UIView {
             make.width.equalTo(titleLabel.snp.width)
             make.height.equalTo(titleLabel.snp.height)
         }
+    }
+    func textViewDidBeginEditing(_ textView: UITextView)
+    {
+        if (textView.text == "placeholder text here..." && textView.textColor == .lightGray)
+        {
+            textView.text = ""
+            textView.textColor = .black
+        }
+        textView.becomeFirstResponder() //Optional
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView)
+    {
+        if (textView.text == "")
+        {
+            textView.text = "placeholder text here..."
+            textView.textColor = .lightGray
+        }
+        textView.resignFirstResponder()
     }
 }
