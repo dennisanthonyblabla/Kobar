@@ -1,15 +1,15 @@
 //
-//  ViewController.swift
-//  MacroChallengeTeam2
+//  BackButtonViewController.swift
+//  Macro Challenge Team2
 //
-//  Created by Dennis Anthony on 06/10/22.
+//  Created by Dennis Anthony on 24/10/22.
 //
 
 import UIKit
 import SwiftUI
 import SnapKit
 
-class ViewController: UIViewController {
+class BackButtonViewController: UIViewController {
     private lazy var smallBackButton: SmallBackButtonView = {
         let btn = SmallBackButtonView()
         btn.variant = .variant2
@@ -29,12 +29,12 @@ class ViewController: UIViewController {
         }
     }
 
-    // TODO: add behavior 
+    // TODO: add behavior
     @objc func clickBack() {
         print("Clicked")
     }
 }
-struct ViewControllerPreviews: PreviewProvider {
+struct BackButtonViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
             return ViewController()

@@ -10,11 +10,13 @@ import UIKit
 import SnapKit
 
 final class SmallBackButtonView: UIButton {
+
     enum Variants {
         case variant1
         case variant2
         case variant3
     }
+
     var variant: Variants = .variant1 {
         didSet {
             self.configuration = .plain()
@@ -42,6 +44,7 @@ final class SmallBackButtonView: UIButton {
             }
         }
     }
+
     private lazy var frontBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +53,7 @@ final class SmallBackButtonView: UIButton {
         view.isUserInteractionEnabled = false
         return view
     }()
+
     private lazy var backBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +62,7 @@ final class SmallBackButtonView: UIButton {
         view.isUserInteractionEnabled = false
         return view
     }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(backBG)
@@ -65,13 +70,16 @@ final class SmallBackButtonView: UIButton {
         setupButton()
         setupAutoLayout()
     }
+
     init(image: UIImage) {
         super.init(frame: .zero)
 
     }
+
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
     }
+    
     private func setupAutoLayout() {
         backBG.snp.makeConstraints { (make) in
             make.width.equalTo(frontBG)
