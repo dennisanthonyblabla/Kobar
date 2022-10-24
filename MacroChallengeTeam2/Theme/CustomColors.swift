@@ -15,4 +15,6 @@ extension UIColor {
     static let kobarGray = UIColor(named: "kobarGray") ?? .white
     static let kobarDarkGray = UIColor(named: "kobarDarkGray") ?? .white
     static let kobarBlack = UIColor(named: "kobarBlack") ?? .white
+    static let kobarDarkBlue = UIColor(named: "kobarDarkBlue") ?? .white
+    static let kobarBlueActive = UIColor(named: "kobarBlueActive") ?? .white
 }
