@@ -17,32 +17,8 @@ final class CardView: UIView, UITextViewDelegate {
         case outputCard
     }
 
-    var cardType: CardType = .inputCard {
-        didSet {
-            switch cardType {
-            case .codingCard:
-                self.titleLabel.textColor = .kobarBlueActive
-                self.titleLabel.text = "Ngoding yuk!"
-                self.textInput.font = .code17
-//                self.textInput.text = "Ketik kodingannya di sini"
-            case .inputCard:
-                self.titleLabel.textColor = .kobarBlueActive
-                self.titleLabel.text = "Input lo"
-                self.textInput.font = .regular17
-//                self.textInput.text = "Ketik input lo untuk diuji"
-            case .outputCard:
-                self.titleLabel.textColor = .kobarBlack
-                self.titleLabel.text = "Output"
-                self.textInput.font = .regular17
-//                self.textInput.text = "Nanti hasil dari input lo akan muncul"
-            }
-        }
-    }
-    var placeholderText: String? {
-        didSet {
-            self.textInput.text = placeholderText ?? "Placeholder"
-        }
-    }
+    var cardType: CardType?
+    var placeholderText: String?
 
     private lazy var textInput: UITextView = {
         let textView = UITextView.init()
@@ -56,6 +32,7 @@ final class CardView: UIView, UITextViewDelegate {
         textView.backgroundColor = .clear
         return textView
     }()
+
     private lazy var titleBanner: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -71,12 +48,14 @@ final class CardView: UIView, UITextViewDelegate {
         view.addSubview(titleLabel)
         return view
     }()
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = .bold17
         return label
     }()
+
     private lazy var textViewBG: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -86,15 +65,52 @@ final class CardView: UIView, UITextViewDelegate {
         view.layer.shadowOpacity = 0.1
         return view
     }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+
+    init(type: CardType) {
+        super.init(frame: .zero)
+        self.cardType = type
         addSubview(textViewBG)
         addSubview(titleBanner)
         addSubview(textInput)
+        self.cardStyle()
         setupAutoLayout()
     }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func cardStyle() {
+        switch cardType {
+        case .codingCard:
+            self.titleLabel.textColor = .kobarBlueActive
+            self.titleLabel.text = "Ngoding yuk!"
+            self.textInput.font = .code17
+            self.textInput.text = "Ketik kodingannya di sini"
+            self.placeholderText = "Ketik kodingannya di sini"
+        case .inputCard:
+            self.titleLabel.textColor = .kobarBlueActive
+            self.titleLabel.text = "Input lo"
+            self.textInput.font = .regular17
+            self.textInput.text = "Ketik input lo untuk diuji"
+            self.placeholderText = "Ketik input lo untuk diuji"
+        case .outputCard:
+            self.titleLabel.textColor = .kobarBlack
+            self.titleLabel.text = "Output"
+            self.textInput.font = .regular17
+            self.textInput.text = "Nanti hasil dari input lo akan muncul"
+            self.placeholderText = "Nanti hasil dari input lo akan muncul"
+        case .none:
+            self.titleLabel.textColor = .kobarBlueActive
+            self.titleLabel.text = "Input lo"
+            self.textInput.font = .regular17
+            self.textInput.text = "Ketik input lo untuk diuji"
+            self.placeholderText = "Ketik input lo untuk diuji"
+        }
     }
     func setupAutoLayout() {
         titleBanner.snp.makeConstraints { (make) in
@@ -102,22 +118,25 @@ final class CardView: UIView, UITextViewDelegate {
             make.width.equalToSuperview()
             make.top.equalTo(textViewBG.snp.top)
         }
+
         textInput.snp.makeConstraints { (make) in
-//            make.width.equalToSuperview().offset(-16)
             make.trailing.equalTo(textViewBG).offset(-16)
             make.leading.equalTo(textViewBG).offset(16)
             make.top.equalTo(textViewBG).offset(62)
             make.bottom.equalTo(textViewBG).offset(-16)
         }
+
         textViewBG.snp.makeConstraints { (make) in
             make.width.height.equalToSuperview()
         }
+
         titleLabel.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
             make.width.equalTo(titleLabel.snp.width)
             make.height.equalTo(titleLabel.snp.height)
         }
     }
+
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textInput.text == placeholderText && textInput.textColor == .lightGray {
             textView.text = ""
