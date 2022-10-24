@@ -22,39 +22,31 @@ final class CardView: UIView, UITextViewDelegate {
             switch cardType {
             case .codingCard:
                 self.titleLabel.textColor = .kobarBlueActive
-//                self.textInput.attributedText = NSMutableAttributedString(
-//                    string: "Placeholder",
-//                    attributes: [NSAttributedString.Key.font: UIFont.code17 ?? .systemFont(ofSize: 17),
-//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
-//                )
+                self.titleLabel.text = "Ngoding yuk!"
+                self.textInput.font = .code17
+//                self.textInput.text = "Ketik kodingannya di sini"
             case .inputCard:
                 self.titleLabel.textColor = .kobarBlueActive
-//                self.textInput.attributedText = NSMutableAttributedString(
-//                    string: "Placeholder",
-//                    attributes: [NSAttributedString.Key.font: UIFont.regular17 ?? .systemFont(ofSize: 17),
-//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
-//                )
+                self.titleLabel.text = "Input lo"
+                self.textInput.font = .regular17
+//                self.textInput.text = "Ketik input lo untuk diuji"
             case .outputCard:
                 self.titleLabel.textColor = .kobarBlack
-//                self.textInput.attributedText = NSMutableAttributedString(
-//                    string: "Placeholder",
-//                    attributes: [NSAttributedString.Key.font: UIFont.regular17 ?? .systemFont(ofSize: 17),
-//                                 NSAttributedString.Key.foregroundColor: UIColor.kobarDarkGray]
-//                )
+                self.titleLabel.text = "Output"
+                self.textInput.font = .regular17
+//                self.textInput.text = "Nanti hasil dari input lo akan muncul"
             }
         }
     }
-
-    var title: String? {
+    var placeholderText: String? {
         didSet {
-            self.titleLabel.text = title ?? "Title"
+            self.textInput.text = placeholderText ?? "Placeholder"
         }
     }
 
     private lazy var textInput: UITextView = {
         let textView = UITextView.init()
         textView.delegate = self
-        textView.text = "placeholder text here..."
         textView.textColor = .lightGray
         textView.font = UIFont.regular17
         textView.textAlignment = .left
@@ -67,7 +59,7 @@ final class CardView: UIView, UITextViewDelegate {
     private lazy var titleBanner: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.kobarLightGray
+        view.backgroundColor = .kobarLightGray
         view.layer.cornerRadius = 15
         view.layer.borderColor = UIColor.kobarBorderGray.cgColor
         view.layer.borderWidth = 1.5
@@ -126,21 +118,17 @@ final class CardView: UIView, UITextViewDelegate {
             make.height.equalTo(titleLabel.snp.height)
         }
     }
-    func textViewDidBeginEditing(_ textView: UITextView)
-    {
-        if (textView.text == "placeholder text here..." && textView.textColor == .lightGray)
-        {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textInput.text == placeholderText && textInput.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .black
         }
-        textView.becomeFirstResponder() //Optional
+        textView.becomeFirstResponder() // Optional
     }
 
-    func textViewDidEndEditing(_ textView: UITextView)
-    {
-        if (textView.text == "")
-        {
-            textView.text = "placeholder text here..."
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textInput.text == "" {
+            textView.text = placeholderText
             textView.textColor = .lightGray
         }
         textView.resignFirstResponder()

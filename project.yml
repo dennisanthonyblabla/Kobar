@@ -33,7 +33,8 @@ targets:
             	     SF-Pro-Rounded-Regular.otf,
         	     SF-Pro-Rounded-Semibold.otf,
         	     SF-Pro-Rounded-Thin.otf,
-        	     SF-Pro-Rounded-Ultralight.otf]
+        	     SF-Pro-Rounded-Ultralight.otf,
+        	     FiraCode-Regular.ttf,]
     postCompileScripts:
       - path: swiftlint.sh
         name: SwiftLint

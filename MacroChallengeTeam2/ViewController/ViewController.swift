@@ -12,8 +12,8 @@ import SnapKit
 class ViewController: UIViewController {
     private lazy var textView: CardView = {
         let view = CardView()
-//        view.title = "Titlenya"
-        view.cardType = .inputCard
+        view.cardType = .codingCard
+        view.placeholderText = "Ketik kodingannya di sini"
         return view
     }()
     override func viewDidLoad() {
