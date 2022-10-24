@@ -10,26 +10,26 @@ import SwiftUI
 import SnapKit
 
 class ViewController: UIViewController {
-    private lazy var smallBackButton: SmallBackButtonView = {
-        let btn = SmallBackButtonView()
-        btn.variant = .variant2
-        return btn
+    private lazy var textView: CardView = {
+        let view = CardView()
+        return view
     }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
-        view.addSubview(smallBackButton)
+        view.addSubview(textView)
         setupAutoLayout()
         smallBackButton.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
     }
     private func setupAutoLayout() {
-        smallBackButton.snp.makeConstraints { (make) in
+        textView.snp.makeConstraints { (make) in
+            make.width.equalToSuperview().offset(-500)
+            make.height.equalToSuperview().offset(-200)
             make.center.equalToSuperview()
         }
     }
 
-    // TODO: add behavior 
+    // TODO: add behavior
     @objc func clickBack() {
         print("Clicked")
     }
@@ -39,6 +39,6 @@ struct ViewControllerPreviews: PreviewProvider {
         UIViewControllerPreview {
             return ViewController()
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeRight)
+        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }
 }
