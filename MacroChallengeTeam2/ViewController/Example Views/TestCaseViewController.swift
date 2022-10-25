@@ -11,13 +11,21 @@ import SnapKit
 
 class TestCaseViewController: UIViewController {
 
+    private lazy var testCaseView = TestCaseButton()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
+        view.addSubview(testCaseView)
+        setupAutoLayout()
     }
 
     private func setupAutoLayout() {
-
+        testCaseView.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.height.equalTo(testCaseView.snp.height)
+            make.width.equalTo(testCaseView.snp.width)
+        }
     }
 }
 
