@@ -10,6 +10,7 @@ import SwiftUI
 import SnapKit
 
 class BackButtonViewController: UIViewController {
+
     private lazy var smallBackButton: SmallBackButtonView = {
         let btn = SmallBackButtonView()
         btn.variant = .variant2
@@ -23,6 +24,7 @@ class BackButtonViewController: UIViewController {
         setupAutoLayout()
         smallBackButton.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
     }
+
     private func setupAutoLayout() {
         smallBackButton.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
