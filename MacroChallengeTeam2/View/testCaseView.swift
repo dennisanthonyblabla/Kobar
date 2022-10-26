@@ -35,9 +35,6 @@ final class TestCaseButton: UIView {
 
     private lazy var testCaseSymbol: UIImageView = {
         let image = UIImageView()
-        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-        let profile = UIImage(systemName: "checkmark", withConfiguration: config)
-        image.image = profile?.withTintColor(.white, renderingMode: .alwaysOriginal)
         return image
     }()
 
@@ -94,32 +91,29 @@ final class TestCaseButton: UIView {
     }
 
     private func testCaseStatus() {
+
         switch status {
         case .correct:
+            let image = UIImage(
+                systemName: "checkmark",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+            )
             if self.style == .fill {
-                self.testCaseSymbol.image = UIImage(
-                    systemName: "checkmark",
-                    withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-                )?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                self.testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
             } else if self.style == .transparent {
-                self.testCaseSymbol.image = UIImage(
-                    systemName: "checkmark",
-                    withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-                )?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
+                self.testCaseSymbol.image = image?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
                 self.testCaseOrder.textColor = .kobarGreen
                 self.testCaselabel.textColor = .kobarGreen
             }
         case .wrong:
+            let image = UIImage(
+                systemName: "xmark",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
+            )
             if self.style == .fill {
-                self.testCaseSymbol.image = UIImage(
-                    systemName: "xmark",
-                    withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-                )?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                self.testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
             } else {
-                self.testCaseSymbol.image = UIImage(
-                    systemName: "xmark",
-                    withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-                )?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
+                self.testCaseSymbol.image = image?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
                 self.testCaseOrder.textColor = .kobarRed
                 self.testCaselabel.textColor = .kobarRed
 
