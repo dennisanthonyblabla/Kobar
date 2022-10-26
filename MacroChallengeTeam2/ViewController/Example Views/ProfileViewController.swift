@@ -12,6 +12,7 @@ import SwiftUI
 class ProfileViewController: UIViewController {
 
     private lazy var profileUser = ProfileTandingView(role: .user, name: "Benny", rating: 256)
+    private lazy var profileInvite = ProfileInviteView(inviteCode: "2A54D")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -23,6 +24,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(background)
         view.addSubview(profileUser)
+        view.addSubview(profileInvite)
         setupAutoLayout()
     }
 
@@ -39,6 +41,13 @@ class ProfileViewController: UIViewController {
             make.height.equalTo(profileUser.snp.height)
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview().offset(-200)
+        }
+
+        profileInvite.snp.makeConstraints { (make) in
+            make.width.equalTo(profileInvite.snp.width)
+            make.height.equalTo(profileInvite.snp.height)
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview().offset(200)
         }
     }
 }
