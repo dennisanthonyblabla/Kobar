@@ -25,19 +25,21 @@ targets:
                 UIWindowSceneSessionRoleApplication:
                   - UISceneConfigurationName: Default Configuration
                     UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
-        UIAppFonts: [SF-Pro-Rounded-Bold.otf, 
-		     SF-Pro-Rounded-Black.otf,
-		     SF-Pro-Rounded-Heavy.otf,
-        	     SF-Pro-Rounded-Light.otf,
-        	     SF-Pro-Rounded-Medium.otf,
-            	     SF-Pro-Rounded-Regular.otf,
-        	     SF-Pro-Rounded-Semibold.otf,
-        	     SF-Pro-Rounded-Thin.otf,
-        	     SF-Pro-Rounded-Ultralight.otf,
-        	     FiraCode-Regular.ttf,]
+        UIAppFonts:
+          - SF-Pro-Rounded-Bold.otf
+          - SF-Pro-Rounded-Black.otf
+          - SF-Pro-Rounded-Heavy.otf
+          - SF-Pro-Rounded-Light.otf
+          - SF-Pro-Rounded-Medium.otf
+          - SF-Pro-Rounded-Regular.otf
+          - SF-Pro-Rounded-Semibold.otf
+          - SF-Pro-Rounded-Thin.otf
+          - SF-Pro-Rounded-Ultralight.otf
+          - FiraCode-Regular.ttf
     postCompileScripts:
       - path: swiftlint.sh
         name: SwiftLint
+        basedOnDependencyAnalysis: false
     sources:
       - MacroChallengeTeam2
     dependencies:

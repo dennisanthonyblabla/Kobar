@@ -79,7 +79,7 @@ final class SmallBackButtonView: UIButton {
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupAutoLayout() {
         backBG.snp.makeConstraints { (make) in
             make.width.equalTo(frontBG)

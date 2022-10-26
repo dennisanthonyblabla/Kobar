@@ -4,6 +4,7 @@
 //
 //  Created by Dennis Anthony on 06/10/22.
 //
+//  swiftlint:disable line_length
 
 import UIKit
 
@@ -29,6 +30,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
-

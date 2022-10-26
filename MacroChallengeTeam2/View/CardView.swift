@@ -112,6 +112,7 @@ final class CardView: UIView, UITextViewDelegate {
             self.placeholderText = "Ketik input lo untuk diuji"
         }
     }
+
     func setupAutoLayout() {
         titleBanner.snp.makeConstraints { (make) in
             make.height.equalTo(44)
