@@ -47,6 +47,7 @@ final class ProfileTandingView: UIView {
         label.text = name ?? "Player"
         return label
     }()
+
     private lazy var profileBG: UIView = {
         let view = UIView()
         view.layer.borderColor = UIColor.kobarGreen.cgColor
@@ -56,6 +57,7 @@ final class ProfileTandingView: UIView {
         view.layer.borderWidth = 7
         return view
     }()
+
     private lazy var profileView: UIImageView = {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
@@ -63,6 +65,7 @@ final class ProfileTandingView: UIView {
         imageView.image = profile?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
         return imageView
     }()
+
      private lazy var ratingHolder: UIView = {
          let view = UIView()
          view.translatesAutoresizingMaskIntoConstraints = false
@@ -72,12 +75,14 @@ final class ProfileTandingView: UIView {
          view.addSubview(ratingLabel)
          return view
      }()
+
     private lazy var ratingStar: UIImageView = {
         let imageView = UIImageView()
         var ratingStar = UIImage(named: "ratingStar")
         imageView.image = ratingStar
         return imageView
     }()
+
     private lazy var ratingLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -85,6 +90,7 @@ final class ProfileTandingView: UIView {
         label.font = .bold28
         return label
     }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(profileBG)
@@ -93,9 +99,11 @@ final class ProfileTandingView: UIView {
         addSubview(ratingHolder)
         setupAutoLayout()
     }
+
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
     }
+
      private func setupAutoLayout() {
          profileBG.snp.makeConstraints { (make) in
              make.width.equalTo(233)

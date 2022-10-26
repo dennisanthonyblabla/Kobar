@@ -10,6 +10,7 @@ import SnapKit
 import UIKit
 
 final class ProfileInvite: UIView {
+
     var inviteCode: String? {
         didSet {
             self.inviteCodeLabel.text = inviteCode
@@ -28,14 +29,15 @@ final class ProfileInvite: UIView {
         view.addSubview(inviteInstruction)
         return view
     }()
+
     private lazy var profileView: UIImageView = {
         let imageView = UIImageView()
-//        let config = UIImage.SymbolConfiguration(pointSize: 96)
-        imageView.contentMode = .scaleAspectFill
         let profile = UIImage(systemName: "person.fill")
+        imageView.contentMode = .scaleAspectFill
         imageView.image = profile?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal)
         return imageView
     }()
+
     private lazy var inviteInstruction: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -44,6 +46,7 @@ final class ProfileInvite: UIView {
         label.text = "Kode buat ajak temen"
         return label
     }()
+
     private lazy var inviteCodeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -88,6 +91,5 @@ final class ProfileInvite: UIView {
             make.bottom.equalTo(inviteInstruction.snp.top).offset(-5)
             make.centerX.equalToSuperview()
         }
-
     }
 }
