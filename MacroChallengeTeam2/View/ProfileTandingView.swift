@@ -43,7 +43,7 @@ final class ProfileTandingView: UIView {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
         let profile = UIImage(systemName: "person.fill", withConfiguration: config)
-        imageView.image = profile?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        imageView.image = profile?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal)
         return imageView
     }()
 
