@@ -11,11 +11,7 @@ import SnapKit
 
 class BackButtonViewController: UIViewController {
 
-    private lazy var smallBackButton: SmallBackButtonView = {
-        let btn = SmallBackButtonView()
-        btn.variant = .variant2
-        return btn
-    }()
+    private lazy var smallBackButton = SmallBackButtonView(variant: .variant1)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +35,7 @@ class BackButtonViewController: UIViewController {
 struct BackButtonViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return ViewController()
+            return BackButtonViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeRight)
     }
