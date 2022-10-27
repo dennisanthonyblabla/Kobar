@@ -57,7 +57,7 @@ final class MedbuttonView: UIButton {
     }
 
     required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setVariants() {
@@ -94,13 +94,13 @@ final class MedbuttonView: UIButton {
     }
 
     private func setupAutoLayout() {
-        backBG.snp.makeConstraints { (make) in
+        backBG.snp.makeConstraints { make in
             make.height.width.equalTo(frontBG)
             make.centerX.equalTo(frontBG)
             make.centerY.equalTo(frontBG).offset(5)
         }
 
-        frontBG.snp.makeConstraints { (make) in
+        frontBG.snp.makeConstraints { make in
             make.height.equalTo(59)
             make.width.equalToSuperview().offset(64)
             make.center.equalToSuperview()

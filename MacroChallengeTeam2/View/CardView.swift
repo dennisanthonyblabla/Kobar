@@ -114,24 +114,24 @@ final class CardView: UIView, UITextViewDelegate {
     }
 
     func setupAutoLayout() {
-        titleBanner.snp.makeConstraints { (make) in
+        titleBanner.snp.makeConstraints { make in
             make.height.equalTo(44)
             make.width.equalToSuperview()
             make.top.equalTo(textViewBG.snp.top)
         }
 
-        textInput.snp.makeConstraints { (make) in
+        textInput.snp.makeConstraints { make in
             make.trailing.equalTo(textViewBG).offset(-16)
             make.leading.equalTo(textViewBG).offset(16)
             make.top.equalTo(textViewBG).offset(62)
             make.bottom.equalTo(textViewBG).offset(-16)
         }
 
-        textViewBG.snp.makeConstraints { (make) in
+        textViewBG.snp.makeConstraints { make in
             make.width.height.equalToSuperview()
         }
 
-        titleLabel.snp.makeConstraints { (make) in
+        titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(titleLabel.snp.width)
             make.height.equalTo(titleLabel.snp.height)
@@ -147,7 +147,7 @@ final class CardView: UIView, UITextViewDelegate {
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textInput.text == "" {
+        if textInput.text.isEmpty {
             textView.text = placeholderText
             textView.textColor = .lightGray
         }

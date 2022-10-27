@@ -22,7 +22,7 @@ class MedButtonViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-        medButton.snp.makeConstraints { (make) in
+        medButton.snp.makeConstraints { make in
             make.width.equalTo(medButton.snp.width)
             make.height.equalTo(medButton.snp.height)
             make.center.equalToSuperview()
@@ -42,5 +42,4 @@ struct MedButtonViewControllerPreviews: PreviewProvider {
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }
-
 }

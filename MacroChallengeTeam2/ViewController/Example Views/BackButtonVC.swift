@@ -22,7 +22,7 @@ class BackButtonViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-        smallBackButton.snp.makeConstraints { (make) in
+        smallBackButton.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }

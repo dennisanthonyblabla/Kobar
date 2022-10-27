@@ -4,7 +4,6 @@
 //
 //  Created by Dennis Anthony on 06/10/22.
 //
-//  swiftlint:disable line_length
 
 import UIKit
 
@@ -17,9 +16,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let winScene = (scene as? UIWindowScene) else { return }
-           window = UIWindow(windowScene: winScene)
-           window?.rootViewController = ViewController()
-           window?.makeKeyAndVisible()
+        window = UIWindow(windowScene: winScene)
+        window?.rootViewController = ViewController()
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -49,5 +48,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
 }
