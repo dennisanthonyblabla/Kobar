@@ -31,11 +31,11 @@ class BackButtonViewController: UIViewController {
         }
     }
 
-    // TODO: add behavior
     @objc func clickBack() {
         print("Clicked")
     }
 }
+
 struct BackButtonViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {

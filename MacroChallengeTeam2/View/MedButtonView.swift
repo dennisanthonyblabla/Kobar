@@ -81,7 +81,6 @@ final class MedbuttonView: UIButton {
     }
 
     private func setupAutoLayout() {
-
         backBG.snp.makeConstraints { (make) in
             make.height.width.equalTo(frontBG)
             make.centerX.equalTo(frontBG)

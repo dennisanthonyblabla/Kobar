@@ -28,7 +28,7 @@ class MedButtonViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
-    // TODO: add behavior
+
     @objc func clickBack() {
         print("Clicked")
     }
