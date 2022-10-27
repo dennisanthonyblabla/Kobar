@@ -81,11 +81,11 @@ final class TestCaseButton: UIView {
     private func testCaseStyle() {
         switch style {
         case .fill:
-            self.testCaseBG.alpha = 1
+            testCaseBG.alpha = 1
         case .transparent:
-            self.testCaseBG.alpha = 0
+            testCaseBG.alpha = 0
         case .none:
-            self.testCaseBG.alpha = 1
+            testCaseBG.alpha = 1
 
         }
     }
@@ -98,28 +98,28 @@ final class TestCaseButton: UIView {
                 systemName: "checkmark",
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
             )
-            if self.style == .fill {
-                self.testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
-            } else if self.style == .transparent {
-                self.testCaseSymbol.image = image?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
-                self.testCaseOrder.textColor = .kobarGreen
-                self.testCaselabel.textColor = .kobarGreen
+            if style == .fill {
+                testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            } else if style == .transparent {
+                testCaseSymbol.image = image?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
+                testCaseOrder.textColor = .kobarGreen
+                testCaselabel.textColor = .kobarGreen
             }
         case .wrong:
             let image = UIImage(
                 systemName: "xmark",
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
             )
-            if self.style == .fill {
-                self.testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            if style == .fill {
+                testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
             } else {
-                self.testCaseSymbol.image = image?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
-                self.testCaseOrder.textColor = .kobarRed
-                self.testCaselabel.textColor = .kobarRed
+                testCaseSymbol.image = image?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
+                testCaseOrder.textColor = .kobarRed
+                testCaselabel.textColor = .kobarRed
 
             }
         case .none:
-            self.testCaseSymbol.image = UIImage(
+            testCaseSymbol.image = UIImage(
                 systemName: "checkmark",
                 withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
             )?.withTintColor(.white, renderingMode: .alwaysOriginal)
