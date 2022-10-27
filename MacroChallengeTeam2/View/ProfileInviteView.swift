@@ -9,13 +9,9 @@ import Foundation
 import SnapKit
 import UIKit
 
-final class ProfileInvite: UIView {
+final class ProfileInviteView: UIView {
 
-    var inviteCode: String? {
-        didSet {
-            self.inviteCodeLabel.text = inviteCode
-        }
-    }
+    var inviteCode: String?
 
     private lazy var profileBG: UIView = {
         let view = UIView()
@@ -58,6 +54,11 @@ final class ProfileInvite: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+
+    init(inviteCode: String) {
+        super.init(frame: .zero)
+        self.inviteCodeLabel.text = inviteCode
         addSubview(profileBG)
         setupAutoLayout()
     }

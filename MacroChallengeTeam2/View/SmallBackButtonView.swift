@@ -17,33 +17,7 @@ final class SmallBackButtonView: UIButton {
         case variant3
     }
 
-    var variant: Variants = .variant1 {
-        didSet {
-            self.configuration = .plain()
-            let config = UIImage.SymbolConfiguration(pointSize: 22)
-            let buttonImage = UIImage(systemName: "arrowshape.backward.fill", withConfiguration: config)
-            switch variant {
-            case .variant1:
-                setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                self.frontBG.backgroundColor = .kobarBlueActive
-                self.backBG.backgroundColor = .kobarDarkBlue
-                self.backBG.layer.opacity = 1
-                self.alpha = 1
-            case .variant2:
-                setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
-                self.frontBG.backgroundColor = .white
-                self.backBG.backgroundColor = .white
-                self.backBG.layer.opacity = 0.7
-                self.alpha = 1
-            case .variant3:
-                setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
-                self.frontBG.backgroundColor = .white
-                self.backBG.backgroundColor = .white
-                self.backBG.layer.opacity = 0.7
-                self.alpha = 0.7
-            }
-        }
-    }
+    var variant: Variants?
 
     private lazy var frontBG: UIView = {
         let view = UIView()
@@ -65,19 +39,51 @@ final class SmallBackButtonView: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(backBG)
-        addSubview(frontBG)
-        setupButton()
-        setupAutoLayout()
     }
 
-    init(image: UIImage) {
+    init(variant: Variants) {
         super.init(frame: .zero)
-
+        self.variant = variant
+        addSubview(backBG)
+        addSubview(frontBG)
+        setupButtonVariant()
+        setupAutoLayout()
     }
 
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupButtonVariant() {
+        configuration = .plain()
+        let config = UIImage.SymbolConfiguration(pointSize: 22)
+        let buttonImage = UIImage(systemName: "arrowshape.backward.fill", withConfiguration: config)
+        switch variant {
+        case .variant1:
+            setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+            frontBG.backgroundColor = .kobarBlueActive
+            backBG.backgroundColor = .kobarDarkBlue
+            backBG.layer.opacity = 1
+            alpha = 1
+        case .variant2:
+            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
+            frontBG.backgroundColor = .white
+            backBG.backgroundColor = .white
+            backBG.layer.opacity = 0.7
+            alpha = 1
+        case .variant3:
+            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
+            frontBG.backgroundColor = .white
+            backBG.backgroundColor = .white
+            backBG.layer.opacity = 0.7
+            alpha = 0.7
+        case .none:
+            setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+            frontBG.backgroundColor = .kobarBlueActive
+            backBG.backgroundColor = .kobarDarkBlue
+            backBG.layer.opacity = 1
+            alpha = 1
+        }
     }
 
     private func setupAutoLayout() {
@@ -92,13 +98,5 @@ final class SmallBackButtonView: UIButton {
             make.height.equalTo(51)
             make.center.equalToSuperview()
         }
-    }
-
-    private func setupButton() {
-        configuration = .plain()
-        let config = UIImage.SymbolConfiguration(pointSize: 22)
-        let buttonImage = UIImage(systemName: "arrowshape.backward.fill", withConfiguration: config)
-        translatesAutoresizingMaskIntoConstraints = false
-        setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
     }
 }

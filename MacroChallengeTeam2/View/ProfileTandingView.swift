@@ -16,28 +16,9 @@ final class ProfileTandingView: UIView {
         case opponent
     }
 
-    var role: Role = .user {
-        didSet {
-            switch role {
-            case .user:
-                self.profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
-                self.ratingHolder.backgroundColor = UIColor.kobarGreen
-            case .opponent:
-                self.profileBG.layer.borderColor = UIColor.kobarRed.cgColor
-                self.ratingHolder.backgroundColor = UIColor.kobarRed
-            }
-        }
-    }
-    var name: String? {
-        didSet {
-            self.playerName.text = name
-        }
-    }
-    var rating: Int? {
-        didSet {
-            self.ratingLabel.text = String(rating ?? 1)
-        }
-    }
+    var role: Role?
+    var name: String?
+    var rating: Int?
 
     private lazy var playerName: UILabel = {
         let label = UILabel()
@@ -62,7 +43,7 @@ final class ProfileTandingView: UIView {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
         let profile = UIImage(systemName: "person.fill", withConfiguration: config)
-        imageView.image = profile?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        imageView.image = profile?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal)
         return imageView
     }()
 
@@ -85,6 +66,7 @@ final class ProfileTandingView: UIView {
 
     private lazy var ratingLabel: UILabel = {
         let label = UILabel()
+        label.text = String(rating ?? 00)
         label.textAlignment = .right
         label.textColor = .white
         label.font = .bold28
@@ -93,15 +75,37 @@ final class ProfileTandingView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+
+    init(role: Role, name: String, rating: Int) {
+        super.init(frame: .zero)
+        self.role = role
+        self.name = name
+        self.rating = rating
         addSubview(profileBG)
         addSubview(playerName)
         addSubview(profileView)
         addSubview(ratingHolder)
+        setupRole()
         setupAutoLayout()
     }
 
     required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupRole() {
+        switch role {
+        case .user:
+            profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarGreen
+        case .opponent:
+            profileBG.layer.borderColor = UIColor.kobarRed.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarRed
+        case .none:
+            profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarGreen
+        }
     }
 
      private func setupAutoLayout() {
