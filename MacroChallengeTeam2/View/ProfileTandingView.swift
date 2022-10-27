@@ -86,7 +86,7 @@ final class ProfileTandingView: UIView {
         addSubview(playerName)
         addSubview(profileView)
         addSubview(ratingHolder)
-        setStyling()
+        setupRole()
         setupAutoLayout()
     }
 
@@ -94,19 +94,18 @@ final class ProfileTandingView: UIView {
             fatalError("init(coder:) has not been implemented")
     }
 
-    private func setStyling() {
+    private func setupRole() {
         switch role {
         case .user:
-            self.profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
-            self.ratingHolder.backgroundColor = UIColor.kobarGreen
+            profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarGreen
         case .opponent:
-            self.profileBG.layer.borderColor = UIColor.kobarRed.cgColor
-            self.ratingHolder.backgroundColor = UIColor.kobarRed
+            profileBG.layer.borderColor = UIColor.kobarRed.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarRed
         case .none:
-            self.profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
-            self.ratingHolder.backgroundColor = UIColor.kobarGreen
+            profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+            ratingHolder.backgroundColor = UIColor.kobarGreen
         }
-
     }
 
      private func setupAutoLayout() {

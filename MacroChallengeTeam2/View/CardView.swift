@@ -72,11 +72,11 @@ final class CardView: UIView, UITextViewDelegate {
 
     init(type: CardType) {
         super.init(frame: .zero)
-        self.cardType = type
+        cardType = type
         addSubview(textViewBG)
         addSubview(titleBanner)
         addSubview(textInput)
-        self.cardStyle()
+        setupCardType()
         setupAutoLayout()
     }
 
@@ -84,32 +84,32 @@ final class CardView: UIView, UITextViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func cardStyle() {
+    private func setupCardType() {
         switch cardType {
         case .codingCard:
-            self.titleLabel.textColor = .kobarBlueActive
-            self.titleLabel.text = "Ngoding yuk!"
-            self.textInput.font = .code17
-            self.textInput.text = "Ketik kodingannya di sini"
-            self.placeholderText = "Ketik kodingannya di sini"
+            titleLabel.textColor = .kobarBlueActive
+            titleLabel.text = "Ngoding yuk!"
+            textInput.font = .code17
+            textInput.text = "Ketik kodingannya di sini"
+            placeholderText = "Ketik kodingannya di sini"
         case .inputCard:
-            self.titleLabel.textColor = .kobarBlueActive
-            self.titleLabel.text = "Input lo"
-            self.textInput.font = .regular17
-            self.textInput.text = "Ketik input lo untuk diuji"
-            self.placeholderText = "Ketik input lo untuk diuji"
+            titleLabel.textColor = .kobarBlueActive
+            titleLabel.text = "Input lo"
+            textInput.font = .regular17
+            textInput.text = "Ketik input lo untuk diuji"
+            placeholderText = "Ketik input lo untuk diuji"
         case .outputCard:
-            self.titleLabel.textColor = .kobarBlack
-            self.titleLabel.text = "Output"
-            self.textInput.font = .regular17
-            self.textInput.text = "Nanti hasil dari input lo akan muncul"
-            self.placeholderText = "Nanti hasil dari input lo akan muncul"
+            titleLabel.textColor = .kobarBlack
+            titleLabel.text = "Output"
+            textInput.font = .regular17
+            textInput.text = "Nanti hasil dari input lo akan muncul"
+            placeholderText = "Nanti hasil dari input lo akan muncul"
         case .none:
-            self.titleLabel.textColor = .kobarBlueActive
-            self.titleLabel.text = "Input lo"
-            self.textInput.font = .regular17
-            self.textInput.text = "Ketik input lo untuk diuji"
-            self.placeholderText = "Ketik input lo untuk diuji"
+            titleLabel.textColor = .kobarBlueActive
+            titleLabel.text = "Input lo"
+            textInput.font = .regular17
+            textInput.text = "Ketik input lo untuk diuji"
+            placeholderText = "Ketik input lo untuk diuji"
         }
     }
 
