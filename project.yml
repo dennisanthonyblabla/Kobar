@@ -11,6 +11,9 @@ packages:
   SocketIO:
     url: https://github.com/socketio/socket.io-client-swift
     from: 16.0.1
+  Lottie:
+    url: https://github.com/airbnb/lottie-ios
+    from: 3.5.0
 targets:
   Macro Challenge Team2:
     type: application
@@ -46,3 +49,4 @@ targets:
       - package: RxSwift
       - package: SnapKit
       - package: SocketIO
+      - package: Lottie
