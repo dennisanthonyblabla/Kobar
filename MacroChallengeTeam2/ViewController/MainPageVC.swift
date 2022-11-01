@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import SwiftUI
+import Lottie
 
 class MainPageViewController: UIViewController {
 
@@ -32,11 +33,21 @@ class MainPageViewController: UIViewController {
         return view
     }()
 
-    private lazy var swordGif: UIImageView = {
+    private lazy var swordgif: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.image = UIImage(named: "Pedang - Home Screen.GIF")
         return view
+    }()
+
+    private lazy var swordGif: LottieAnimationView = {
+        let jsonName = "MainPageSword"
+        let animation = LottieAnimation.named(jsonName)
+        let gif = LottieAnimationView(animation: animation)
+        gif.contentMode = .scaleAspectFit
+        gif.loopMode = .loop
+        gif.play()
+        return gif
     }()
 
     private lazy var tandingYukTitle: UILabel = {
@@ -75,6 +86,7 @@ class MainPageViewController: UIViewController {
         view.addSubview(settingBtn)
         view.addSubview(soundBtn)
         view.addSubview(musicBtn)
+        view.addSubview(swordgif)
         view.addSubview(swordGif)
         view.addSubview(profile)
         view.addSubview(ajakTemanBtn)
@@ -84,7 +96,6 @@ class MainPageViewController: UIViewController {
         settingBtn.addTarget(self, action: #selector(settingFunc), for: .touchUpInside)
         soundBtn.addTarget(self, action: #selector(soundFunc), for: .touchUpInside)
         musicBtn.addTarget(self, action: #selector(musicFunc), for: .touchUpInside)
-        
         setupBackground()
         setupDisplays()
         setupComponents()
@@ -117,8 +128,8 @@ class MainPageViewController: UIViewController {
             make.centerX.equalTo(tandingYukTitle)
         }
         swordGif.snp.makeConstraints { make in
-            make.width.equalTo(580)
-            make.height.equalTo(580)
+            make.width.equalTo(480)
+            make.height.equalTo(480)
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-120)
         }
