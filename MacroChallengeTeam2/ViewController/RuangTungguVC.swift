@@ -14,6 +14,7 @@ class RuangTungguViewController: UIViewController {
     private lazy var backBtn = SmallBackButtonView(variant: .variant2)
     private lazy var profileUser = ProfileTandingView(role: .user, name: "John Doe", rating: 100)
     private lazy var profileInvite = ProfileInviteView(inviteCode: "XYZAB")
+    private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)
 
     private lazy var pageTitle: UILabel = {
         let label = UILabel()
@@ -82,9 +83,11 @@ class RuangTungguViewController: UIViewController {
         view.addSubview(profileInvite)
         view.addSubview(swordVS)
         view.addSubview(eloDesc)
+        view.addSubview(shareBtn)
         setupBackground()
         setupDisplays()
         setupComponents()
+        shareBtn.addTarget(self, action: #selector(share), for: .touchUpInside)
     }
 
     private func setupBackground() {
@@ -134,6 +137,14 @@ class RuangTungguViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-300)
             make.centerY.equalToSuperview()
         }
+        shareBtn.snp.makeConstraints { make in
+            make.centerX.equalTo(profileInvite).offset(10)
+            make.bottom.equalTo(profileInvite).offset(110)
+        }
+    }
+
+    @objc func share() {
+        print("Clicked")
     }
 }
 
