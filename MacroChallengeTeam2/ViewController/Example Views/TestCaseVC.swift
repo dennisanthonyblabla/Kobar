@@ -11,12 +11,13 @@ import SnapKit
 
 class TestCaseViewController: UIViewController {
 
-    private lazy var testCaseView = TestCaseButton(style: .fill, status: .wrong, order: 5)
+    private lazy var testCaseView = TestCaseButton(style: .fill, status: .correct, order: 1)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
         view.addSubview(testCaseView)
+        testCaseView.addTarget(self, action: #selector(clickBack), for: .touchUpInside)
         setupAutoLayout()
     }
 
@@ -26,6 +27,10 @@ class TestCaseViewController: UIViewController {
             make.height.equalTo(testCaseView.snp.height)
             make.width.equalTo(testCaseView.snp.width)
         }
+    }
+
+    @objc func clickBack() {
+        print("Clicked")
     }
 }
 
