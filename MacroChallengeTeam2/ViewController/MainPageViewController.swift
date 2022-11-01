@@ -86,6 +86,7 @@ class MainPageViewController: UIViewController {
         musicBtn.addTarget(self, action: #selector(musicFunc), for: .touchUpInside)
         
         setupBackground()
+        setupDisplays()
         setupComponents()
     }
 
