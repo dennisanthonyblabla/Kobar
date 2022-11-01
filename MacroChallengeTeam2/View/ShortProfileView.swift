@@ -13,17 +13,23 @@ final class ShortProfileView: UIView {
 
     private var rating: Int?
 
-    private lazy var frontCircle: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
-        return view
+    private lazy var profilePicture: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "profilePicture")
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 31.5
+        imageView.clipsToBounds = true
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderWidth = 3
+        return imageView
     }()
 
     private lazy var backCircle: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .kobarLightBlue
+        view.layer.cornerRadius = 31.5
         return view
     }()
 
@@ -47,6 +53,7 @@ final class ShortProfileView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
+        view.layer.cornerRadius = 22.5
         view.addSubview(ratingStar)
         view.addSubview(ratingLabel)
         return view
@@ -56,6 +63,7 @@ final class ShortProfileView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .kobarLightBlue
+        view.layer.cornerRadius = 22.5
         return view
     }()
 
@@ -69,7 +77,7 @@ final class ShortProfileView: UIView {
         addSubview(bannerBackBG)
         addSubview(bannerFrontBG)
         addSubview(backCircle)
-        addSubview(frontCircle)
+        addSubview(profilePicture)
         setupAutoLayout()
     }
 
@@ -79,28 +87,23 @@ final class ShortProfileView: UIView {
 
     private func setupAutoLayout() {
         let circleHeight = 63
-        let labelHeight = 45
-        self.bannerFrontBG.layer.cornerRadius = CGFloat(labelHeight / 2)
-        self.bannerBackBG.layer.cornerRadius = CGFloat(labelHeight / 2)
-        self.frontCircle.layer.cornerRadius = CGFloat(circleHeight / 2)
-        self.backCircle.layer.cornerRadius = CGFloat(circleHeight / 2)
 
-        frontCircle.snp.makeConstraints { make in
+        backCircle.snp.makeConstraints { make in
             make.height.equalTo(circleHeight)
             make.width.equalTo(circleHeight)
+            make.top.equalTo(profilePicture).offset(4)
+            make.centerX.equalTo(profilePicture)
+        }
+        profilePicture.snp.makeConstraints { make in
+            make.width.equalTo(circleHeight)
+            make.height.equalTo(circleHeight)
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
-        backCircle.snp.makeConstraints { make in
-            make.height.equalTo(frontCircle)
-            make.width.equalTo(frontCircle)
-            make.top.equalTo(frontCircle).offset(4)
-            make.centerX.equalTo(frontCircle)
-        }
         bannerFrontBG.snp.makeConstraints { make in
             make.width.equalTo(160)
-            make.height.equalTo(labelHeight)
-            make.centerY.equalTo(frontCircle)
+            make.height.equalTo(45)
+            make.centerY.equalTo(profilePicture)
             make.leading.equalToSuperview().offset(21.5)
         }
         bannerBackBG.snp.makeConstraints { make in
