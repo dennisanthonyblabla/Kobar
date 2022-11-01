@@ -15,6 +15,7 @@ final class MedbuttonView: UIButton {
         case variant1
         case variant2
         case variant3
+        case mainPage
     }
 
     private var variant: Variants?
@@ -47,7 +48,12 @@ final class MedbuttonView: UIButton {
         addSubview(backBG)
         addSubview(frontBG)
         setVariants()
-        setupAutoLayout()
+        if variant == .mainPage {
+            setupAutoLayoutMP()
+        } else {
+            setupAutoLayout()
+        }
+
     }
 
     required init?(coder: NSCoder) {
@@ -73,6 +79,13 @@ final class MedbuttonView: UIButton {
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
             self.setTitleColor(.kobarDarkGrayText, for: .normal)
+        case .mainPage:
+            self.frontBG.backgroundColor = .white
+            self.backBG.backgroundColor = .white
+            self.backBG.alpha = 0.7
+            self.setTitleColor(.kobarBlueActive, for: .normal)
+            self.frontBG.layer.cornerRadius = 29.5
+            self.backBG.layer.cornerRadius = 29.5
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
@@ -90,6 +103,20 @@ final class MedbuttonView: UIButton {
         frontBG.snp.makeConstraints { (make) in
             make.height.equalTo(59)
             make.width.equalToSuperview().offset(64)
+            make.center.equalToSuperview()
+        }
+    }
+
+    private func setupAutoLayoutMP() {
+        backBG.snp.makeConstraints { (make) in
+            make.height.width.equalTo(frontBG)
+            make.centerX.equalTo(frontBG)
+            make.centerY.equalTo(frontBG).offset(5)
+        }
+
+        frontBG.snp.makeConstraints { (make) in
+            make.height.equalTo(59)
+            make.width.equalTo(245)
             make.center.equalToSuperview()
         }
     }

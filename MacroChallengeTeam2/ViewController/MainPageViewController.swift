@@ -14,6 +14,10 @@ class MainPageViewController: UIViewController {
     private lazy var settingBtn = DropDownButtonsView(variant: .variant1)
     private lazy var soundBtn = DropDownButtonsView(variant: .variant2)
     private lazy var musicBtn = DropDownButtonsView(variant: .variant3)
+    private lazy var profile = ShortProfileView(rating: 2000)
+    private lazy var ajakTemanBtn = MedbuttonView(variant: .mainPage, title: "Ajak Teman")
+    private lazy var gabungBtn = MedbuttonView(variant: .mainPage, title: "Gabung Sama Teman")
+    private lazy var siapaAjaBtn = MedbuttonView(variant: .mainPage, title: "Siapa Aja Bebas")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -72,14 +76,20 @@ class MainPageViewController: UIViewController {
         view.addSubview(soundBtn)
         view.addSubview(musicBtn)
         view.addSubview(swordGif)
+        view.addSubview(profile)
+        view.addSubview(ajakTemanBtn)
+        view.addSubview(gabungBtn)
+        view.addSubview(siapaAjaBtn)
 
         settingBtn.addTarget(self, action: #selector(settingFunc), for: .touchUpInside)
         soundBtn.addTarget(self, action: #selector(soundFunc), for: .touchUpInside)
         musicBtn.addTarget(self, action: #selector(musicFunc), for: .touchUpInside)
-        setupAutoLayout()
+        
+        setupBackground()
+        setupComponents()
     }
 
-    private func setupAutoLayout() {
+    private func setupBackground() {
         background.snp.makeConstraints { (make) in
             make.width.equalToSuperview()
             make.height.equalToSuperview().offset(50)
@@ -90,17 +100,19 @@ class MainPageViewController: UIViewController {
             make.height.equalToSuperview()
             make.center.equalToSuperview()
         }
+    }
 
+    private func setupDisplays() {
         tandingYukTitle.snp.makeConstraints { (make) in
             make.width.equalTo(tandingYukTitle.snp.width)
             make.height.equalTo(tandingYukTitle.snp.height)
-            make.centerY.equalToSuperview().offset(150)
+            make.centerY.equalToSuperview().offset(140)
             make.centerX.equalToSuperview()
         }
         tandingYukDesc.snp.makeConstraints { (make) in
             make.width.equalTo(tandingYukDesc.snp.width)
             make.height.equalTo(tandingYukDesc.snp.height)
-            make.top.equalTo(tandingYukTitle.snp.bottom).offset(15)
+            make.top.equalTo(tandingYukTitle.snp.bottom).offset(8)
             make.centerX.equalTo(tandingYukTitle)
         }
         swordGif.snp.makeConstraints { make in
@@ -109,6 +121,9 @@ class MainPageViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-120)
         }
+    }
+
+    private func setupComponents() {
         ddBG.snp.makeConstraints { make in
             make.width.equalTo(65)
             make.height.equalTo(202)
@@ -126,6 +141,22 @@ class MainPageViewController: UIViewController {
         musicBtn.snp.makeConstraints { make in
             make.centerX.equalTo(ddBG)
             make.top.equalTo(soundBtn.snp.bottom).offset(25.5)
+        }
+        profile.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(89)
+            make.top.equalToSuperview().offset(100)
+        }
+        gabungBtn.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-100)
+        }
+        ajakTemanBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(gabungBtn.snp.leading).offset(-200)
+            make.centerY.equalTo(gabungBtn)
+        }
+        siapaAjaBtn.snp.makeConstraints { make in
+            make.leading.equalTo(gabungBtn.snp.trailing).offset(200)
+            make.centerY.equalTo(gabungBtn)
         }
     }
 
