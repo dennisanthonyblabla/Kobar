@@ -100,7 +100,7 @@ final class TestCaseButton: UIView {
             )
             if style == .fill {
                 testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
-            } else if style == .transparent {
+            } else {
                 testCaseSymbol.image = image?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
                 testCaseOrder.textColor = .kobarGreen
                 testCaselabel.textColor = .kobarGreen
@@ -116,7 +116,6 @@ final class TestCaseButton: UIView {
                 testCaseSymbol.image = image?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
                 testCaseOrder.textColor = .kobarRed
                 testCaselabel.textColor = .kobarRed
-
             }
         case .none:
             testCaseSymbol.image = UIImage(

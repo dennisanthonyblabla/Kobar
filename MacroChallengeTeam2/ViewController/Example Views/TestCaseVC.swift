@@ -11,7 +11,7 @@ import SnapKit
 
 class TestCaseViewController: UIViewController {
 
-    private lazy var testCaseView = TestCaseButton(style: .fill, status: .correct, order: 5)
+    private lazy var testCaseView = TestCaseButton(style: .fill, status: .wrong, order: 5)
 
     override func viewDidLoad() {
         super.viewDidLoad()
