@@ -40,15 +40,6 @@ final class TestCaseButton: UIButton {
         return imageView
     }()
 
-//    private lazy var testCaselabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Test Case"
-//        label.textAlignment = .center
-//        label.textColor = .white
-//        label.font = .semi22
-//        return label
-//    }()
-
     private lazy var testCaseOrder: UILabel = {
         let label = UILabel()
         label.text = String(order ?? 0)
@@ -70,7 +61,6 @@ final class TestCaseButton: UIButton {
         self.order = order
         addSubview(testCaseBG)
         addSubview(testCaseSymbol)
-//        addSubview(testCaselabel)
         addSubview(testCaseOrder)
         testCaseStyle()
         testCaseStatus()
@@ -78,7 +68,7 @@ final class TestCaseButton: UIButton {
     }
 
     required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func testCaseStyle() {
@@ -89,7 +79,6 @@ final class TestCaseButton: UIButton {
             testCaseBG.alpha = 0
         case .none:
             testCaseBG.alpha = 1
-
         }
     }
 
@@ -133,28 +122,21 @@ final class TestCaseButton: UIButton {
 
     private func setupAutoLayout() {
 
-        testCaseBG.snp.makeConstraints { (make) in
+        testCaseBG.snp.makeConstraints { make in
             make.width.equalTo(210)
             make.height.equalTo(58)
             make.centerX.equalToSuperview().offset(-4)
             make.centerY.equalToSuperview()
         }
 
-        testCaseSymbol.snp.makeConstraints { (make) in
+        testCaseSymbol.snp.makeConstraints { make in
             make.width.equalTo(testCaseSymbol.snp.width)
             make.height.equalTo(testCaseSymbol.snp.height)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(-35)
         }
 
-//        testCaselabel.snp.makeConstraints { (make) in
-//            make.width.equalTo(testCaselabel.snp.width)
-//            make.height.equalTo(testCaselabel.snp.height)
-//            make.centerY.equalToSuperview()
-//            make.centerX.equalToSuperview().offset(5)
-//        }
-
-        testCaseOrder.snp.makeConstraints { (make) in
+        testCaseOrder.snp.makeConstraints { make in
             make.width.equalTo(testCaseOrder.snp.width)
             make.height.equalTo(testCaseOrder.snp.height)
             make.trailing.equalToSuperview().offset(25)

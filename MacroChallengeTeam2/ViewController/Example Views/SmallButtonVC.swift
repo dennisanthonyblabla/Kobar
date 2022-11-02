@@ -40,5 +40,4 @@ struct SmallButtonViewControllerPreviews: PreviewProvider {
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }
-
 }

@@ -27,7 +27,7 @@ class ShortProfileViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-        background.snp.makeConstraints { (make) in
+        background.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalToSuperview().offset(50)
@@ -46,5 +46,4 @@ struct ShortProfileViewControllerPreviews: PreviewProvider {
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }
-
 }

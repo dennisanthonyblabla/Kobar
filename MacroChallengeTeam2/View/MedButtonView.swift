@@ -47,20 +47,19 @@ final class MedbuttonView: UIButton {
         self.variant = variant
         addSubview(backBG)
         addSubview(frontBG)
-        setVariants()
+        setupVariants()
         if variant == .mainPage {
             setupAutoLayoutMP()
         } else {
             setupAutoLayout()
         }
-
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setVariants() {
+    private func setupVariants() {
         self.configuration = .none
         setTitle(title, for: .normal)
         setTitle("Touched", for: .highlighted)
@@ -108,13 +107,13 @@ final class MedbuttonView: UIButton {
     }
 
     private func setupAutoLayoutMP() {
-        backBG.snp.makeConstraints { (make) in
+        backBG.snp.makeConstraints { make in
             make.height.width.equalTo(frontBG)
             make.centerX.equalTo(frontBG)
             make.centerY.equalTo(frontBG).offset(5)
         }
 
-        frontBG.snp.makeConstraints { (make) in
+        frontBG.snp.makeConstraints { make in
             make.height.equalTo(59)
             make.width.equalTo(245)
             make.center.equalToSuperview()
