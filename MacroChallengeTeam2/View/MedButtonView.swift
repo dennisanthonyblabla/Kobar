@@ -48,7 +48,7 @@ final class MedbuttonView: UIButton {
         addSubview(backBG)
         addSubview(frontBG)
         setupVariants()
-        if variant == .mainPage {
+        if variant == .fixedWidth {
             setupAutoLayoutMP()
         } else {
             setupAutoLayout()

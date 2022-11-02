@@ -19,14 +19,6 @@ class TungguLawanViewController: UIViewController {
     private lazy var tandingBaruBtn = MedbuttonView(variant: .fixedWidth, title: "Tanding Baru")
     private lazy var pembahasanBtn = MedbuttonView(variant: .fixedWidth, title: "Pembahasan")
 
-    private var timerLabel: UILabel = {
-        let timer = UILabel()
-//        timer.text = "01:30"
-        timer.font = .bold38
-        timer.textColor = .white
-        return timer
-    }()
-
     private lazy var background: UIView = {
         let view = UIView()
         view.backgroundColor = .kobarBlueBG
@@ -38,6 +30,24 @@ class TungguLawanViewController: UIViewController {
         view.contentMode = .scaleAspectFill
         view.image = UIImage(named: "pageTungguLawanBG")
         return view
+    }()
+
+    private lazy var hourglassGif: LottieAnimationView = {
+        let jsonName = "Hourglass"
+        let animation = LottieAnimation.named(jsonName)
+        let gif = LottieAnimationView(animation: animation)
+        gif.contentMode = .scaleAspectFit
+        gif.loopMode = .loop
+        gif.play()
+        return gif
+    }()
+
+
+    private var timerLabel: UILabel = {
+        let timer = UILabel()
+        timer.font = .bold38
+        timer.textColor = .white
+        return timer
     }()
 
     private lazy var pantun: UILabel = {
@@ -65,6 +75,7 @@ class TungguLawanViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(background)
         view.addSubview(backgroundMotives)
+        view.addSubview(hourglassGif)
         view.addSubview(tandingBaruBtn)
         view.addSubview(pembahasanBtn)
         view.addSubview(pantun)
@@ -78,12 +89,12 @@ class TungguLawanViewController: UIViewController {
     }
 
     private func setupBackground() {
-        background.snp.makeConstraints { (make) in
+        background.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview().offset(50)
             make.center.equalToSuperview()
         }
-        backgroundMotives.snp.makeConstraints { (make) in
+        backgroundMotives.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview()
             make.center.equalToSuperview()
@@ -93,7 +104,7 @@ class TungguLawanViewController: UIViewController {
     private func setupDisplays() {
         pantun.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(50)
+            make.centerY.equalToSuperview().offset(70)
         }
         desc.snp.makeConstraints { make in
             make.centerX.equalTo(pantun)
@@ -102,6 +113,12 @@ class TungguLawanViewController: UIViewController {
         timerLabel.snp.makeConstraints { make in
             make.centerX.equalTo(desc)
             make.top.equalTo(desc.snp.bottom).offset(2)
+        }
+        hourglassGif.snp.makeConstraints { make in
+            make.width.equalTo(330)
+            make.height.equalTo(330)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(pantun.snp.top).offset(-5)
         }
     }
 
@@ -134,8 +151,6 @@ class TungguLawanViewController: UIViewController {
     }
 
     func timeString(time: TimeInterval) -> String {
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
         let formatter = DateComponentsFormatter()
         return formatter.string(from: time) ?? "00"
     }
