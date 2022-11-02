@@ -15,7 +15,7 @@ final class MedbuttonView: UIButton {
         case variant1
         case variant2
         case variant3
-        case mainPage
+        case fixedWidth
     }
 
     private var variant: Variants?
@@ -48,7 +48,7 @@ final class MedbuttonView: UIButton {
         addSubview(backBG)
         addSubview(frontBG)
         setupVariants()
-        if variant == .mainPage {
+        if variant == .fixedWidth {
             setupAutoLayoutMP()
         } else {
             setupAutoLayout()
@@ -78,7 +78,7 @@ final class MedbuttonView: UIButton {
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
             self.setTitleColor(.kobarDarkGrayText, for: .normal)
-        case .mainPage:
+        case .fixedWidth:
             self.frontBG.backgroundColor = .white
             self.backBG.backgroundColor = .white
             self.backBG.alpha = 0.7

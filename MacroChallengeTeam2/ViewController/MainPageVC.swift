@@ -13,9 +13,9 @@ import Lottie
 class MainPageViewController: UIViewController {
 
     private lazy var profile = ShortProfileView(rating: 2000)
-    private lazy var ajakTemanBtn = MedbuttonView(variant: .mainPage, title: "Ajak Teman")
-    private lazy var gabungBtn = MedbuttonView(variant: .mainPage, title: "Gabung Sama Teman")
-    private lazy var siapaAjaBtn = MedbuttonView(variant: .mainPage, title: "Siapa Aja Bebas")
+    private lazy var ajakTemanBtn = MedbuttonView(variant: .fixedWidth, title: "Ajak Teman")
+    private lazy var gabungBtn = MedbuttonView(variant: .fixedWidth, title: "Gabung Sama Teman")
+    private lazy var siapaAjaBtn = MedbuttonView(variant: .fixedWidth, title: "Siapa Aja Bebas")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -27,13 +27,6 @@ class MainPageViewController: UIViewController {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.image = UIImage(named: "pageTandingYukBG")
-        return view
-    }()
-
-    private lazy var swordgif: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "Pedang - Home Screen.GIF")
         return view
     }()
 
@@ -71,7 +64,6 @@ class MainPageViewController: UIViewController {
         view.addSubview(backgroundMotives)
         view.addSubview(tandingYukTitle)
         view.addSubview(tandingYukDesc)
-        view.addSubview(swordgif)
         view.addSubview(swordGif)
         view.addSubview(profile)
         view.addSubview(ajakTemanBtn)
