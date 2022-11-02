@@ -84,12 +84,12 @@ class MainPageViewController: UIViewController {
     }
 
     private func setupBackground() {
-        background.snp.makeConstraints { (make) in
+        background.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview().offset(50)
             make.center.equalToSuperview()
         }
-        backgroundMotives.snp.makeConstraints { (make) in
+        backgroundMotives.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview()
             make.center.equalToSuperview()
@@ -97,13 +97,13 @@ class MainPageViewController: UIViewController {
     }
 
     private func setupDisplays() {
-        tandingYukTitle.snp.makeConstraints { (make) in
+        tandingYukTitle.snp.makeConstraints { make in
             make.width.equalTo(tandingYukTitle.snp.width)
             make.height.equalTo(tandingYukTitle.snp.height)
             make.centerY.equalToSuperview().offset(140)
             make.centerX.equalToSuperview()
         }
-        tandingYukDesc.snp.makeConstraints { (make) in
+        tandingYukDesc.snp.makeConstraints { make in
             make.width.equalTo(tandingYukDesc.snp.width)
             make.height.equalTo(tandingYukDesc.snp.height)
             make.top.equalTo(tandingYukTitle.snp.bottom).offset(8)

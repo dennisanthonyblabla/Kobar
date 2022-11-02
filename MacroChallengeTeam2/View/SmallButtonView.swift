@@ -59,8 +59,8 @@ final class SmallButtonView: UIButton {
         addSubview(backBG)
         addSubview(frontBG)
         addSubview(shareIcon)
-        setBtnType()
-        setVariants()
+        setupButtonType()
+        setupVariants()
         setupAutoLayout()
     }
 
@@ -70,23 +70,23 @@ final class SmallButtonView: UIButton {
 
     private func setupAutoLayout() {
         if btnType == .normal {
-            backBG.snp.makeConstraints { (make) in
+            backBG.snp.makeConstraints { make in
                 make.height.width.equalTo(frontBG)
                 make.centerX.equalTo(frontBG)
                 make.centerY.equalTo(frontBG).offset(5)
             }
-            frontBG.snp.makeConstraints { (make) in
+            frontBG.snp.makeConstraints { make in
                 make.height.equalTo(45)
                 make.width.equalTo(149)
                 make.center.equalToSuperview()
             }
         } else {
-            backBG.snp.makeConstraints { (make) in
+            backBG.snp.makeConstraints { make in
                 make.height.width.equalTo(frontBG)
                 make.centerX.equalTo(frontBG)
                 make.centerY.equalTo(frontBG).offset(5)
             }
-            frontBG.snp.makeConstraints { (make) in
+            frontBG.snp.makeConstraints { make in
                 make.height.equalTo(45)
                 make.width.equalTo(149)
                 make.trailing.equalToSuperview().offset(35)
@@ -101,7 +101,7 @@ final class SmallButtonView: UIButton {
         }
     }
 
-    private func setVariants() {
+    private func setupVariants() {
         self.configuration = .none
         setTitle(title, for: .normal)
         titleLabel?.font = .regular17
@@ -132,7 +132,7 @@ final class SmallButtonView: UIButton {
         }
     }
 
-    private func setBtnType() {
+    private func setupButtonType() {
         switch btnType {
         case .normal:
             self.shareIcon.alpha = 0

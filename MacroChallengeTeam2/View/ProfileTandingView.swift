@@ -47,15 +47,15 @@ final class ProfileTandingView: UIView {
         return imageView
     }()
 
-     private lazy var ratingHolder: UIView = {
-         let view = UIView()
-         view.translatesAutoresizingMaskIntoConstraints = false
-         view.backgroundColor = UIColor.kobarGreen
-         view.layer.cornerRadius = 22
-         view.addSubview(ratingStar)
-         view.addSubview(ratingLabel)
-         return view
-     }()
+    private lazy var ratingHolder: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.kobarGreen
+        view.layer.cornerRadius = 22
+        view.addSubview(ratingStar)
+        view.addSubview(ratingLabel)
+        return view
+    }()
 
     private lazy var ratingStar: UIImageView = {
         let imageView = UIImageView()
@@ -91,13 +91,13 @@ final class ProfileTandingView: UIView {
     }
 
     required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupRole() {
         switch role {
         case .user:
-            profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
+            self.profileBG.layer.borderColor = UIColor.kobarGreen.cgColor
             ratingHolder.backgroundColor = UIColor.kobarGreen
         case .opponent:
             profileBG.layer.borderColor = UIColor.kobarRed.cgColor
@@ -108,40 +108,40 @@ final class ProfileTandingView: UIView {
         }
     }
 
-     private func setupAutoLayout() {
-         profileBG.snp.makeConstraints { (make) in
-             make.width.equalTo(233)
-             make.height.equalTo(205)
-             make.center.equalToSuperview()
-         }
-         ratingHolder.snp.makeConstraints { (make) in
-             make.width.equalTo(profileBG.snp.width).inset(36)
-             make.height.equalTo(44)
-             make.centerX.equalTo(profileBG)
-             make.bottom.equalTo(profileBG).inset(-20)
-         }
-         ratingStar.snp.makeConstraints { (make) in
-             make.width.equalTo(26.73)
-             make.height.equalTo(25.61)
-             make.leading.equalTo(ratingHolder.snp.leading).inset(20)
-             make.centerY.equalToSuperview()
-         }
-         ratingLabel.snp.makeConstraints { (make) in
-             make.width.equalTo(ratingLabel.snp.width)
-             make.height.equalTo(ratingLabel.snp.height)
-             make.trailing.equalTo(ratingHolder.snp.trailing).inset(20)
-             make.centerY.equalToSuperview()
-         }
-         playerName.snp.makeConstraints { (make) in
-             make.width.equalTo(playerName.snp.width)
-             make.height.equalTo(playerName.snp.height)
-             make.bottom.equalTo(profileBG.snp.top).inset(-18)
-             make.centerX.equalToSuperview()
-         }
-         profileView.snp.makeConstraints { (make) in
-             make.width.equalTo(profileView.snp.width)
-             make.height.equalTo(profileView.snp.height)
-             make.center.equalToSuperview()
-         }
-     }
- }
+    private func setupAutoLayout() {
+        profileBG.snp.makeConstraints { make in
+            make.width.equalTo(233)
+            make.height.equalTo(205)
+            make.center.equalToSuperview()
+        }
+        ratingHolder.snp.makeConstraints { make in
+            make.width.equalTo(profileBG.snp.width).inset(36)
+            make.height.equalTo(44)
+            make.centerX.equalTo(profileBG)
+            make.bottom.equalTo(profileBG).inset(-20)
+        }
+        ratingStar.snp.makeConstraints { make in
+            make.width.equalTo(26.73)
+            make.height.equalTo(25.61)
+            make.leading.equalTo(ratingHolder.snp.leading).inset(20)
+            make.centerY.equalToSuperview()
+        }
+        ratingLabel.snp.makeConstraints { make in
+            make.width.equalTo(ratingLabel.snp.width)
+            make.height.equalTo(ratingLabel.snp.height)
+            make.trailing.equalTo(ratingHolder.snp.trailing).inset(20)
+            make.centerY.equalToSuperview()
+        }
+        playerName.snp.makeConstraints { make in
+            make.width.equalTo(playerName.snp.width)
+            make.height.equalTo(playerName.snp.height)
+            make.bottom.equalTo(profileBG.snp.top).inset(-18)
+            make.centerX.equalToSuperview()
+        }
+        profileView.snp.makeConstraints { make in
+            make.width.equalTo(profileView.snp.width)
+            make.height.equalTo(profileView.snp.height)
+            make.center.equalToSuperview()
+        }
+    }
+}

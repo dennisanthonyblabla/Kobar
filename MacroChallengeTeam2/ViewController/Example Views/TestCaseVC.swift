@@ -22,7 +22,7 @@ class TestCaseViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-        testCaseView.snp.makeConstraints { (make) in
+        testCaseView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.height.equalTo(testCaseView.snp.height)
             make.width.equalTo(testCaseView.snp.width)

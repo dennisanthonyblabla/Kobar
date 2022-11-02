@@ -68,24 +68,24 @@ final class ProfileInviteView: UIView {
     }
 
     private func setupAutoLayout() {
-        profileBG.snp.makeConstraints { (make) in
+        profileBG.snp.makeConstraints { make in
             make.width.equalTo(233)
             make.height.equalTo(205)
             make.center.equalToSuperview()
         }
-        inviteCodeLabel.snp.makeConstraints { (make) in
+        inviteCodeLabel.snp.makeConstraints { make in
             make.width.equalTo(inviteCodeLabel.snp.width)
             make.height.equalTo(inviteCodeLabel.snp.height)
             make.bottom.equalTo(profileBG.snp.bottom).offset(-35)
             make.centerX.equalToSuperview()
         }
-        inviteInstruction.snp.makeConstraints { (make) in
+        inviteInstruction.snp.makeConstraints { make in
             make.width.equalTo(inviteInstruction.snp.width)
             make.height.equalTo(inviteInstruction.snp.height)
             make.bottom.equalTo(inviteCodeLabel.snp.top)
             make.centerX.equalToSuperview()
         }
-        profileView.snp.makeConstraints { (make) in
+        profileView.snp.makeConstraints { make in
             make.width.equalTo(profileView.snp.width)
             make.height.equalTo(profileView.snp.height)
             make.top.equalToSuperview().offset(20)

@@ -15,8 +15,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .gray
     }
-
 }
+
 struct ViewControllerPreviews: PreviewProvider {
 
     static var previews: some View {

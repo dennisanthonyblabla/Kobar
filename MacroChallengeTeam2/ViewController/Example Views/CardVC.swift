@@ -21,13 +21,12 @@ class CardViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-        textView.snp.makeConstraints { (make) in
+        textView.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(-500)
             make.height.equalToSuperview().offset(-200)
             make.center.equalToSuperview()
         }
     }
-
 }
 
 struct CardViewControllerPreviews: PreviewProvider {
@@ -38,5 +37,4 @@ struct CardViewControllerPreviews: PreviewProvider {
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }
-
 }

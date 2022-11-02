@@ -91,12 +91,12 @@ class RuangTungguViewController: UIViewController {
     }
 
     private func setupBackground() {
-        background.snp.makeConstraints { (make) in
+        background.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview().offset(50)
             make.center.equalToSuperview()
         }
-        backgroundMotives.snp.makeConstraints { (make) in
+        backgroundMotives.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalToSuperview()
             make.center.equalToSuperview()
@@ -164,9 +164,10 @@ extension NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byTruncatingTail
         paragraphStyle.lineSpacing = spacing
-        attributedString.addAttribute(.paragraphStyle,
-                                      value: paragraphStyle,
-                                      range: NSRange(location: 0, length: string.count))
+        attributedString.addAttribute(
+            .paragraphStyle,
+            value: paragraphStyle,
+            range: NSRange(location: 0, length: string.count))
         return NSAttributedString(attributedString: attributedString)
     }
 }

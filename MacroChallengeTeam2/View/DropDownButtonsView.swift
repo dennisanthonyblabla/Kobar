@@ -52,7 +52,7 @@ final class DropDownButtonsView: UIButton {
     }
 
     required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupButtonVariant() {
@@ -76,13 +76,13 @@ final class DropDownButtonsView: UIButton {
     }
 
     private func setupAutoLayout() {
-        backBG.snp.makeConstraints { (make) in
+        backBG.snp.makeConstraints { make in
             make.width.equalTo(frontBG)
             make.height.equalTo(frontBG)
             make.centerX.equalTo(frontBG)
             make.centerY.equalTo(frontBG).offset(4)
         }
-        frontBG.snp.makeConstraints { (make) in
+        frontBG.snp.makeConstraints { make in
             make.width.equalTo(51)
             make.height.equalTo(51)
             make.center.equalToSuperview()
