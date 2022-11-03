@@ -1,6 +1,6 @@
 name: MacroChallengeTeam2
 options:
-  bundleIdPrefix: Team2.MacroChallengeTeam2
+  bundleIdPrefix: com.NamanyaApa
 packages:
   RxSwift:
     url: https://github.com/ReactiveX/RxSwift
