@@ -15,6 +15,7 @@ final class CardView: UIView, UITextViewDelegate {
         case codingCard
         case inputCard
         case outputCard
+        case pertanyaan
     }
 
     var cardType: CardType?
@@ -104,6 +105,12 @@ final class CardView: UIView, UITextViewDelegate {
             textInput.font = .regular17
             textInput.text = "Nanti hasil dari input lo akan muncul"
             placeholderText = "Nanti hasil dari input lo akan muncul"
+        case .pertanyaan:
+            titleLabel.textColor = .kobarBlack
+            titleLabel.text = "Pertanyaan"
+            textInput.font = .regular17
+            textInput.text = "Pertanyaan disini"
+            placeholderText = "Pertanyaan disini"
         case .none:
             titleLabel.textColor = .kobarBlueActive
             titleLabel.text = "Input lo"
