@@ -26,7 +26,7 @@ class MainPageViewController: UIViewController {
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "pageTandingYukBG")
+        view.image = UIImage(named: "background1")
         return view
     }()
 
