@@ -11,7 +11,7 @@ import SwiftUI
 
 class MedButtonViewController: UIViewController {
 
-    private lazy var medButton = MedbuttonView(variant: .variant1, title: "Let's go")
+    private lazy var medButton = MedButtonView(variant: .variant1, title: "Let's go")
 
     override func viewDidLoad() {
         super.viewDidLoad()
