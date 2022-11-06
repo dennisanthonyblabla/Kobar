@@ -13,9 +13,9 @@ import Lottie
 class MainPageViewController: UIViewController {
 
     private lazy var profile = ShortProfileView(rating: 2000)
-    private lazy var ajakTemanBtn = MedbuttonView(variant: .fixedWidth, title: "Ajak Teman")
-    private lazy var gabungBtn = MedbuttonView(variant: .fixedWidth, title: "Gabung Sama Teman")
-    private lazy var siapaAjaBtn = MedbuttonView(variant: .fixedWidth, title: "Siapa Aja Bebas")
+    private lazy var ajakTemanBtn = MedButtonView(variant: .fixedWidth, title: "Ajak Teman")
+    private lazy var gabungBtn = MedButtonView(variant: .fixedWidth, title: "Gabung Sama Teman")
+    private lazy var siapaAjaBtn = MedButtonView(variant: .fixedWidth, title: "Siapa Aja Bebas")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -26,7 +26,7 @@ class MainPageViewController: UIViewController {
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "pageTandingYukBG")
+        view.image = UIImage(named: "background1")
         return view
     }()
 

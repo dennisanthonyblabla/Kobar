@@ -16,8 +16,8 @@ class TungguLawanViewController: UIViewController {
     private var timer = Timer()
     private var isTimerRunning = false
 
-    private lazy var tandingBaruBtn = MedbuttonView(variant: .fixedWidth, title: "Tanding Baru")
-    private lazy var pembahasanBtn = MedbuttonView(variant: .fixedWidth, title: "Pembahasan")
+    private lazy var tandingBaruBtn = MedButtonView(variant: .fixedWidth, title: "Tanding Baru")
+    private lazy var pembahasanBtn = MedButtonView(variant: .fixedWidth, title: "Pembahasan")
 
     private lazy var background: UIView = {
         let view = UIView()
