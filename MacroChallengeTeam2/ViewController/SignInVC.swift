@@ -8,6 +8,7 @@
 import UIKit
 import SwiftUI
 import SnapKit
+import Lottie
 
 class SignInViewController: UIViewController {
 
@@ -22,15 +23,14 @@ class SignInViewController: UIViewController {
         return view
     }()
 
-    private lazy var signInButton: MedButtonView = {
-        let button = MedButtonView(variant: .variant2, title: "􀣺 Masuk dengan Apple")
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addAction(
-            UIAction { _ in
-                self.onSignIn?()
-            },
-            for: .touchDown)
-        return button
+    private lazy var signInDoorGIF: LottieAnimationView = {
+        let jsonName = "SignInDoor"
+        let animation = LottieAnimation.named(jsonName)
+        let gif = LottieAnimationView(animation: animation)
+        gif.contentMode = .scaleAspectFit
+        gif.loopMode = .loop
+        gif.play()
+        return gif
     }()
 
     private lazy var signUpButton: MedButtonView = {
@@ -55,7 +55,7 @@ class SignInViewController: UIViewController {
     private lazy var asikinAjaLabel: UILabel = {
         let label = UILabel()
         let text = NSMutableAttributedString(
-            string: "Ngoding?\nAsikin aja!",
+            string: "Yuk masuk untuk\nlanjutin akun lo!",
             attributes: [
                 .font: UIFont.bold34 ?? UIFont.systemFont(ofSize: 34)
             ]
@@ -116,8 +116,8 @@ class SignInViewController: UIViewController {
         view.addSubview(signUpButton)
         view.addSubview(daftarYukLabel)
         view.addSubview(atauView)
-        view.addSubview(signInButton)
         view.addSubview(asikinAjaLabel)
+        view.addSubview(signInDoorGIF)
 
         setupAutoLayout()
     }
@@ -146,14 +146,15 @@ class SignInViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
 
-        signInButton.snp.makeConstraints { make in
-            make.bottom.equalTo(atauView.snp.top).offset(-12)
+        asikinAjaLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(atauView.snp.top).offset(-100)
             make.centerX.equalToSuperview()
         }
 
-        asikinAjaLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(signInButton.snp.top).offset(-18)
+        signInDoorGIF.snp.makeConstraints { make in
+            make.bottom.equalTo(atauView.snp.top).offset(-75)
             make.centerX.equalToSuperview()
+            make.height.width.equalTo(500)
         }
     }
 }
