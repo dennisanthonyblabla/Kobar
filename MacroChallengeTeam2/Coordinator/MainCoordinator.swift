@@ -8,15 +8,13 @@
 import UIKit
 
 final class MainCoordinator: Coordinator {
-    typealias AuthListenableRepository = AuthRepository & AuthListenable
-
     var childCoordinators: [Coordinator] = []
     var isCompleted: (() -> Void)?
 
     private let navigationController: UINavigationController
-    private let authRepository: AuthListenableRepository
+    private let authRepository: AuthRepositoryListenableAdapter
 
-    init(_ navigationController: UINavigationController, authRepository: AuthListenableRepository) {
+    init(_ navigationController: UINavigationController, authRepository: AuthRepositoryListenableAdapter) {
         self.navigationController = navigationController
         self.authRepository = authRepository
     }
@@ -53,11 +51,11 @@ final class MainCoordinator: Coordinator {
         let signInPageVC = SignInPageViewController()
 
         signInPageVC.onSignIn = { [weak self] in
-            self?.authRepository.login { _ in }
+            self?.authRepository.login()
         }
 
         signInPageVC.onSignUp = { [weak self] in
-            self?.authRepository.signUp { _ in }
+            self?.authRepository.signUp()
         }
 
         navigationController.pushViewController(signInPageVC, animated: true)

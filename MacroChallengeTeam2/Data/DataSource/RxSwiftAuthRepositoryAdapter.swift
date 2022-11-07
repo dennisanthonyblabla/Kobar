@@ -8,7 +8,8 @@
 import Foundation
 import RxSwift
 
-final class RxSwiftAuthWrapper: AuthRepository & AuthListenable {
+// TODO: @salman maybe there's a better way to do this
+final class RxSwiftAuthRepositoryAdapter: AuthRepositoryListenableAdapter {
     private let authRepository: AuthRepository
 
     private let userSubject = BehaviorSubject<User?>(value: nil)
@@ -16,35 +17,30 @@ final class RxSwiftAuthWrapper: AuthRepository & AuthListenable {
 
     init(_ authService: AuthRepository) {
         self.authRepository = authService
-
-        self.getUser { _ in }
+        getUser()
     }
 
-    func getUser(_ callback: @escaping (User?) -> Void) {
+    private func getUser() {
         authRepository.getUser { [weak self] user in
             self?.userSubject.onNext(user)
-            callback(user)
         }
     }
 
-    func login(_ callback: @escaping (User?) -> Void) {
+    func login() {
         authRepository.login { [weak self] user in
             self?.userSubject.onNext(user)
-            callback(user)
         }
     }
 
-    func signUp(_ callback: @escaping (User?) -> Void) {
+    func signUp() {
         authRepository.signUp { [weak self] user in
             self?.userSubject.onNext(user)
-            callback(user)
         }
     }
 
-    func logout(_ callback: @escaping (User?) -> Void) {
+    func logout() {
         authRepository.logout { [weak self] user in
             self?.userSubject.onNext(user)
-            callback(user)
         }
     }
 

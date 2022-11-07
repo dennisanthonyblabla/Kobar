@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         coordinator = MainCoordinator(
             navigationController,
-            authRepository: RxSwiftAuthWrapper(authRepository))
+            authRepository: RxSwiftAuthRepositoryAdapter(authRepository))
 
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController

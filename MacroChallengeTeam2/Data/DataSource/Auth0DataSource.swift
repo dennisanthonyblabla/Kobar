@@ -14,13 +14,13 @@ class Auth0DataSource: AuthRepository {
 
     private init() {}
 
-    // TODO: make thread-safe
+    // TODO: @salman make thread-safe
     private func storeCredentials(_ credentials: Credentials) {
-        let didStore = credentialsManager.store(credentials: credentials)
+        _ = credentialsManager.store(credentials: credentials)
     }
 
     private func clearCredentials() {
-        let didClear = credentialsManager.clear()
+        _ = credentialsManager.clear()
     }
 
     private func hasValidCredentials() -> Bool {
@@ -60,13 +60,8 @@ class Auth0DataSource: AuthRepository {
         Auth0
             .webAuth()
             .redirectURL(redirectURL)
-            .clearSession { result in
-                switch result {
-                case .success:
-                    callback(nil)
-                case .failure(let error):
-                    print(error)
-                }
+            .clearSession { _ in
+                callback(nil)
             }
 
         clearCredentials()
@@ -84,8 +79,8 @@ class Auth0DataSource: AuthRepository {
                 case .success(let credentials):
                     self?.storeCredentials(credentials)
                     callback(User(from: credentials))
-                case .failure(let error):
-                    print(error)
+                case .failure:
+                    callback(nil)
                 }
             }
     }
