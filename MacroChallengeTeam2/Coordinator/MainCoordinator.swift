@@ -22,6 +22,18 @@ final class MainCoordinator: Coordinator {
     }
 
     func start() {
+        showLoadingVC()
+
+        // Delay loading page by at least 1 second so its not too fast
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now().advanced(by: .seconds(1)),
+            execute: ({ [weak self] in
+                self?.listenToAuthState()
+            })
+        )
+    }
+
+    private func listenToAuthState() {
         authRepository.onAuthStateChanged { [weak self] user in
             guard let user = user else {
                 self?.showSignInVC()
@@ -32,22 +44,27 @@ final class MainCoordinator: Coordinator {
         }
     }
 
-    private func showSignInVC() {
-        let signInVC = SignInViewController()
+    private func showLoadingVC() {
+        let loadingPageVC = LoadingPageVC()
+        navigationController.pushViewController(loadingPageVC, animated: true)
+    }
 
-        signInVC.onSignIn = { [weak self] in
+    private func showSignInVC() {
+        let signInPageVC = SignInPageViewController()
+
+        signInPageVC.onSignIn = { [weak self] in
             self?.authRepository.login { _ in }
         }
 
-        signInVC.onSignUp = { [weak self] in
+        signInPageVC.onSignUp = { [weak self] in
             self?.authRepository.signUp { _ in }
         }
 
-        navigationController.pushViewController(signInVC, animated: true)
+        navigationController.pushViewController(signInPageVC, animated: true)
     }
 
     private func showMainVC(_ user: User) {
-        let mainVC = MainPageViewController()
-        navigationController.pushViewController(mainVC, animated: true)
+        let mainPageVC = MainPageViewController()
+        navigationController.pushViewController(mainPageVC, animated: true)
     }
 }

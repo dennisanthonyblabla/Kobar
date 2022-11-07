@@ -10,7 +10,7 @@ import SwiftUI
 import SnapKit
 import Lottie
 
-class SignInViewController: UIViewController {
+class SignInPageViewController: UIViewController {
 
     var onSignIn: (() -> Void)?
     var onSignUp: (() -> Void)?
@@ -180,7 +180,7 @@ struct SignInViewControllerPreviews: PreviewProvider {
 
     static var previews: some View {
         UIViewControllerPreview {
-            return SignInViewController()
+            return SignInPageViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)")
         .previewInterfaceOrientation(.landscapeLeft)
