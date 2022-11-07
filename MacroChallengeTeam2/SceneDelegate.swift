@@ -25,7 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             authRepository: RxSwiftAuthRepositoryAdapter(authRepository))
 
         window = UIWindow(windowScene: winScene)
-        window?.rootViewController = navigationController
+        let onboardingVC = UINavigationController(rootViewController: OnboardingPVC(transitionStyle: .scroll, navigationOrientation: .horizontal))
+        window?.rootViewController = onboardingVC
         window?.makeKeyAndVisible()
 
         coordinator?.start()
