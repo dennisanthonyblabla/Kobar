@@ -13,9 +13,18 @@ import Lottie
 class MainPageViewController: UIViewController {
 
     private lazy var profile = ShortProfileView(rating: 2000)
-    private lazy var ajakTemanBtn = MedButtonView(variant: .fixedWidth, title: "Ajak Teman")
-    private lazy var gabungBtn = MedButtonView(variant: .fixedWidth, title: "Gabung Sama Teman")
-    private lazy var siapaAjaBtn = MedButtonView(variant: .fixedWidth, title: "Siapa Aja Bebas")
+    private lazy var ajakTemanBtn = MedButtonView(
+        variant: .variant2,
+        title: "Ajak Teman",
+        width: 245)
+    private lazy var gabungBtn = MedButtonView(
+        variant: .variant2,
+        title: "Gabung Sama Teman",
+        width: 245)
+    private lazy var siapaAjaBtn = MedButtonView(
+        variant: .variant2,
+        title: "Siapa Aja Bebas",
+        width: 245)
 
     private lazy var background: UIView = {
         let view = UIView()
