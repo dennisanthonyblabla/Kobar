@@ -10,7 +10,7 @@ import Foundation
 struct User: Identifiable, Codable {
     let id: UUID
     let name: String
-    let imageUrl: String
+    let imageURL: String
     let rating: Int
     let bearerToken: String
 }

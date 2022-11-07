@@ -13,7 +13,6 @@ import Lottie
 class SignInViewController: UIViewController {
 
     var onSignIn: (() -> Void)?
-    var onSignUp: (() -> Void)?
 
     private lazy var background: UIImageView = {
         let view = UIImageView()
@@ -38,7 +37,7 @@ class SignInViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(
             UIAction { _ in
-                self.onSignUp?()
+                self.onSignIn?()
             },
             for: .touchDown)
         return button
