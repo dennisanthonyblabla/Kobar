@@ -13,8 +13,8 @@ extension User {
     init?(from credentials: Credentials) {
         guard let jwt = try? decode(jwt: credentials.idToken) else { return nil }
 
-        id = UUID(uuidString: credentials.idToken) ?? UUID()
-        name = jwt["name"].string ?? ""
+        id = credentials.idToken
+        name = jwt["nickname"].string ?? ""
         imageURL = jwt["picture"].string ?? ""
         rating = jwt["rating"].integer ?? 0
         bearerToken = credentials.accessToken
