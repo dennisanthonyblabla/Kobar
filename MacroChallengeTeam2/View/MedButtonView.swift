@@ -15,12 +15,12 @@ final class MedButtonView: UIButton {
         case variant1
         case variant2
         case variant3
-        case fixedWidth
     }
 
     private var variant: Variants?
     private var title: String?
     private var isPressed = false
+    private var width: Double?
 
     private lazy var frontBG: UIView = {
         let view = UIView()
@@ -42,19 +42,17 @@ final class MedButtonView: UIButton {
         super.init(frame: frame)
     }
 
-    init(variant: Variants, title: String) {
+    init(variant: Variants, title: String, width: Double? = nil) {
         super.init(frame: .zero)
         self.title = title
         self.variant = variant
+        self.width = width
+
         addSubview(backBG)
         addSubview(frontBG)
         setupButtonConfiguration()
         setupVariants()
-        if variant == .fixedWidth {
-            setupAutoLayoutMP()
-        } else {
-            setupAutoLayout()
-        }
+        setupAutoLayout()
 
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
         gestureRecognizer.minimumPressDuration = 0.01
@@ -92,13 +90,6 @@ final class MedButtonView: UIButton {
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
             self.setTitleColor(.kobarDarkGrayText, for: .normal)
-        case .fixedWidth:
-            self.frontBG.backgroundColor = .white
-            self.backBG.backgroundColor = .white
-            self.backBG.alpha = 0.7
-            self.setTitleColor(.kobarBlueActive, for: .normal)
-            self.frontBG.layer.cornerRadius = 29.5
-            self.backBG.layer.cornerRadius = 29.5
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
@@ -109,6 +100,9 @@ final class MedButtonView: UIButton {
     private func setupAutoLayout() {
         self.snp.makeConstraints { make in
             make.height.equalTo(64)
+            if let width = self.width {
+                make.width.equalTo(width)
+            }
         }
 
         backBG.snp.makeConstraints { make in
@@ -117,23 +111,8 @@ final class MedButtonView: UIButton {
         }
 
         frontBG.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.width.equalToSuperview()
             make.bottom.equalToSuperview().offset(-6)
-            make.width.equalTo(backBG)
-        }
-    }
-
-    private func setupAutoLayoutMP() {
-        backBG.snp.makeConstraints { make in
-            make.height.width.equalTo(frontBG)
-            make.centerX.equalTo(frontBG)
-            make.centerY.equalTo(frontBG).offset(5)
-        }
-
-        frontBG.snp.makeConstraints { make in
-            make.height.equalTo(59)
-            make.width.equalTo(245)
-            make.center.equalToSuperview()
         }
     }
 

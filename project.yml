@@ -1,6 +1,6 @@
 name: MacroChallengeTeam2
 options:
-  bundleIdPrefix: Team2.MacroChallengeTeam2
+  bundleIdPrefix: com.namanya-apa
 packages:
   RxSwift:
     url: https://github.com/ReactiveX/RxSwift
@@ -14,6 +14,9 @@ packages:
   Lottie:
     url: https://github.com/airbnb/lottie-ios
     from: 3.5.0
+  Auth0:
+    url: https://github.com/auth0/Auth0.swift
+    from: 2.3.2
 targets:
   Macro Challenge Team2:
     type: application
@@ -50,3 +53,4 @@ targets:
       - package: SnapKit
       - package: SocketIO
       - package: Lottie
+      - package: Auth0

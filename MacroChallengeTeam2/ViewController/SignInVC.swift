@@ -10,7 +10,7 @@ import SwiftUI
 import SnapKit
 import Lottie
 
-class SignInViewController: UIViewController {
+class SignInPageViewController: UIViewController {
 
     var onSignIn: (() -> Void)?
     var onSignUp: (() -> Void)?
@@ -31,6 +31,17 @@ class SignInViewController: UIViewController {
         gif.loopMode = .loop
         gif.play()
         return gif
+    }()
+
+    private lazy var signInButton: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "􀣺 Masuk dengan Apple")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addAction(
+            UIAction { _ in
+                self.onSignIn?()
+            },
+            for: .touchDown)
+        return button
     }()
 
     private lazy var signUpButton: MedButtonView = {
@@ -116,6 +127,7 @@ class SignInViewController: UIViewController {
         view.addSubview(signUpButton)
         view.addSubview(daftarYukLabel)
         view.addSubview(atauView)
+        view.addSubview(signInButton)
         view.addSubview(asikinAjaLabel)
         view.addSubview(signInDoorGIF)
 
@@ -146,8 +158,13 @@ class SignInViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
 
+        signInButton.snp.makeConstraints { make in
+            make.bottom.equalTo(atauView.snp.top).offset(-12)
+            make.centerX.equalToSuperview()
+        }
+
         asikinAjaLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(atauView.snp.top).offset(-100)
+            make.bottom.equalTo(signInButton.snp.top).offset(-18)
             make.centerX.equalToSuperview()
         }
 
@@ -163,7 +180,7 @@ struct SignInViewControllerPreviews: PreviewProvider {
 
     static var previews: some View {
         UIViewControllerPreview {
-            return SignInViewController()
+            return SignInPageViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)")
         .previewInterfaceOrientation(.landscapeLeft)
