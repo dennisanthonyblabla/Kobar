@@ -11,7 +11,6 @@ import SwiftUI
 import Lottie
 
 class MainPageViewController: UIViewController {
-
     private lazy var profile = ShortProfileView(rating: 2000)
     private lazy var ajakTemanBtn = MedButtonView(
         variant: .variant2,
@@ -139,7 +138,6 @@ class MainPageViewController: UIViewController {
 }
 
 struct MainPageViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return MainPageViewController()

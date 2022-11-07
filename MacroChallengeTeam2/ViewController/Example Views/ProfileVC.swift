@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class ProfileViewController: UIViewController {
-
     private lazy var profileUser = ProfileTandingView(role: .user, name: "Benny", rating: 256)
     private lazy var profileInvite = ProfileInviteView(inviteCode: "2A54D")
 
@@ -29,7 +28,6 @@ class ProfileViewController: UIViewController {
     }
 
     private func setupAutoLayout() {
-
         background.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalToSuperview()
@@ -53,7 +51,6 @@ class ProfileViewController: UIViewController {
 }
 
 struct ProfileViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return ProfileViewController()

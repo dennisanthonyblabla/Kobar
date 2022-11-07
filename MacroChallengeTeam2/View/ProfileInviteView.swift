@@ -10,7 +10,6 @@ import SnapKit
 import UIKit
 
 final class ProfileInviteView: UIView {
-
     var inviteCode: String?
 
     private lazy var profileBG: UIView = {

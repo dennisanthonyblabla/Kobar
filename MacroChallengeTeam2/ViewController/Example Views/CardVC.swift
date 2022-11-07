@@ -10,7 +10,6 @@ import SwiftUI
 import SnapKit
 
 class CardViewController: UIViewController {
-
     private lazy var textView = CardView(type: .outputCard)
 
     override func viewDidLoad() {
@@ -30,7 +29,6 @@ class CardViewController: UIViewController {
 }
 
 struct CardViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return CardViewController()

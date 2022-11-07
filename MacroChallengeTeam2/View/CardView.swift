@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 final class CardView: UIView, UITextViewDelegate {
-
     enum CardType {
         case codingCard
         case inputCard

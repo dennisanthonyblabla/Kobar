@@ -11,7 +11,6 @@ import SnapKit
 import Lottie
 
 class SignInPageViewController: UIViewController {
-
     var onSignIn: (() -> Void)?
     var onSignUp: (() -> Void)?
 
@@ -177,7 +176,6 @@ class SignInPageViewController: UIViewController {
 }
 
 struct SignInViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return SignInPageViewController()

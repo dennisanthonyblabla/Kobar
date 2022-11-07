@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 final class SmallButtonView: UIButton {
-
     enum BtnType {
         case share
         case normal

@@ -11,7 +11,6 @@ import SwiftUI
 import Lottie
 
 class TungguLawanViewController: UIViewController {
-
     private var seconds = 90
     private var timer = Timer()
     private var isTimerRunning = false
@@ -163,7 +162,6 @@ class TungguLawanViewController: UIViewController {
 }
 
 struct TungguLawanViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return TungguLawanViewController()
