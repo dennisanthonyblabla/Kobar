@@ -8,8 +8,8 @@
 import Foundation
 import Auth0
 
-class Auth0Repository: AuthService {
-    static let shared = Auth0Repository()
+class Auth0DataSource: AuthRepository {
+    static let shared = Auth0DataSource()
     private let credentialsManager = CredentialsManager(authentication: Auth0.authentication())
 
     private init() {}
@@ -23,8 +23,13 @@ class Auth0Repository: AuthService {
         let didClear = credentialsManager.clear()
     }
 
+    private func hasValidCredentials() -> Bool {
+        let hasCredentials = credentialsManager.hasValid()
+        return hasCredentials
+    }
+
     func getUser(_ callback: @escaping (User?) -> Void) {
-        guard credentialsManager.hasValid() else {
+        guard hasValidCredentials() else {
             callback(nil)
             return
         }
@@ -39,20 +44,12 @@ class Auth0Repository: AuthService {
         }
     }
 
+    func signUp(_ callback: @escaping (User?) -> Void) {
+        startWebAuth(parameters: ["screen_hint": "signup"], callback: callback)
+    }
+
     func login(_ callback: @escaping (User?) -> Void) {
-        Auth0
-            .webAuth()
-//            .parameters(["screen_hint": "signup"])
-            .audience("kobar-api")
-            .start { [weak self] result in
-                switch result {
-                case .success(let credentials):
-                    self?.storeCredentials(credentials)
-                    callback(User(from: credentials))
-                case .failure(let error):
-                    print(error)
-                }
-            }
+        startWebAuth(callback: callback)
     }
 
     func logout(_ callback: @escaping (User?) -> Void) {
@@ -64,7 +61,6 @@ class Auth0Repository: AuthService {
             .webAuth()
             .redirectURL(redirectURL)
             .clearSession { result in
-                print(result)
                 switch result {
                 case .success:
                     callback(nil)
@@ -76,5 +72,21 @@ class Auth0Repository: AuthService {
         clearCredentials()
 
         return
+    }
+
+    private func startWebAuth(parameters: [String: String] = [:], callback: @escaping (User?) -> Void) {
+        Auth0
+            .webAuth()
+            .parameters(parameters)
+            .audience("kobar-api")
+            .start { [weak self] result in
+                switch result {
+                case .success(let credentials):
+                    self?.storeCredentials(credentials)
+                    callback(User(from: credentials))
+                case .failure(let error):
+                    print(error)
+                }
+            }
     }
 }

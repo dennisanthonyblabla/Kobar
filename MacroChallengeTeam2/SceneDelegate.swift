@@ -19,16 +19,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let winScene = (scene as? UIWindowScene) else { return }
 
         let navigationController = UINavigationController()
-        let authService = Auth0Repository.shared
-        let factory = ViewControllerFactory(authRepository: authService)
+        let authRepository = Auth0DataSource.shared
 
-        coordinator = MainCoordinator(navigationController, factory: factory)
+        coordinator = MainCoordinator(
+            navigationController,
+            authRepository: RxSwiftAuthWrapper(authRepository))
 
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
-        coordinator?.start(authService: authService)
+        coordinator?.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

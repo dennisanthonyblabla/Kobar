@@ -13,6 +13,7 @@ import Lottie
 class SignInViewController: UIViewController {
 
     var onSignIn: (() -> Void)?
+    var onSignUp: (() -> Void)?
 
     private lazy var background: UIImageView = {
         let view = UIImageView()
@@ -32,12 +33,23 @@ class SignInViewController: UIViewController {
         return gif
     }()
 
+    private lazy var signInButton: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "􀣺 Masuk dengan Apple")
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addAction(
+            UIAction { _ in
+                self.onSignIn?()
+            },
+            for: .touchDown)
+        return button
+    }()
+
     private lazy var signUpButton: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "􀣺 Daftar dengan Apple")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(
             UIAction { _ in
-                self.onSignIn?()
+                self.onSignUp?()
             },
             for: .touchDown)
         return button
@@ -115,6 +127,7 @@ class SignInViewController: UIViewController {
         view.addSubview(signUpButton)
         view.addSubview(daftarYukLabel)
         view.addSubview(atauView)
+        view.addSubview(signInButton)
         view.addSubview(asikinAjaLabel)
         view.addSubview(signInDoorGIF)
 
@@ -145,8 +158,13 @@ class SignInViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
 
+        signInButton.snp.makeConstraints { make in
+            make.bottom.equalTo(atauView.snp.top).offset(-12)
+            make.centerX.equalToSuperview()
+        }
+
         asikinAjaLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(atauView.snp.top).offset(-100)
+            make.bottom.equalTo(signInButton.snp.top).offset(-18)
             make.centerX.equalToSuperview()
         }
 
