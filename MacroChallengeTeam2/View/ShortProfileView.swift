@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 final class ShortProfileView: UIView {
-
     private var rating: Int?
 
     private lazy var profilePicture: UIImageView = {

@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 final class DropDownButtonsView: UIButton {
-
     enum Variants {
         case variant1
         case variant2

@@ -10,7 +10,6 @@ import SnapKit
 import UIKit
 
 final class ProfileTandingView: UIView {
-
     enum Role {
         case user
         case opponent

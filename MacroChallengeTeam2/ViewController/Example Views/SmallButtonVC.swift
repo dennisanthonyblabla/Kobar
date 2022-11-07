@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class SmallButtonViewController: UIViewController {
-
     private lazy var smallButton = SmallButtonView(variant: .variant1, title: "Button", btnType: .share)
 
     override func viewDidLoad() {
@@ -33,7 +32,6 @@ class SmallButtonViewController: UIViewController {
 }
 
 struct SmallButtonViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return SmallButtonViewController()

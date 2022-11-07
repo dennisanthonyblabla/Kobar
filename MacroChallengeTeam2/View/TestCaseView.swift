@@ -10,21 +10,20 @@ import UIKit
 import SnapKit
 
 final class TestCaseButton: UIButton {
-
     enum Status {
         case correct
         case wrong
     }
-
+    
     enum Style {
         case fill
         case transparent
     }
-
+    
     private var status: Status?
     private var style: Style?
     private var order: Int?
-
+    
     private lazy var testCaseBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,13 +32,13 @@ final class TestCaseButton: UIButton {
         view.isUserInteractionEnabled = false
         return view
     }()
-
+    
     private lazy var testCaseSymbol: UIImageView = {
         let imageView = UIImageView()
         imageView.isUserInteractionEnabled = false
         return imageView
     }()
-
+    
     private lazy var testCaseOrder: UILabel = {
         let label = UILabel()
         label.text = String(order ?? 0)
@@ -49,11 +48,11 @@ final class TestCaseButton: UIButton {
         label.isUserInteractionEnabled = false
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     init(style: Style, status: Status, order: Int) {
         super.init(frame: .zero)
         self.style = style
@@ -66,11 +65,11 @@ final class TestCaseButton: UIButton {
         testCaseStatus()
         setupAutoLayout()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func testCaseStyle() {
         switch style {
         case .fill:
@@ -81,7 +80,7 @@ final class TestCaseButton: UIButton {
             testCaseBG.alpha = 1
         }
     }
-
+    
     private func testCaseStatus() {
         self.configuration = .none
         setTitle("Test Case", for: .normal)
@@ -119,23 +118,22 @@ final class TestCaseButton: UIButton {
             )?.withTintColor(.white, renderingMode: .alwaysOriginal)
         }
     }
-
+    
     private func setupAutoLayout() {
-
         testCaseBG.snp.makeConstraints { make in
             make.width.equalTo(210)
             make.height.equalTo(58)
             make.centerX.equalToSuperview().offset(-4)
             make.centerY.equalToSuperview()
         }
-
+        
         testCaseSymbol.snp.makeConstraints { make in
             make.width.equalTo(testCaseSymbol.snp.width)
             make.height.equalTo(testCaseSymbol.snp.height)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(-35)
         }
-
+        
         testCaseOrder.snp.makeConstraints { make in
             make.width.equalTo(testCaseOrder.snp.width)
             make.height.equalTo(testCaseOrder.snp.height)

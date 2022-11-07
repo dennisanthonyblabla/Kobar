@@ -10,7 +10,6 @@ import SwiftUI
 import SnapKit
 
 class BackButtonViewController: UIViewController {
-
     private lazy var smallBackButton = SmallBackButtonView(variant: .variant1)
 
     override func viewDidLoad() {

@@ -10,7 +10,6 @@ import SwiftUI
 import SnapKit
 
 class ViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
@@ -18,7 +17,6 @@ class ViewController: UIViewController {
 }
 
 struct ViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return ViewController()

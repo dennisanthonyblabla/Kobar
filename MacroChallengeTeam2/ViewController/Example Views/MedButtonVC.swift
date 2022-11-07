@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class MedButtonViewController: UIViewController {
-
     private lazy var medButton = MedButtonView(variant: .variant1, title: "Let's go")
 
     override func viewDidLoad() {
@@ -35,7 +34,6 @@ class MedButtonViewController: UIViewController {
 }
 
 struct MedButtonViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return MedButtonViewController()

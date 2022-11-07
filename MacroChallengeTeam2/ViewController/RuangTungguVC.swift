@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class RuangTungguViewController: UIViewController {
-
     private lazy var backBtn = SmallBackButtonView(variant: .variant2)
     private lazy var profileUser = ProfileTandingView(role: .user, name: "John Doe", rating: 100)
     private lazy var profileInvite = ProfileInviteView(inviteCode: "XYZAB")
@@ -149,7 +148,6 @@ class RuangTungguViewController: UIViewController {
 }
 
 struct RuangTungguViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return RuangTungguViewController()

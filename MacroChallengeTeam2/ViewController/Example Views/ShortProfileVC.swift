@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class ShortProfileViewController: UIViewController {
-
     private lazy var profile = ShortProfileView(rating: 2000)
 
     private lazy var background: UIView = {
@@ -39,7 +38,6 @@ class ShortProfileViewController: UIViewController {
 }
 
 struct ShortProfileViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return ShortProfileViewController()
