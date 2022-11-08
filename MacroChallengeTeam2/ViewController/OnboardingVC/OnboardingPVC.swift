@@ -22,8 +22,8 @@ class OnboardingPVC: UIPageViewController {
         return view
     }()
 
-    private lazy var lanjutBtn: MedbuttonView = {
-        let btn = MedbuttonView(variant: .variant2, title: "Lanjut")
+    private lazy var lanjutBtn: MedButtonView = {
+        let btn = MedButtonView(variant: .variant2, title: "Lanjut")
         btn.addAction(
             UIAction(identifier: UIAction.Identifier("next")) { [self] _ in
                 pageControl.currentPage += 1

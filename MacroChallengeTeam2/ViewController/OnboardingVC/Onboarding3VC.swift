@@ -46,8 +46,8 @@ class Onboarding3ViewController: UIViewController {
         return gif
     }()
 
-    private lazy var lanjutBtn: MedbuttonView = {
-        let btn = MedbuttonView(variant: .variant2, title: "Lanjut")
+    private lazy var lanjutBtn: MedButtonView = {
+        let btn = MedButtonView(variant: .variant2, title: "Lanjut")
         btn.addAction(
             UIAction { _ in
                 print("touched")
