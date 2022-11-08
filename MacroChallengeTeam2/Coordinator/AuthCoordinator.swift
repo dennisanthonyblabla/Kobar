@@ -8,64 +8,44 @@
 import UIKit
 import RxSwift
 
+/// Responsible for navigation when onAuthStateChanged is called
 final class AuthCoordinator: BaseCoordinator {
+    private var makeLoadingViewController: (() -> UIViewController)
+    private var makeLoginViewController: (() -> UIViewController)
+    private var makeMainViewController: ((User) -> UIViewController)
+    
     private let navigationController: UINavigationController
-    private let viewModel: AuthViewModel
     
-    private let disposeBag = DisposeBag()
-    
-    init(_ navigationController: UINavigationController, viewModel: AuthViewModel) {
+    init(
+        _ navigationController: UINavigationController,
+        makeLoadingViewController: @escaping (() -> UIViewController),
+        makeLoginViewController: @escaping (() -> UIViewController),
+        makeMainViewController: @escaping ((User) -> UIViewController)
+    ) {
         self.navigationController = navigationController
-        self.viewModel = viewModel
+        self.makeLoadingViewController = makeLoadingViewController
+        self.makeLoginViewController = makeLoginViewController
+        self.makeMainViewController = makeMainViewController
     }
     
     override func start() {
-        showLoadingVC()
-        
-        // Delay loading page by at least 1 second so its not too fast
-        DispatchQueue.main.asyncAfter(
-            deadline: DispatchTime.now().advanced(by: .seconds(1)),
-            execute: ({ [weak self] in
-                self?.listenToAuthState()
-            })
-        )
+        // Show loading page
+        show(makeLoadingViewController())
     }
     
-    private func listenToAuthState() {
-        viewModel.userSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] user in
-                guard let user = user else {
-                    self?.showSignInVC()
-                    return
-                }
-                
-                self?.showMainVC(user)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    private func showLoadingVC() {
-        let loadingPageVC = LoadingPageVC()
-        navigationController.pushViewController(loadingPageVC, animated: true)
-    }
-    
-    private func showSignInVC() {
-        let signInPageVC = SignInPageViewController()
-        
-        signInPageVC.onSignIn = { [weak self] in
-            self?.viewModel.login()
+    func onAuthStateChanged(_ authUser: User?) {
+        // Subscribe to auth state
+        // If (hasUser) -> show main page
+        // Else -> show login page
+        guard let user = authUser else {
+            show(makeLoginViewController())
+            return
         }
         
-        signInPageVC.onSignUp = { [weak self] in
-            self?.viewModel.signUp()
-        }
-        
-        navigationController.pushViewController(signInPageVC, animated: true)
+        show(makeMainViewController(user))
     }
-    
-    private func showMainVC(_ user: User) {
-        let mainPageVC = MainPageViewController()
-        navigationController.pushViewController(mainPageVC, animated: true)
+
+    private func show(_ viewController: UIViewController) {
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
