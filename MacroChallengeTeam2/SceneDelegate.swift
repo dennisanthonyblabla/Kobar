@@ -29,6 +29,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let authCoordinator = makeAuthCoordinator(
             navigationController: navigationController,
             viewModel: authViewModel)
+
+        // FIXME: @salman ini harusnya pindah ke makeAuthCoordinator kayanya dia
+        // deallocate subject / authViewModelnya jadi kadang ngga jalan??
+        
+        // Bind auth coordinator with auth state from view model
+        authViewModel.userSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe {
+                authCoordinator.onAuthStateChanged($0)
+            }
+            .disposed(by: self.disposeBag)
         
         authCoordinator.start()
     }
@@ -42,14 +53,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coordinator = AuthCoordinator(
             navigationController,
             makeLoadingViewController: makeLoadingPageViewController,
-            makeLoginViewController: { self.makeSignInPageViewController(viewModel: viewModel) },
-            makeMainViewController: makeMainPageViewController(with:))
-        
-        // Bind auth coordinator with auth state from view model
-        viewModel.userSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe { coordinator.onAuthStateChanged($0) }
-            .disposed(by: self.disposeBag)
+            makeLoginViewController: {
+                self.makeSignInPageViewController(viewModel: viewModel)
+            },
+            makeMainViewController: { user in
+                self.makeMainPageViewController(
+                    with: user,
+                    authViewModel: viewModel)
+            })
 
         return coordinator
     }
@@ -65,8 +76,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return viewController
     }
     
-    func makeMainPageViewController(with user: User) -> MainPageViewController {
+    func makeMainPageViewController(
+        with user: User,
+        authViewModel: AuthViewModel
+    ) -> MainPageViewController {
         let viewController = MainPageViewController()
+        viewController.onInviteFriend = {}
+        viewController.onJoinFriend = {}
+        viewController.onJoinRandom = {}
+        viewController.onLogout = { [weak authViewModel] in authViewModel?.logout() }
         return viewController
     }
 }
