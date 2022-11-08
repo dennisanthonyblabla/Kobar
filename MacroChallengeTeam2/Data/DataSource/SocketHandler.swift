@@ -9,12 +9,15 @@ import Foundation
 import SocketIO
 
 class SocketHandler: NSObject {
-    static let sharedInstance = SocketHandler()
-    let socket = SocketManager(socketURL: URL(string: "http://kobar.up.railway.app")!, config: [.log(true), .compress])
-    var mSocket: SocketIOClient!
+    var mSocket: SocketIOClient
 
-    override init() {
-        super.init()
+    init(url: URL?) {
+        guard let url = url else {
+            fatalError("Invalid socket URL!")
+        }
+        
+        let socket = SocketManager(socketURL: url, config: [.log(true), .compress])
+        
         mSocket = socket.socket(forNamespace: "/battle")
     }
 
@@ -23,7 +26,7 @@ class SocketHandler: NSObject {
     }
 
     func establishConnection(token: String) {
-         mSocket.connect(withPayload: ["token": "Bearer \(token)"])
+        mSocket.connect(withPayload: ["token": "Bearer \(token)"])
     }
     
     func emitExchangeIdEvent(data: ExchangeIdDto) {
@@ -31,7 +34,7 @@ class SocketHandler: NSObject {
     }
     
     func onIdExchangedEvent(_ callback: @escaping (String) -> Void) {
-        mSocket.on("idExchanged") { (dataArray, ack) -> Void in
+        mSocket.on("idExchanged") { dataArray, _ -> Void in
             guard let userId = dataArray[0] as? String else {return}
             callback(userId)
         }
@@ -42,7 +45,7 @@ class SocketHandler: NSObject {
     }
     
     func onBattleInvitationCreated(_ callback: @escaping(BattleInvitation) -> Void) {
-        mSocket.on("battleInvitationCreated") { (dataArray, ack) -> Void in
+        mSocket.on("battleInvitationCreated") { dataArray, _ -> Void in
             guard let data = dataArray.first else {return}
             
             if let battleInvitation: BattleInvitation = try? SocketParser.convert(data: data) {

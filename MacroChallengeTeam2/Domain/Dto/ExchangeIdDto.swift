@@ -8,7 +8,5 @@
 import Foundation
 
 struct ExchangeIdDto {
-    
     let auth0Id: String
-    
 }

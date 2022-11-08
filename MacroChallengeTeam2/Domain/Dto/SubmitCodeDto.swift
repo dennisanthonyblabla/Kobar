@@ -9,10 +9,8 @@ import Foundation
 import SocketIO
 
 struct SubmitCodeDto {
-    
     let userId: String
     let battleId: String
     let problemId: String
     let code: String
-    
 }

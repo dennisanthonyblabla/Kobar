@@ -7,18 +7,15 @@
 
 import Foundation
 
-class SocketParser {
-
+enum SocketParser {
     static func convert<T: Decodable>(data: Any) throws -> T {
         let jsonData = try JSONSerialization.data(withJSONObject: data)
         let decoder = JSONDecoder()
-        do{
-           let  _ = try decoder.decode(T.self, from: jsonData)
-            
-        }catch{
+        do {
+            _ = try decoder.decode(T.self, from: jsonData)
+        } catch {
             print("CheckError \(error)")
         }
         return try decoder.decode(T.self, from: jsonData)
     }
-
 }

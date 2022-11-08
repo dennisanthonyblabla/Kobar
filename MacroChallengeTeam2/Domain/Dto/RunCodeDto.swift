@@ -8,11 +8,9 @@
 import Foundation
 
 struct RunCodeDto {
-    
     let userId: String
     let battleId: String
     let problemId: String
     let code: String
     let input: String
-    
 }
