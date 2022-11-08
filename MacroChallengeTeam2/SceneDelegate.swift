@@ -26,10 +26,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         let authViewModel = AuthViewModel(Auth0DataSource.shared)
+        let startBattleViewModel = StartBattleViewModel()
         let authCoordinator = makeAuthCoordinator(
             navigationController: navigationController,
-            viewModel: authViewModel)
-
+            authViewModel: authViewModel,
+            startBattleViewModel: startBattleViewModel)
+        
         // FIXME: @salman ini harusnya pindah ke makeAuthCoordinator kayanya dia
         // deallocate subject / authViewModelnya jadi kadang ngga jalan??
         
@@ -41,6 +43,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             .disposed(by: self.disposeBag)
         
+        // Bind auth coordinator with start battle coordinator
+        startBattleViewModel.battleEventSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe { _ in
+                authCoordinator.startBattleCoordinator()
+            }
+            .disposed(by: self.disposeBag)
+        
         authCoordinator.start()
     }
     
@@ -48,20 +58,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeAuthCoordinator(
         navigationController: UINavigationController,
-        viewModel: AuthViewModel
+        authViewModel: AuthViewModel,
+        startBattleViewModel: StartBattleViewModel
     ) -> AuthCoordinator {
         let coordinator = AuthCoordinator(
             navigationController,
             makeLoadingViewController: makeLoadingPageViewController,
             makeLoginViewController: {
-                self.makeSignInPageViewController(viewModel: viewModel)
+                self.makeSignInPageViewController(viewModel: authViewModel)
             },
             makeMainViewController: { user in
                 self.makeMainPageViewController(
                     with: user,
-                    authViewModel: viewModel)
+                    authViewModel: authViewModel,
+                    startBattleViewModel: startBattleViewModel)
             })
-
+        
+        return coordinator
+    }
+    
+    func makeBattleCoordinator(navigationController: UINavigationController) -> BattleCoordinator {
+        let coordinator = BattleCoordinator(navigationController)
         return coordinator
     }
     
@@ -78,12 +95,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeMainPageViewController(
         with user: User,
-        authViewModel: AuthViewModel
+        authViewModel: AuthViewModel,
+        startBattleViewModel: StartBattleViewModel
     ) -> MainPageViewController {
         let viewController = MainPageViewController()
-        viewController.onInviteFriend = {}
-        viewController.onJoinFriend = {}
-        viewController.onJoinRandom = {}
+        viewController.onInviteFriend = { [weak startBattleViewModel] in
+            startBattleViewModel?.inviteFriend()
+        }
+        viewController.onJoinFriend = { [weak startBattleViewModel] in
+            startBattleViewModel?.joinFriend()
+        }
+        viewController.onJoinRandom = { [weak startBattleViewModel] in
+            startBattleViewModel?.joinRandom()
+        }
         viewController.onLogout = { [weak authViewModel] in authViewModel?.logout() }
         return viewController
     }

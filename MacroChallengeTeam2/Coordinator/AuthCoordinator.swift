@@ -44,7 +44,20 @@ final class AuthCoordinator: BaseCoordinator {
         
         show(makeMainViewController(user))
     }
-
+    
+    // TODO: @salman refactor to Composition Root
+    func startBattleCoordinator() {
+        let coordinator = BattleCoordinator(navigationController)
+        
+        store(coordinator)
+        
+        coordinator.completion = { [weak self] in
+            self?.free(coordinator)
+        }
+        
+        coordinator.start()
+    }
+    
     private func show(_ viewController: UIViewController) {
         navigationController.pushViewController(viewController, animated: true)
     }
