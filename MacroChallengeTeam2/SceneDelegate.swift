@@ -48,9 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coordinator = AuthCoordinator(
             navigationController,
             makeLoadingViewController: makeLoadingPageViewController,
-            makeLoginViewController: {
-                self.makeSignInPageViewController(viewModel: viewModel)
-            },
+            makeLoginViewController: { self.makeSignInPageViewController(viewModel: viewModel) },
             makeMainViewController: makeMainPageViewController(with:))
             
         return coordinator
@@ -62,8 +60,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func makeSignInPageViewController(viewModel: AuthViewModel) -> SignInPageViewController {
         let viewController = SignInPageViewController()
-        viewController.onSignIn = viewModel.login
-        viewController.onSignUp = viewModel.signUp
+        viewController.onSignIn = { [weak viewModel] in viewModel?.login() }
+        viewController.onSignUp = { [weak viewModel] in viewModel?.signUp() }
         return viewController
     }
     
