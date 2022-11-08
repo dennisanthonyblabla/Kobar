@@ -16,6 +16,7 @@ extension UIFont {
     static let semi17 = UIFont(name: "SFProRounded-Semibold", size: 17)
     static let semi22 = UIFont(name: "SFProRounded-Semibold", size: 22)
     static let semi28 = UIFont(name: "SFProRounded-Semibold", size: 28)
+    static let semi36 = UIFont(name: "SFProRounded-Semibold", size: 36)
     static let bold17 = UIFont(name: "SFProRounded-Bold", size: 17)
     static let bold22 = UIFont(name: "SFProRounded-Bold", size: 22)
     static let bold28 = UIFont(name: "SFProRounded-Bold", size: 28)
