@@ -139,7 +139,7 @@ class MainPageViewController: UIViewController {
             make.centerX.equalTo(tandingYukTitle)
         }
         swordGif.snp.makeConstraints { make in
-            make.height.width.equalTo(480)
+            make.height.width.equalTo(400)
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-120)
         }

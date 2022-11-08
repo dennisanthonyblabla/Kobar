@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 class BattleContohView: UIButton {
-
     private lazy var titleBanner: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false

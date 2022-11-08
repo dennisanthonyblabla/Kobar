@@ -10,7 +10,6 @@ import SwiftUI
 import SnapKit
 
 class BattleContohViewController: UIViewController {
-
     private lazy var contoh1 = BattleContohView(title: "Contoh (1)")
     private var exampleCount = 3
     private lazy var examples: [BattleContohView] = {
@@ -56,7 +55,6 @@ class BattleContohViewController: UIViewController {
 }
 
 struct MPContohViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return BattleContohViewController()
