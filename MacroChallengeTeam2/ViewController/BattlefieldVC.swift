@@ -10,7 +10,6 @@ import SnapKit
 import SwiftUI
 
 class BattlefieldViewController: UIViewController {
-
     private var statusDesc: String?
     private var contohCount = 3
 
@@ -281,12 +280,10 @@ class BattlefieldViewController: UIViewController {
     }
 
     @objc func contoh1Clicked() {
-
     }
 }
 
 struct BattlefieldViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return BattlefieldViewController()

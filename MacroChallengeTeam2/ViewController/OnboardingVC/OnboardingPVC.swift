@@ -10,7 +10,6 @@ import SwiftUI
 import SnapKit
 
 class OnboardingPVC: UIPageViewController {
-
     private var pages: [UIViewController] = []
     private var pageControl = UIPageControl()
     private let initialPage = 0
@@ -68,7 +67,6 @@ class OnboardingPVC: UIPageViewController {
 }
 
 extension OnboardingPVC {
-
     func setupPageControl() {
         dataSource = self
         delegate = self
@@ -123,9 +121,7 @@ extension OnboardingPVC {
 // MARK: - DataSource
 
 extension OnboardingPVC: UIPageViewControllerDataSource {
-
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
 
         if currentIndex == 0 {
@@ -136,7 +132,6 @@ extension OnboardingPVC: UIPageViewControllerDataSource {
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
 
         if currentIndex < pages.count - 1 {
@@ -150,10 +145,8 @@ extension OnboardingPVC: UIPageViewControllerDataSource {
 // MARK: - Delegates
 
 extension OnboardingPVC: UIPageViewControllerDelegate {
-
     // How we keep our pageControl in sync with viewControllers
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-
         guard let viewControllers = pageViewController.viewControllers else { return }
         guard let currentIndex = pages.firstIndex(of: viewControllers[0]) else { return }
 
@@ -199,22 +192,21 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
     }
 
     private func hideControls() {
-        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: {
+        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
             self.lewatiBtn.alpha = 0.0
-        }).startAnimation()
+        }.startAnimation()
     }
 
     private func showControls() {
-        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: {
+        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut) {
             self.lewatiBtn.alpha = 1
-        }).startAnimation()
+        }.startAnimation()
     }
 }
 
 // MARK: - Actions
 
 extension OnboardingPVC {
-
     @objc func pageControlTapped(_ sender: UIPageControl) {
         setViewControllers([pages[sender.currentPage]], direction: .forward, animated: true, completion: nil)
         animateControlsIfNeeded()
@@ -238,7 +230,6 @@ extension OnboardingPVC {
 // MARK: - Extensions
 
 extension UIPageViewController {
-
     func goToNextPage(animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         guard let currentPage = viewControllers?[0] else { return }
         guard let nextPage = dataSource?.pageViewController(self, viewControllerAfter: currentPage) else { return }
@@ -259,7 +250,6 @@ extension UIPageViewController {
 }
 
 struct OnboardingPVCPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return OnboardingPVC(transitionStyle: .scroll, navigationOrientation: .horizontal)

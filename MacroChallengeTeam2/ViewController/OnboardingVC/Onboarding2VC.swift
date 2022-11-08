@@ -11,7 +11,6 @@ import SwiftUI
 import Lottie
 
 class Onboarding2ViewController: UIViewController {
-
     private lazy var titleOB: UILabel = {
         let label = UILabel()
         label.text = "Pake Bahasa Sehari-hari~"
@@ -71,7 +70,6 @@ class Onboarding2ViewController: UIViewController {
 }
 
 struct Onboarding2ViewControllerPreviews: PreviewProvider {
-
     static var previews: some View {
         UIViewControllerPreview {
             return Onboarding2ViewController()
