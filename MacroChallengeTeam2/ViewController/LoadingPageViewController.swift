@@ -8,7 +8,7 @@
 import UIKit
 import Lottie
 
-class LoadingPageVC: UIViewController {
+class LoadingPageViewController: UIViewController {
     private lazy var background: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
