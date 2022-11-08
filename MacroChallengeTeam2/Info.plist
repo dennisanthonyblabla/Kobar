@@ -58,8 +58,8 @@
 	</array>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UIImageName</key>
-		<string>background1</string>
+		<key>UIColorName</key>
+		<string>kobarBlueActive</string>
 	</dict>
 </dict>
 </plist>

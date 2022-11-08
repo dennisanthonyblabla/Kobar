@@ -22,8 +22,28 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: 15.0
-    settings:
-      INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
+    info:
+      path: MacroChallengeTeam2/Info.plist
+      properties:
+        UIApplicationSceneManifest:
+              UIApplicationSupportsMultipleScenes: false
+              UISceneConfigurations:
+                UIWindowSceneSessionRoleApplication:
+                  - UISceneConfigurationName: Default Configuration
+                    UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
+        UILaunchScreen:
+              UIColorName: kobarBlueActive
+        UIAppFonts:
+          - SF-Pro-Rounded-Bold.otf
+          - SF-Pro-Rounded-Black.otf
+          - SF-Pro-Rounded-Heavy.otf
+          - SF-Pro-Rounded-Light.otf
+          - SF-Pro-Rounded-Medium.otf
+          - SF-Pro-Rounded-Regular.otf
+          - SF-Pro-Rounded-Semibold.otf
+          - SF-Pro-Rounded-Thin.otf
+          - SF-Pro-Rounded-Ultralight.otf
+          - FiraCode-Regular.ttf
     postCompileScripts:
       - path: swiftlint.sh
         name: SwiftLint

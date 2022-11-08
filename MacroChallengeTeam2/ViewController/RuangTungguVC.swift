@@ -67,7 +67,7 @@ class RuangTungguViewController: UIViewController {
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "pageRuangTungguBG")
+        view.image = UIImage(named: "background2")
         return view
     }()
 
