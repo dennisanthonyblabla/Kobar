@@ -17,7 +17,7 @@ class OnboardingPVC: UIPageViewController {
 
     private lazy var backgroundMotives: UIImageView = {
         let view = 	UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         view.image = UIImage(named: "onboardBGBack")
         return view
     }()
@@ -41,13 +41,20 @@ class OnboardingPVC: UIPageViewController {
         btn.titleLabel?.textColor = .white
         btn.titleLabel?.font = .regular17
         view.addSubview(btn)
+        btn.addAction(
+            UIAction { [self] _ in
+                let lastPageIndex = pages.count - 1
+                pageControl.currentPage = lastPageIndex
+                goToSpecificPage(index: lastPageIndex, ofViewControllers: pages)
+                animateControlsIfNeeded()
+            }, for: .touchDown)
         return btn
     }()
 
     private lazy var bgFront: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "onboardBGFront")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         return imageView
     }()
@@ -84,21 +91,19 @@ extension OnboardingPVC {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = initialPage
         pageControl.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        view.addSubview(pageControl)
     }
 
     func setupAutoLayout() {
-        view.addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(240)
         }
-
         backgroundMotives.snp.makeConstraints { make in
             make.width.equalTo(bgFront).offset(11)
             make.height.equalTo(bgFront).offset(14)
             make.center.equalToSuperview()
         }
-
         lewatiBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(140)
             make.bottom.equalToSuperview().offset(-100)
@@ -108,8 +113,8 @@ extension OnboardingPVC {
             make.bottom.equalToSuperview().offset(-110)
         }
         bgFront.snp.makeConstraints { make in
-            make.width.equalTo(bgFront.snp.width)
-            make.height.equalTo(bgFront.snp.height)
+            make.width.equalToSuperview()
+            make.height.equalToSuperview()
             make.center.equalToSuperview()
         }
     }
@@ -164,8 +169,7 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
             lanjutBtn.removeAction(identifiedBy: UIAction.Identifier("next"), for: .allEvents)
             lanjutBtn.addAction(
                 UIAction(identifier: UIAction.Identifier("finish")) { _ in
-                    let destinationVC = MainPageViewController()
-                    self.navigationController?.pushViewController(destinationVC, animated: true)
+                    self.navigationController?.pushViewController(MainPageViewController(), animated: true)
                 },
                 for: .touchDown
             )
@@ -187,7 +191,7 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.5,
             delay: 0,
-            options: [.curveEaseOut],
+            options: [.curveEaseInOut],
             animations: {
                 self.view.layoutIfNeeded()
             },
@@ -195,9 +199,15 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
     }
 
     private func hideControls() {
+        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: {
+            self.lewatiBtn.alpha = 0.0
+        }).startAnimation()
     }
 
     private func showControls() {
+        UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: {
+            self.lewatiBtn.alpha = 1
+        }).startAnimation()
     }
 }
 
