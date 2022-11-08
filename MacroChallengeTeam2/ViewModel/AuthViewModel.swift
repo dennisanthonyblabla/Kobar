@@ -8,12 +8,10 @@
 import Foundation
 import RxSwift
 
-// TODO: @salman maybe there's a better way to do this
-final class RxSwiftAuthRepositoryAdapter: AuthRepositoryListenableAdapter {
+final class AuthViewModel {
     private let authRepository: AuthRepository
 
-    private let userSubject = BehaviorSubject<User?>(value: nil)
-    private let disposeBag = DisposeBag()
+    let userSubject = BehaviorSubject<User?>(value: nil)
 
     init(_ authService: AuthRepository) {
         self.authRepository = authService
@@ -42,12 +40,5 @@ final class RxSwiftAuthRepositoryAdapter: AuthRepositoryListenableAdapter {
         authRepository.logout { [weak self] user in
             self?.userSubject.onNext(user)
         }
-    }
-
-    func onAuthStateChanged(_ callback: @escaping (User?) -> Void) {
-        userSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe { (user: User?) in callback(user) }
-            .disposed(by: disposeBag)
     }
 }

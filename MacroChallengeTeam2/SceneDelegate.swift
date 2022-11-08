@@ -9,7 +9,7 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    private var coordinator: MainCoordinator?
+    private var coordinator: AuthCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -20,15 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController(rootViewController: OnboardingPVC())
         let authRepository = Auth0DataSource.shared
 
-        coordinator = MainCoordinator(
+        coordinator = AuthCoordinator(
             navigationController,
-            authRepository: RxSwiftAuthRepositoryAdapter(authRepository))
-
+            viewModel: AuthViewModel(authRepository))
+            
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
-//        coordinator?.start()
+        coordinator?.start()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
