@@ -8,7 +8,7 @@
 import Foundation
 
 struct BattleInvitation: Identifiable, Codable {
-    let id: UUID
-    let userId: UUID
+    let id: String
+    let userId: String
     let inviteCode: String
 }
