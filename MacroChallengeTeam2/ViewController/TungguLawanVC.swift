@@ -33,7 +33,7 @@ class TungguLawanViewController: UIViewController {
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "pageTungguLawanBG")
+        view.image = UIImage(named: "background4")
         return view
     }()
 
@@ -44,6 +44,7 @@ class TungguLawanViewController: UIViewController {
         gif.contentMode = .scaleAspectFit
         gif.loopMode = .loop
         gif.play()
+        gif.backgroundBehavior = .pauseAndRestore
         return gif
     }()
 
