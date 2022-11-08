@@ -10,7 +10,7 @@ import SnapKit
 import SwiftUI
 
 class RuangTungguViewController: UIViewController {
-    private lazy var backBtn = SmallBackButtonView(variant: .variant2)
+    private lazy var backBtn = SmallIconButtonView(variant: .variant2)
     private lazy var profileUser = ProfileTandingView(role: .user, name: "John Doe", rating: 100)
     private lazy var profileInvite = ProfileInviteView(inviteCode: "XYZAB")
     private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)

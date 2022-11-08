@@ -14,6 +14,7 @@ class MainPageViewController: UIViewController {
     var onInviteFriend: (() -> Void)?
     var onJoinFriend: (() -> Void)?
     var onJoinRandom: (() -> Void)?
+    var onLogout: (() -> Void)?
     
     private lazy var profile = ShortProfileView(rating: 2000)
     
@@ -56,6 +57,20 @@ class MainPageViewController: UIViewController {
         button.addAction(
             UIAction { _ in
                 self.onJoinRandom?()
+            },
+            for: .touchDown)
+        
+        return button
+    }()
+    
+    private lazy var logOutBtn: SmallIconButtonView = {
+        let button = SmallIconButtonView(
+            variant: .variant2,
+            buttonImage: UIImage(systemName: "rectangle.portrait.and.arrow.right"))
+        
+        button.addAction(
+            UIAction { _ in
+                self.onLogout?()
             },
             for: .touchDown)
         
@@ -117,6 +132,7 @@ class MainPageViewController: UIViewController {
         view.addSubview(swordGif)
         view.addSubview(profile)
         view.addSubview(buttonsStackView)
+        view.addSubview(logOutBtn)
         
         setupBackgroundConstraints()
         setupDisplayConstraint()
@@ -153,6 +169,9 @@ class MainPageViewController: UIViewController {
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(tandingYukDesc).offset(50)
+        }
+        logOutBtn.snp.makeConstraints { make in
+            make.top.right.equalToSuperview().inset(96)
         }
     }
 }

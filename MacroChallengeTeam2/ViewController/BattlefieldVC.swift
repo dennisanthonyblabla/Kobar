@@ -16,7 +16,7 @@ class BattlefieldViewController: UIViewController {
     private lazy var pertanyaan = CardView(type: .pertanyaan)
     private lazy var ngodingYuk = CardView(type: .codingCard)
     private lazy var ujiKodingan = SmallButtonView(variant: .variant2, title: "Uji Kodingan", btnType: .normal)
-    private lazy var tips = SmallBackButtonView(variant: .variant2)
+    private lazy var tips = SmallIconButtonView(variant: .variant2)
 
     private lazy var background: UIView = {
         let view = UIView()
