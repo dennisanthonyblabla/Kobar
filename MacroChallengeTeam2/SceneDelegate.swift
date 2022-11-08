@@ -43,11 +43,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             .disposed(by: self.disposeBag)
         
-        // Bind auth coordinator with start battle coordinator
+        // Bind auth coordinator with start battle coordinator on start battle event
         startBattleViewModel.battleEventSubject
             .observe(on: MainScheduler.instance)
-            .subscribe { _ in
-                authCoordinator.startBattleCoordinator()
+            .subscribe { [weak self] _ in
+                guard let strongSelf = self else { return }
+                authCoordinator.startNextCoordinator {
+                    strongSelf.makeBattleCoordinator(navigationController: $0)
+                }
             }
             .disposed(by: self.disposeBag)
         

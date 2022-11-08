@@ -45,9 +45,8 @@ final class AuthCoordinator: BaseCoordinator {
         show(makeMainViewController(user))
     }
     
-    // TODO: @salman refactor to Composition Root
-    func startBattleCoordinator() {
-        let coordinator = BattleCoordinator(navigationController)
+    func startNextCoordinator(_ makeNextCoordinator: (UINavigationController) -> Coordinator) {
+        let coordinator = makeNextCoordinator(navigationController)
         
         store(coordinator)
         
