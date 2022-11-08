@@ -48,13 +48,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UIRequiresFullScreen</key>
-	<true/>
-	<key>UIStatusBarHidden</key>
-	<false/>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-	</array>
 </dict>
 </plist>
