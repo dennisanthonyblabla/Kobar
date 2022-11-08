@@ -11,33 +11,76 @@ import SwiftUI
 import Lottie
 
 class MainPageViewController: UIViewController {
+    var onInviteFriend: (() -> Void)?
+    var onJoinFriend: (() -> Void)?
+    var onJoinRandom: (() -> Void)?
+    
     private lazy var profile = ShortProfileView(rating: 2000)
-    private lazy var ajakTemanBtn = MedButtonView(
-        variant: .variant2,
-        title: "Ajak Teman",
-        width: 245)
-    private lazy var gabungBtn = MedButtonView(
-        variant: .variant2,
-        title: "Gabung Sama Teman",
-        width: 245)
-    private lazy var siapaAjaBtn = MedButtonView(
-        variant: .variant2,
-        title: "Siapa Aja Bebas",
-        width: 245)
-
-    private lazy var background: UIView = {
-        let view = UIView()
-        view.backgroundColor = .kobarBlueBG
-        return view
+    
+    private lazy var ajakTemanBtn: MedButtonView = {
+        let button = MedButtonView(
+            variant: .variant2,
+            title: "Ajak Teman",
+            width: 245)
+        
+        button.addAction(
+            UIAction { _ in
+                self.onInviteFriend?()
+            },
+            for: .touchDown)
+        
+        return button
     }()
-
-    private lazy var backgroundMotives: UIImageView = {
+    
+    private lazy var gabungBtn: MedButtonView = {
+        let button = MedButtonView(
+            variant: .variant2,
+            title: "Gabung Sama Teman",
+            width: 245)
+        
+        button.addAction(
+            UIAction { _ in
+                self.onJoinFriend?()
+            },
+            for: .touchDown)
+        
+        return button
+    }()
+    
+    private lazy var siapaAjaBtn: MedButtonView = {
+        let button = MedButtonView(
+            variant: .variant2,
+            title: "Siapa Aja Bebas",
+            width: 245)
+        
+        button.addAction(
+            UIAction { _ in
+                self.onJoinRandom?()
+            },
+            for: .touchDown)
+        
+        return button
+    }()
+    
+    private lazy var background: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleToFill
         view.image = UIImage(named: "background1")
         return view
     }()
-
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let view = UIStackView()
+        
+        view.addArrangedSubview(ajakTemanBtn)
+        view.addArrangedSubview(gabungBtn)
+        view.addArrangedSubview(siapaAjaBtn)
+        
+        view.spacing = 40
+        
+        return view
+    }()
+    
     private lazy var swordGif: LottieAnimationView = {
         let jsonName = "MainPageSword"
         let animation = LottieAnimation.named(jsonName)
@@ -47,7 +90,7 @@ class MainPageViewController: UIViewController {
         gif.play()
         return gif
     }()
-
+    
     private lazy var tandingYukTitle: UILabel = {
         let label = UILabel()
         label.text = "Tanding Yuk!"
@@ -56,7 +99,7 @@ class MainPageViewController: UIViewController {
         label.font = .bold34
         return label
     }()
-
+    
     private lazy var tandingYukDesc: UILabel = {
         let label = UILabel()
         label.text = "Uji Kemampuan koding lo dengan cus pilih lawan lo!"
@@ -65,74 +108,51 @@ class MainPageViewController: UIViewController {
         label.font = .regular28
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(background)
-        view.addSubview(backgroundMotives)
         view.addSubview(tandingYukTitle)
         view.addSubview(tandingYukDesc)
         view.addSubview(swordGif)
         view.addSubview(profile)
-        view.addSubview(ajakTemanBtn)
-        view.addSubview(gabungBtn)
-        view.addSubview(siapaAjaBtn)
-
-        setupBackground()
-        setupDisplays()
-        setupComponents()
+        view.addSubview(buttonsStackView)
+        
+        setupBackgroundConstraints()
+        setupDisplayConstraint()
+        setupComponentsConstraint()
     }
-
-    private func setupBackground() {
+    
+    private func setupBackgroundConstraints() {
         background.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview().offset(50)
-            make.center.equalToSuperview()
-        }
-        backgroundMotives.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
-            make.center.equalToSuperview()
+            make.height.width.equalToSuperview()
         }
     }
-
-    private func setupDisplays() {
+    
+    private func setupDisplayConstraint() {
         tandingYukTitle.snp.makeConstraints { make in
-            make.width.equalTo(tandingYukTitle.snp.width)
-            make.height.equalTo(tandingYukTitle.snp.height)
             make.centerY.equalToSuperview().offset(140)
             make.centerX.equalToSuperview()
         }
         tandingYukDesc.snp.makeConstraints { make in
-            make.width.equalTo(tandingYukDesc.snp.width)
-            make.height.equalTo(tandingYukDesc.snp.height)
             make.top.equalTo(tandingYukTitle.snp.bottom).offset(8)
             make.centerX.equalTo(tandingYukTitle)
         }
         swordGif.snp.makeConstraints { make in
-            make.width.equalTo(480)
-            make.height.equalTo(480)
+            make.height.width.equalTo(400)
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-120)
         }
     }
-
-    private func setupComponents() {
+    
+    private func setupComponentsConstraint() {
         profile.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
             make.top.equalToSuperview().offset(100)
         }
-        gabungBtn.snp.makeConstraints { make in
+        buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-100)
-        }
-        ajakTemanBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(gabungBtn.snp.leading).offset(-200)
-            make.centerY.equalTo(gabungBtn)
-        }
-        siapaAjaBtn.snp.makeConstraints { make in
-            make.leading.equalTo(gabungBtn.snp.trailing).offset(200)
-            make.centerY.equalTo(gabungBtn)
+            make.top.equalTo(tandingYukDesc).offset(50)
         }
     }
 }
@@ -142,6 +162,8 @@ struct MainPageViewControllerPreviews: PreviewProvider {
         UIViewControllerPreview {
             return MainPageViewController()
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
     }
 }
