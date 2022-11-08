@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol AuthRepository {
+protocol AuthService {
     func getUser(_ callback: @escaping (User?) -> Void)
     func signUp(_ callback: @escaping (User?) -> Void)
     func login(_ callback: @escaping (User?) -> Void)

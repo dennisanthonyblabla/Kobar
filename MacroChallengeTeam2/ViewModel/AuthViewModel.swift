@@ -9,35 +9,35 @@ import Foundation
 import RxSwift
 
 final class AuthViewModel {
-    private let authRepository: AuthRepository
+    private let authService: AuthService
 
     let userSubject = BehaviorSubject<User?>(value: nil)
 
-    init(_ authService: AuthRepository) {
-        self.authRepository = authService
+    init(_ authService: AuthService) {
+        self.authService = authService
         getUser()
     }
 
     private func getUser() {
-        authRepository.getUser { [weak self] user in
+        authService.getUser { [weak self] user in
             self?.userSubject.onNext(user)
         }
     }
 
     func login() {
-        authRepository.login { [weak self] user in
+        authService.login { [weak self] user in
             self?.userSubject.onNext(user)
         }
     }
 
     func signUp() {
-        authRepository.signUp { [weak self] user in
+        authService.signUp { [weak self] user in
             self?.userSubject.onNext(user)
         }
     }
 
     func logout() {
-        authRepository.logout { [weak self] user in
+        authService.logout { [weak self] user in
             self?.userSubject.onNext(user)
         }
     }

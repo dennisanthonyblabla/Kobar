@@ -8,7 +8,7 @@
 import Foundation
 import Auth0
 
-class Auth0DataSource: AuthRepository {
+class Auth0DataSource: AuthService {
     static let shared = Auth0DataSource()
     private let credentialsManager = CredentialsManager(authentication: Auth0.authentication())
 
