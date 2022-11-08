@@ -30,12 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             navigationController: navigationController,
             viewModel: authViewModel)
         
-        // Bind auth coordinator with auth state from view model
-        authViewModel.userSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe { authCoordinator.onAuthStateChanged($0) }
-            .disposed(by: disposeBag)
-        
         authCoordinator.start()
     }
     
@@ -50,7 +44,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             makeLoadingViewController: makeLoadingPageViewController,
             makeLoginViewController: { self.makeSignInPageViewController(viewModel: viewModel) },
             makeMainViewController: makeMainPageViewController(with:))
-            
+        
+        // Bind auth coordinator with auth state from view model
+        viewModel.userSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe { coordinator.onAuthStateChanged($0) }
+            .disposed(by: self.disposeBag)
+
         return coordinator
     }
     
