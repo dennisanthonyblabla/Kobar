@@ -16,7 +16,15 @@ class MainPageViewController: UIViewController {
     var onJoinRandom: (() -> Void)?
     var onLogout: (() -> Void)?
     
-    private lazy var profile = ShortProfileView(rating: 2000)
+    var rating: Int = 0
+    var imageURL: URL?
+    
+    private lazy var profileView: ShortProfileView = {
+        let view = ShortProfileView(
+            rating: rating,
+            imageURL: imageURL)
+        return view
+    }()
     
     private lazy var ajakTemanBtn: MedButtonView = {
         let button = MedButtonView(
@@ -130,7 +138,7 @@ class MainPageViewController: UIViewController {
         view.addSubview(tandingYukTitle)
         view.addSubview(tandingYukDesc)
         view.addSubview(swordGif)
-        view.addSubview(profile)
+        view.addSubview(profileView)
         view.addSubview(buttonsStackView)
         view.addSubview(logOutBtn)
         
@@ -162,7 +170,7 @@ class MainPageViewController: UIViewController {
     }
     
     private func setupComponentsConstraint() {
-        profile.snp.makeConstraints { make in
+        profileView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
             make.top.equalToSuperview().offset(100)
         }

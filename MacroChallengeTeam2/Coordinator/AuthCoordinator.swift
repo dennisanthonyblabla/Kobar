@@ -81,6 +81,9 @@ final class AuthCoordinator: BaseCoordinator {
     func makeMainPageViewController(with user: User) -> MainPageViewController {
         let mainVC = MainPageViewController()
         
+        mainVC.rating = Int(user.rating)
+        mainVC.imageURL = URL(string: user.picture)
+        
         mainVC.onLogout = { [weak self] in
             self?.authViewModel.logout()
         }
