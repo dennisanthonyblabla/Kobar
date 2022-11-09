@@ -67,7 +67,7 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     func onJoinFriend() {
-        popup(makeReadyToBattlePageViewController())
+        popup(makeJoinFriendPageViewController())
     }
 
     func makeInviteFriendPageViewController(
