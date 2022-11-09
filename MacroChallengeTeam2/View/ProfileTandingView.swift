@@ -15,24 +15,11 @@ final class ProfileTandingView: UIView {
         case opponent
     }
 
-    private var role: Role?
-    private var name: String?
-    private var rating: Int?
+    var role: Role?
+    var name: String?
+    var rating: Int?
+    var imageURL: URL?
     var state: String?
-    var frameWidth: Int? {
-        didSet {
-            profileBG.snp.updateConstraints { make in
-                make.width.equalTo(frameWidth ?? 233)
-            }
-        }
-    }
-    var frameHeight: Int? {
-        didSet {
-            profileBG.snp.updateConstraints { make in
-                make.height.equalTo(frameHeight ?? 205)
-            }
-        }
-    }
 
     private lazy var playerName: UILabel = {
         let label = UILabel()
@@ -57,7 +44,9 @@ final class ProfileTandingView: UIView {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
         let profile = UIImage(systemName: "person.fill", withConfiguration: config)
-        imageView.image = profile?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal)
+        
+        imageView.load(from: imageURL, fallback: profile)
+        
         return imageView
     }()
 
@@ -91,11 +80,12 @@ final class ProfileTandingView: UIView {
         super.init(frame: frame)
     }
 
-    init(role: Role, name: String, rating: Int, state: String? = "") {
+    init(role: Role, name: String, rating: Int, imageURL: URL? = nil, state: String? = "") {
         super.init(frame: .zero)
         self.role = role
         self.name = name
         self.rating = rating
+        self.imageURL = imageURL
         self.state = state
         addSubview(profileBG)
         addSubview(playerName)
@@ -125,8 +115,8 @@ final class ProfileTandingView: UIView {
 
     private func setupAutoLayout() {
         profileBG.snp.makeConstraints { make in
-            make.width.equalTo(frameWidth ?? 233)
-            make.height.equalTo(frameHeight ?? 205)
+            make.width.equalTo(233)
+            make.height.equalTo(205)
             make.center.equalToSuperview()
         }
         ratingHolder.snp.makeConstraints { make in

@@ -28,8 +28,7 @@ class MainPageViewController: UIViewController {
     private lazy var ajakTemanBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Ajak Teman",
-            width: 245)
+            title: "Ajak Teman")
         
         button.addAction(
             UIAction { _ in
@@ -43,8 +42,7 @@ class MainPageViewController: UIViewController {
     private lazy var gabungBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Gabung Sama Teman",
-            width: 245)
+            title: "Gabung Sama Teman")
         
         button.addAction(
             UIAction { _ in
@@ -58,8 +56,7 @@ class MainPageViewController: UIViewController {
     private lazy var siapaAjaBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Siapa Aja Bebas",
-            width: 245)
+            title: "Siapa Aja Bebas")
         
         button.addAction(
             UIAction { _ in
@@ -93,6 +90,16 @@ class MainPageViewController: UIViewController {
     
     private lazy var buttonsStackView: UIStackView = {
         let view = UIStackView()
+        
+        ajakTemanBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
+        gabungBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
+        siapaAjaBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
         
         view.addArrangedSubview(ajakTemanBtn)
         view.addArrangedSubview(gabungBtn)
