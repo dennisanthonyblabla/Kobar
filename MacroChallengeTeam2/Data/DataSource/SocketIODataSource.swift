@@ -16,7 +16,7 @@ class SocketIODataSource: WebSocketService {
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
     var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
-    var onPlayersFound: ((Battle) -> Void) = { _ in }
+    var onBattleFound: ((Battle) -> Void) = { _ in }
 
     init(url: URL?) {
         guard let url = url else {
@@ -43,8 +43,8 @@ class SocketIODataSource: WebSocketService {
         
         socketClient.on("opponentFound") { [weak self] data, _ in
             do {
-                let battle: Battle = try SocketParser.convert(data: data[0])
-                self?.onPlayersFound(battle)
+                let battle: Battle = try Battle.convert(from: data)
+                self?.onBattleFound(battle)
             } catch {
                 print("Failed to parse")
             }
@@ -52,8 +52,8 @@ class SocketIODataSource: WebSocketService {
         
         socketClient.on("battleJoined") { [weak self] data, _ in
             do {
-                let battle: Battle = try SocketParser.convert(data: data[0])
-                self?.onPlayersFound(battle)
+                let battle: Battle = try Battle.convert(from: data)
+                self?.onBattleFound(battle)
             } catch {
                 print("Failed to parse")
             }
@@ -61,8 +61,8 @@ class SocketIODataSource: WebSocketService {
         
         socketClient.on("battleRejoined") { [weak self] data, _ in
             do {
-                let battle: Battle = try SocketParser.convert(data: data[0])
-                self?.onPlayersFound(battle)
+                let battle: Battle = try Battle.convert(from: data)
+                self?.onBattleFound(battle)
             } catch {
                 print("Failed to parse")
             }
@@ -88,8 +88,12 @@ class SocketIODataSource: WebSocketService {
         socketClient.emit("createBattleInvitation", data)
     }
     
-    func emitJoinbattleEvent(data: JoinBattleDto) {
+    func emitJoinBattleEvent(data: JoinBattleDto) {
         socketClient.emit("joinBattle", data)
+    }
+    
+    func emitCancelBattleEvent(data: CancelBattleDto) {
+        socketClient.emit("cancelBattle", data)
     }
 
     func disconnect() {

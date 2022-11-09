@@ -7,7 +7,7 @@
 
 import RxSwift
 
-class StartBattleViewModel {
+class FindBattleViewModel {
     private let socketService: SocketIODataSource
     private let user: User
     
@@ -30,13 +30,13 @@ class StartBattleViewModel {
     }
     
     func joinBattle(inviteCode: String) {
-        socketService.emitJoinbattleEvent(
+        socketService.emitJoinBattleEvent(
             data: JoinBattleDto(userId: user.id, inviteCode: inviteCode))
     }
     
     func playersFoundState() -> Single<Battle> {
         Single<Battle>.create { [weak self] single in
-            self?.socketService.onPlayersFound = { battle in
+            self?.socketService.onBattleFound = { battle in
                 single(.success(battle))
             }
             

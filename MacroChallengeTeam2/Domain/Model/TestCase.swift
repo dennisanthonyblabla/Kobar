@@ -7,7 +7,8 @@
 
 import Foundation
 struct TestCase: Identifiable, Codable {
-    let id: UUID
+    let id: String
     let input: String
     let output: String
+    let order: Int
 }

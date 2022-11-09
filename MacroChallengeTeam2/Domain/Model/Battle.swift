@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Battle: Identifiable, Codable {
-    let id: UUID
+struct Battle: Codable {
+    let id: String
     let inviteCode: String
-    let problemId: UUID
+    let problem: Problem?
     let users: [User]
     let startTime: Date
     let endTime: Date

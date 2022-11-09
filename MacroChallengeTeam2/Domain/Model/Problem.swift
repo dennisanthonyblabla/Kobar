@@ -8,10 +8,12 @@
 import Foundation
 
 struct Problem: Identifiable, Codable {
-    let id: UUID
+    let id: String
     let prompt: String
     let inputFormat: String
     let outputFormat: String
-    let testCase: [TestCase]
+    let testCases: [TestCase]
     let exampleCount: Int
+    let reviewVideoURL: String
+    let reviewText: String
 }

@@ -16,7 +16,7 @@ final class BattleCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     private let battleAction: BattleAction
     
-    private let startBattleViewModel: StartBattleViewModel
+    private let findBattleViewModel: FindBattleViewModel
     
     private let disposeBag = DisposeBag()
     
@@ -27,7 +27,7 @@ final class BattleCoordinator: BaseCoordinator {
         user: User
     ) {
         self.navigationController = navigationController
-        self.startBattleViewModel = StartBattleViewModel(
+        self.findBattleViewModel = FindBattleViewModel(
             socketService: socketService,
             user: user)
         self.battleAction = battleAction
@@ -45,7 +45,7 @@ final class BattleCoordinator: BaseCoordinator {
             break
         }
         
-        startBattleViewModel.playersFoundState()
+        findBattleViewModel.playersFoundState()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] battle in
                 
@@ -54,7 +54,7 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     func onInviteFriend() {
-        startBattleViewModel.createBattle()
+        findBattleViewModel.createBattle()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] user, battleInvitation in
                 guard let waitingRoomVC = self?.makeInviteFriendPageViewController(
@@ -91,7 +91,7 @@ final class BattleCoordinator: BaseCoordinator {
         let readyVC = JoinFriendPageViewController()
     
         readyVC.onConfirm = { inviteCode in
-            self.startBattleViewModel.joinBattle(inviteCode: inviteCode)
+            self.findBattleViewModel.joinBattle(inviteCode: inviteCode)
         }
         
         readyVC.onCancel = {
