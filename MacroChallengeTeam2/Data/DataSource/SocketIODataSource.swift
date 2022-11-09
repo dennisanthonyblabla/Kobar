@@ -59,6 +59,15 @@ class SocketIODataSource: WebSocketService {
             }
         }
         
+        socketClient.on("battleRejoined") { [weak self] data, _ in
+            do {
+                let battle: Battle = try SocketParser.convert(data: data[0])
+                self?.onPlayersFound(battle)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+        
         socketClient.on("battleInvitationCreated") { [weak self] data, _ in
             do {
                 let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])

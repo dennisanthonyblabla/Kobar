@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         let url = URL(string: "http://kobar.up.railway.app")
+//        let url = URL(string: "http://localhost:8080")
         let authService = Auth0DataSource.shared
         let socketService = SocketIODataSource(url: url)
         

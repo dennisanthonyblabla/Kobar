@@ -7,11 +7,14 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 // TODO: @salman add title view
 class JoinFriendPageViewController: UIViewController {
     var onCancel: (() -> Void)?
     var onConfirm: ((String) -> Void)?
+    
+    private let disposeBag = DisposeBag()
     
     private var inviteCode: String = ""
     
@@ -37,6 +40,12 @@ class JoinFriendPageViewController: UIViewController {
         textField.font = .regular24
         textField.backgroundColor = .kobarGray
         textField.layer.cornerRadius = 20
+        
+        textField.addAction(
+            UIAction { _ in
+                self.inviteCode = textField.text ?? ""
+            }, for: .editingChanged)
+        
         return textField
     }()
 
@@ -109,14 +118,5 @@ class JoinFriendPageViewController: UIViewController {
 extension JoinFriendPageViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         inviteCode = ""
-    }
-    
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        inviteCode = string
-        return true
     }
 }
