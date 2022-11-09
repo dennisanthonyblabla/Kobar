@@ -38,7 +38,7 @@ final class ProfileInviteView: UIView {
         label.textAlignment = .right
         label.textColor = .kobarBlack
         label.font = .regular17
-        label.text = "Kode buat ajak temen"
+        label.text = inviteCode
         return label
     }()
 

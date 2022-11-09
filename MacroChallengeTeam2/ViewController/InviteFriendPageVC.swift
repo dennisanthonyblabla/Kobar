@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import SwiftUI
 
-class RuangTungguViewController: UIViewController {
+class InviteFriendPageViewController: UIViewController {
     var onBack: (() -> Void)?
     
     var user: User = .empty()
@@ -177,7 +177,7 @@ class RuangTungguViewController: UIViewController {
 struct RuangTungguViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return RuangTungguViewController()
+            return InviteFriendPageViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }

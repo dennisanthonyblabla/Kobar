@@ -16,6 +16,7 @@ class SocketIODataSource: WebSocketService {
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
     var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
+    var onPlayersFound: ((Battle) -> Void) = { _ in }
 
     init(url: URL?) {
         guard let url = url else {
@@ -40,6 +41,24 @@ class SocketIODataSource: WebSocketService {
             }
         }
         
+        socketClient.on("opponentFound") { [weak self] data, _ in
+            do {
+                let battle: Battle = try SocketParser.convert(data: data[0])
+                self?.onPlayersFound(battle)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+        
+        socketClient.on("battleJoined") { [weak self] data, _ in
+            do {
+                let battle: Battle = try SocketParser.convert(data: data[0])
+                self?.onPlayersFound(battle)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+        
         socketClient.on("battleInvitationCreated") { [weak self] data, _ in
             do {
                 let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])
@@ -58,6 +77,10 @@ class SocketIODataSource: WebSocketService {
     
     func emitCreateBattleInvitationEvent(data: CreateBattleInvitationDto) {
         socketClient.emit("createBattleInvitation", data)
+    }
+    
+    func emitJoinbattleEvent(data: JoinBattleDto) {
+        socketClient.emit("joinBattle", data)
     }
 
     func disconnect() {

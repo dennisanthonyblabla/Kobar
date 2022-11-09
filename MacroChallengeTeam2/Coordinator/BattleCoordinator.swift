@@ -16,7 +16,7 @@ final class BattleCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     private let battleAction: BattleAction
     
-    private let createBattleViewModel: CreateBattleViewModel
+    private let startBattleViewModel: StartBattleViewModel
     
     private let disposeBag = DisposeBag()
     
@@ -27,30 +27,37 @@ final class BattleCoordinator: BaseCoordinator {
         user: User
     ) {
         self.navigationController = navigationController
-        self.createBattleViewModel = CreateBattleViewModel(
+        self.startBattleViewModel = StartBattleViewModel(
             socketService: socketService,
             user: user)
         self.battleAction = battleAction
     }
     
     // TODO: Show loading state
+    // TODO: implement join random battle
     override func start() {
         switch battleAction {
         case .inviteFriend:
             onInviteFriend()
         case .joinFriend:
             onJoinFriend()
-        // TODO: implement join random battle
         case .joinRandom:
             break
         }
+        
+        startBattleViewModel.playersFoundState()
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] battle in
+                
+            }
+            .disposed(by: disposeBag)
     }
     
     func onInviteFriend() {
-        createBattleViewModel.createBattle()
+        startBattleViewModel.createBattle()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] user, battleInvitation in
-                guard let waitingRoomVC = self?.makeWaitingRoomViewController(
+                guard let waitingRoomVC = self?.makeInviteFriendPageViewController(
                     user: user,
                     with: battleInvitation)
                 else { return }
@@ -60,35 +67,50 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     func onJoinFriend() {
-        
+        popup(makeReadyToBattlePageViewController())
     }
 
-    func makeLoadingPageViewController() -> LoadingPageViewController {
-        LoadingPageViewController()
-    }
-
-    func makeWaitingRoomViewController(
+    func makeInviteFriendPageViewController(
         user: User,
         with battleInvitation: BattleInvitation
-    ) -> RuangTungguViewController {
-        let viewController = RuangTungguViewController()
+    ) -> InviteFriendPageViewController {
+        let viewController = InviteFriendPageViewController()
         
         viewController.user = user
+        viewController.inviteCode = battleInvitation.inviteCode
         
-        viewController.onBack = { [weak self] in
-            self?.pop()
-            self?.completion?()
+        viewController.onBack = {
+            self.pop()
+            self.completion?()
         }
         
         return viewController
     }
     
-    func makeTungguLawanVC() {
+    func makeJoinFriendPageViewController() -> JoinFriendPageViewController {
+        let readyVC = JoinFriendPageViewController()
+    
+        readyVC.onConfirm = { inviteCode in
+            self.startBattleViewModel.joinBattle(inviteCode: inviteCode)
+        }
         
+        readyVC.onCancel = {
+            self.dismiss(readyVC)
+        }
+        
+        return readyVC
     }
     
     private func show(_ viewController: UIViewController) {
         navigationController.pushViewController(viewController, animated: true)
+    }
+    
+    private func popup(_ viewController: UIViewController) {
+        navigationController.present(viewController, animated: true)
+    }
+    
+    private func dismiss(_ viewController: UIViewController) {
+        navigationController.dismiss(animated: true)
     }
     
     private func pop() {
