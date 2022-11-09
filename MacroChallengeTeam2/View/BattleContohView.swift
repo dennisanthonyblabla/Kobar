@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class BattleContohView: UIButton {
+    private var image: String?
     private lazy var titleBanner: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -25,8 +26,9 @@ class BattleContohView: UIButton {
         super.init(frame: frame)
     }
 
-    init(title: String) {
+    init(title: String, image: String = "") {
         super.init(frame: .zero)
+        self.image = image
         addSubview(titleBanner)
         setupAutoLayout()
         setupButton(title: title)
@@ -41,7 +43,7 @@ class BattleContohView: UIButton {
         config.imagePadding = 5
         config.titlePadding = 5
         configuration = config
-        let buttonImage = UIImage(systemName: "chevron.down")
+        let buttonImage = UIImage(systemName: image ?? "")
         setImage(buttonImage?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal), for: .normal)
         setTitle(title, for: .normal)
         setTitleColor(.kobarBlack, for: .normal)
