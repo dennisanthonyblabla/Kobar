@@ -32,7 +32,7 @@ final class AuthCoordinator: BaseCoordinator {
             .disposed(by: self.disposeBag)
     }
     
-    func onAuthStateChanged(_ authUser: User?) {
+    func onAuthStateChanged(_ authUser: AuthUser?) {
         guard let user = authUser else {
             show(makeSignInPageViewController())
             return
@@ -59,7 +59,7 @@ final class AuthCoordinator: BaseCoordinator {
         return viewController
     }
     
-    func makeMainPageViewController(with user: User) -> MainPageViewController {
+    func makeMainPageViewController(with user: AuthUser) -> MainPageViewController {
         let viewController = MainPageViewController()
         
         viewController.onLogout = { [weak self] in

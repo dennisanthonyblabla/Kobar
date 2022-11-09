@@ -9,14 +9,9 @@ import Foundation
 import Auth0
 import JWTDecode
 
-extension User {
-    init?(from credentials: Credentials) {
-        guard let jwt = try? decode(jwt: credentials.idToken) else { return nil }
-
+extension AuthUser {
+    init(from credentials: Credentials) {
         id = credentials.idToken
-        name = jwt["nickname"].string ?? ""
-        imageURL = jwt["picture"].string ?? ""
-        rating = jwt["rating"].integer ?? 0
         bearerToken = credentials.accessToken
     }
 }

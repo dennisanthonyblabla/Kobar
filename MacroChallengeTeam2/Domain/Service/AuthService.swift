@@ -8,8 +8,8 @@
 import Foundation
 
 protocol AuthService {
-    func getUser(_ callback: @escaping (User?) -> Void)
-    func signUp(_ callback: @escaping (User?) -> Void)
-    func login(_ callback: @escaping (User?) -> Void)
-    func logout(_ callback: @escaping (User?) -> Void)
+    func getUser(_ callback: @escaping (AuthUser?) -> Void)
+    func signUp(_ callback: @escaping (AuthUser?) -> Void)
+    func login(_ callback: @escaping (AuthUser?) -> Void)
+    func logout(_ callback: @escaping (AuthUser?) -> Void)
 }

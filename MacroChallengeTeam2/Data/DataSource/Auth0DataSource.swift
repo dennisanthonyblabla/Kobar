@@ -28,7 +28,7 @@ class Auth0DataSource: AuthService {
         return hasCredentials
     }
 
-    func getUser(_ callback: @escaping (User?) -> Void) {
+    func getUser(_ callback: @escaping (AuthUser?) -> Void) {
         guard hasValidCredentials() else {
             callback(nil)
             return
@@ -37,22 +37,22 @@ class Auth0DataSource: AuthService {
         credentialsManager.credentials { result in
             switch result {
             case .success(let credentials):
-                callback(User(from: credentials))
+                callback(AuthUser(from: credentials))
             case .failure:
                 callback(nil)
             }
         }
     }
 
-    func signUp(_ callback: @escaping (User?) -> Void) {
+    func signUp(_ callback: @escaping (AuthUser?) -> Void) {
         startWebAuth(parameters: ["screen_hint": "signup"], callback: callback)
     }
 
-    func login(_ callback: @escaping (User?) -> Void) {
+    func login(_ callback: @escaping (AuthUser?) -> Void) {
         startWebAuth(callback: callback)
     }
 
-    func logout(_ callback: @escaping (User?) -> Void) {
+    func logout(_ callback: @escaping (AuthUser?) -> Void) {
         guard let redirectURL = URL(
             string: "com.namanya-apa.MacroChallengeTeam2://kobar.au.auth0.com/ios/com.namanya-apa.MacroChallengeTeam2/logout")
         else { return }
@@ -69,7 +69,7 @@ class Auth0DataSource: AuthService {
         return
     }
 
-    private func startWebAuth(parameters: [String: String] = [:], callback: @escaping (User?) -> Void) {
+    private func startWebAuth(parameters: [String: String] = [:], callback: @escaping (AuthUser?) -> Void) {
         Auth0
             .webAuth()
             .parameters(parameters)
@@ -78,7 +78,7 @@ class Auth0DataSource: AuthService {
                 switch result {
                 case .success(let credentials):
                     self?.storeCredentials(credentials)
-                    callback(User(from: credentials))
+                    callback(AuthUser(from: credentials))
                 case .failure:
                     callback(nil)
                 }
