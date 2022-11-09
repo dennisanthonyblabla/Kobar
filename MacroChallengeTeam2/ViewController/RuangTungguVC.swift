@@ -7,13 +7,26 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 class RuangTungguViewController: UIViewController {
     var onBack: (() -> Void)?
     
-    private lazy var profileUser = ProfileTandingView(role: .user, name: "John Doe", rating: 100)
-    private lazy var profileInvite = ProfileInviteView(inviteCode: "XYZAB")
+    var user: User = .empty()
+    var inviteCode: String = ""
+    
+    private lazy var profileUser: ProfileTandingView = {
+        let view = ProfileTandingView(
+            role: .user,
+            name: user.name,
+            rating: user.rating)
+        
+        return view
+    }()
+
+    private lazy var profileInvite: ProfileInviteView = {
+        ProfileInviteView(inviteCode: inviteCode)
+    }()
+    
     private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)
     
     private lazy var backBtn: SmallIconButtonView = {
@@ -160,14 +173,6 @@ class RuangTungguViewController: UIViewController {
     }
 }
 
-struct RuangTungguViewControllerPreviews: PreviewProvider {
-    static var previews: some View {
-        UIViewControllerPreview {
-            return RuangTungguViewController()
-        }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
-    }
-}
 
 extension NSAttributedString {
     func withLineSpacing(_ spacing: CGFloat) -> NSAttributedString {

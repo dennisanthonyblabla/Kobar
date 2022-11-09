@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 import Lottie
 
 class MainPageViewController: UIViewController {
@@ -16,13 +15,12 @@ class MainPageViewController: UIViewController {
     var onJoinRandom: (() -> Void)?
     var onLogout: (() -> Void)?
     
-    var rating: Int = 0
-    var imageURL: URL?
+    var user: User = .empty()
     
     private lazy var profileView: ShortProfileView = {
         let view = ShortProfileView(
-            rating: rating,
-            imageURL: imageURL)
+            rating: user.rating,
+            imageURL: URL(string: user.picture))
         return view
     }()
     
@@ -181,16 +179,5 @@ class MainPageViewController: UIViewController {
         logOutBtn.snp.makeConstraints { make in
             make.top.right.equalToSuperview().inset(96)
         }
-    }
-}
-
-struct MainPageViewControllerPreviews: PreviewProvider {
-    static var previews: some View {
-        UIViewControllerPreview {
-            return MainPageViewController()
-        }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)")
-        .previewInterfaceOrientation(.landscapeLeft)
-        .ignoresSafeArea()
     }
 }

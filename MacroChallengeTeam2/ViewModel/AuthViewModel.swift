@@ -9,9 +9,9 @@ import Foundation
 import RxSwift
 
 final class AuthViewModel {
-    private let authService: AuthService
-
     let userSubject = BehaviorSubject<AuthUser?>(value: nil)
+    
+    private let authService: AuthService
 
     init(_ authService: AuthService) {
         self.authService = authService

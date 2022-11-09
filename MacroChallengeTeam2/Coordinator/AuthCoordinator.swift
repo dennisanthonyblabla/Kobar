@@ -10,6 +10,10 @@ import RxSwift
 
 /// Responsible for navigation when onAuthStateChanged is called
 final class AuthCoordinator: BaseCoordinator {
+    // TODO: @salman i think there's a better way to do this, but for now isoke
+    var goToInviteFriendCoordinator: ((User) -> Coordinator)?
+    var goToJoinFriendCoordinator: ((User) -> Coordinator)?
+    
     private let navigationController: UINavigationController
     
     private let authViewModel: AuthViewModel
@@ -20,12 +24,12 @@ final class AuthCoordinator: BaseCoordinator {
     init(
         _ navigationController: UINavigationController,
         authService: AuthService,
-        socketHandler: SocketIODataSource
+        socketService: SocketIODataSource
     ) {
         self.navigationController = navigationController
         
         self.authViewModel = AuthViewModel(authService)
-        self.userViewModel = UserViewModel(socketHandler: socketHandler)
+        self.userViewModel = UserViewModel(socketHandler: socketService)
     }
     
     override func start() {
@@ -81,8 +85,17 @@ final class AuthCoordinator: BaseCoordinator {
     func makeMainPageViewController(with user: User) -> MainPageViewController {
         let mainVC = MainPageViewController()
         
-        mainVC.rating = Int(user.rating)
-        mainVC.imageURL = URL(string: user.picture)
+        mainVC.user = user
+        
+        mainVC.onInviteFriend = { [weak self] in
+            guard let coordinator = self?.goToInviteFriendCoordinator?(user) else { return }
+            self?.startNextCoordinator(coordinator)
+        }
+        
+        mainVC.onJoinFriend = { [weak self] in
+            guard let coordinator = self?.goToJoinFriendCoordinator?(user) else { return }
+            self?.startNextCoordinator(coordinator)
+        }
         
         mainVC.onLogout = { [weak self] in
             self?.authViewModel.logout()

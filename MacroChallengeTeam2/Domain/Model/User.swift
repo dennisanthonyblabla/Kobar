@@ -11,5 +11,9 @@ struct User: Identifiable, Codable {
     let id: String
     let name: String
     let picture: String
-    let rating: Double
+    let rating: Int
+    
+    static func empty() -> User {
+        User(id: "", name: "", picture: "", rating: 0)
+    }
 }

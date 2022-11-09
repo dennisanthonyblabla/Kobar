@@ -25,30 +25,61 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
-        let authCoordinator = makeAuthCoordinator(navigationController)
+        let url = URL(string: "http://kobar.up.railway.app")
+        let authService = Auth0DataSource.shared
+        let socketService = SocketIODataSource(url: url)
+        
+        let authCoordinator = makeAuthCoordinator(
+            navigationController,
+            authService: authService,
+            socketService: socketService)
+        
+        authCoordinator.goToJoinFriendCoordinator = { user in
+            self.makeBattleCoordinator(
+                navigationController,
+                socketService: socketService,
+                battleAction: .joinFriend,
+                user: user)
+        }
+        
+        authCoordinator.goToInviteFriendCoordinator = { user in
+            self.makeBattleCoordinator(
+                navigationController,
+                socketService: socketService,
+                battleAction: .inviteFriend,
+                user: user)
+        }
         
         authCoordinator.start()
     }
     
     // MARK: Composition Root
     
-    func makeAuthCoordinator(_ navigationController: UINavigationController) -> AuthCoordinator {
-        let url = URL(string: "http://kobar.up.railway.app")
-
-        let socketHandler = SocketIODataSource(url: url)
-        let authService = Auth0DataSource.shared
+    func makeAuthCoordinator(
+        _ navigationController: UINavigationController,
+        authService: AuthService,
+        socketService: SocketIODataSource
+    ) -> AuthCoordinator {
         let coordinator = AuthCoordinator(
             navigationController,
             authService: authService,
-            socketHandler: socketHandler)
-        
+            socketService: socketService)
+    
         return coordinator
     }
 
-    func makeBattleCoordinator(_ navigationController: UINavigationController) -> BattleCoordinator {
+    func makeBattleCoordinator(
+        _ navigationController: UINavigationController,
+        socketService: SocketIODataSource,
+        battleAction: BattleCoordinator.BattleAction,
+        user: User
+    ) -> BattleCoordinator {
         let coordinator = BattleCoordinator(
-            navigationController)
-
+            navigationController,
+            socketService: socketService,
+            battleAction: battleAction,
+            user: user)
+        
         return coordinator
     }
 }

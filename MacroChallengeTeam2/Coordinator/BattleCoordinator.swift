@@ -6,20 +6,78 @@
 //
 
 import UIKit
+import RxSwift
 
 final class BattleCoordinator: BaseCoordinator {
-    private let navigationController: UINavigationController
+    enum BattleAction {
+        case inviteFriend, joinFriend, joinRandom
+    }
     
-    init(_ navigationController: UINavigationController) {
+    private let navigationController: UINavigationController
+    private let battleAction: BattleAction
+    
+    private let createBattleViewModel: CreateBattleViewModel
+    
+    private let disposeBag = DisposeBag()
+    
+    init(
+        _ navigationController: UINavigationController,
+        socketService: SocketIODataSource,
+        battleAction: BattleAction,
+        user: User
+    ) {
         self.navigationController = navigationController
+        self.createBattleViewModel = CreateBattleViewModel(
+            socketService: socketService,
+            user: user)
+        self.battleAction = battleAction
     }
     
     override func start() {
-        show(makeWaitingRoomViewController())
+        show(makeLoadingPageViewController())
+        
+        switch battleAction {
+        case .inviteFriend:
+            onInviteFriend()
+        case .joinFriend:
+            onJoinFriend()
+        // TODO: implement join random battle
+        case .joinRandom:
+            break
+        }
+    }
+    
+    func onInviteFriend() {
+        createBattleViewModel.battleInvitationSubject
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] user, battleInvitation in
+                guard let waitingRoomVC = self?.makeWaitingRoomViewController(
+                    user: user,
+                    with: battleInvitation)
+                else { return }
+                self?.show(waitingRoomVC)
+            }
+            .disposed(by: disposeBag)
+        
+        createBattleViewModel.createBattle()
+    }
+    
+    func onJoinFriend() {
+        
     }
 
-    func makeWaitingRoomViewController() -> RuangTungguViewController {
+    func makeLoadingPageViewController() -> LoadingPageViewController {
+        LoadingPageViewController()
+    }
+
+    func makeWaitingRoomViewController(
+        user: User,
+        with battleInvitation: BattleInvitation
+    ) -> RuangTungguViewController {
         let viewController = RuangTungguViewController()
+        
+        viewController.user = user
         
         viewController.onBack = { [weak self] in
             self?.pop()

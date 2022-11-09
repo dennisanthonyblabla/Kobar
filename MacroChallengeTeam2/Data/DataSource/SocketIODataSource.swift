@@ -15,6 +15,7 @@ class SocketIODataSource: WebSocketService {
     
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
+    var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
 
     init(url: URL?) {
         guard let url = url else {
@@ -26,6 +27,10 @@ class SocketIODataSource: WebSocketService {
     }
 
     func connect(token: String) {
+        socketClient.on(clientEvent: .connect) { [weak self] _, _ in
+            self?.onConnect()
+        }
+
         socketClient.on("idExchanged") { [weak self] data, _ in
             do {
                 let user: User = try SocketParser.convert(data: data[0])
@@ -35,8 +40,13 @@ class SocketIODataSource: WebSocketService {
             }
         }
         
-        socketClient.on(clientEvent: .connect) { [weak self] _, _ in
-            self?.onConnect()
+        socketClient.on("battleInvitationCreated") { [weak self] data, _ in
+            do {
+                let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])
+                self?.onBattleInvitation(battleInvitation)
+            } catch {
+                print("Failed to parse")
+            }
         }
         
         socketClient.connect(withPayload: ["token": "Bearer \(token)"])
@@ -44,6 +54,10 @@ class SocketIODataSource: WebSocketService {
     
     func emitExchangeIdEvent(data: ExchangeIdDto) {
         socketClient.emit("exchangeId", data)
+    }
+    
+    func emitCreateBattleInvitationEvent(data: CreateBattleInvitationDto) {
+        socketClient.emit("createBattleInvitation", data)
     }
 
     func disconnect() {
