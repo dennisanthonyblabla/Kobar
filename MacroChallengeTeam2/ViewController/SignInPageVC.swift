@@ -64,13 +64,11 @@ class SignInPageViewController: UIViewController {
 
     private lazy var asikinAjaLabel: UILabel = {
         let label = UILabel()
-        let text = NSMutableAttributedString(
-            string: "Yuk masuk untuk\nlanjutin akun lo!",
-            attributes: [
-                .font: UIFont.bold34 ?? UIFont.systemFont(ofSize: 34)
-            ]
+        let text = NSAttributedString(
+            string: "Yuk masuk untuk\nlanjutin akun lo!"
         ).withLineSpacing(8)
 
+        label.font = .bold34
         label.attributedText = text
         label.textColor = .white
         label.numberOfLines = 2
