@@ -19,7 +19,8 @@ class InviteFriendPageViewController: UIViewController {
         let view = ProfileTandingView(
             role: .user,
             name: user.nickname,
-            rating: user.rating)
+            rating: user.rating,
+            imageURL: URL(string: user.picture))
         
         return view
     }()

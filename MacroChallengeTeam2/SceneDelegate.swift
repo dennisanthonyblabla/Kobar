@@ -19,14 +19,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let winScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = UINavigationController()
+        let navigationController = UINavigationController(
+            rootViewController: ReadyForBattlePageViewController())
 
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
         let url = URL(string: "http://kobar.up.railway.app")
-//        let url = URL(string: "http://localhost:8080")
         let authService = Auth0DataSource.shared
         let socketService = SocketIODataSource(url: url)
         
@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 user: user)
         }
         
-        authCoordinator.start()
+//        authCoordinator.start()
     }
     
     // MARK: Composition Root
