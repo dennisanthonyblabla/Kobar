@@ -20,8 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let winScene = (scene as? UIWindowScene) else { return }
         
         let navigationController = UINavigationController()
-        
-        _ = URL(string: "http://kobar.up.railway.app")
 
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController
@@ -35,10 +33,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: Composition Root
     
     func makeAuthCoordinator(_ navigationController: UINavigationController) -> AuthCoordinator {
-        let authViewModel = AuthViewModel(Auth0DataSource.shared)
+        let url = URL(string: "http://kobar.up.railway.app")
+
+        let socketHandler = SocketIODataSource(url: url)
+        let authService = Auth0DataSource.shared
         let coordinator = AuthCoordinator(
             navigationController,
-            viewModel: authViewModel)
+            authService: authService,
+            socketHandler: socketHandler)
         
         return coordinator
     }

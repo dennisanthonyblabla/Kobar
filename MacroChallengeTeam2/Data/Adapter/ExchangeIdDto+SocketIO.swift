@@ -10,6 +10,6 @@ import SocketIO
 
 extension ExchangeIdDto: SocketData {
     func socketRepresentation() -> SocketData {
-        return ["auth0Id", auth0Id]
+        return ["auth0Id": auth0Id]
     }
 }

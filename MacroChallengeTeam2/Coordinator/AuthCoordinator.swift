@@ -11,19 +11,28 @@ import RxSwift
 /// Responsible for navigation when onAuthStateChanged is called
 final class AuthCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
-    private let viewModel: AuthViewModel
+    
+    private let authViewModel: AuthViewModel
+    private var userViewModel: UserViewModel
+    
     private let disposeBag = DisposeBag()
     
-    init(_ navigationController: UINavigationController, viewModel: AuthViewModel) {
+    init(
+        _ navigationController: UINavigationController,
+        authService: AuthService,
+        socketHandler: SocketIODataSource
+    ) {
         self.navigationController = navigationController
-        self.viewModel = viewModel
+        
+        self.authViewModel = AuthViewModel(authService)
+        self.userViewModel = UserViewModel(socketHandler: socketHandler)
     }
     
     override func start() {
         show(makeLoadingPageViewController())
         
         // Bind auth coordinator with auth state from view model
-        viewModel.userSubject
+        authViewModel.userSubject
             .observe(on: MainScheduler.instance)
             .distinctUntilChanged { $0?.id == $1?.id }
             .subscribe {
@@ -33,12 +42,22 @@ final class AuthCoordinator: BaseCoordinator {
     }
     
     func onAuthStateChanged(_ authUser: AuthUser?) {
-        guard let user = authUser else {
+        guard let authUser = authUser else {
             show(makeSignInPageViewController())
             return
         }
         
-        show(makeMainPageViewController(with: user))
+        userViewModel.connect(with: authUser)
+        
+        // Bind to userId exchange state from view model
+        userViewModel.userSubject
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] user in
+                guard let viewController = self?.makeMainPageViewController(with: user) else { return }
+                self?.show(viewController)
+            }
+            .disposed(by: disposeBag)
     }
     
     func makeLoadingPageViewController() -> LoadingPageViewController {
@@ -46,27 +65,27 @@ final class AuthCoordinator: BaseCoordinator {
     }
     
     func makeSignInPageViewController() -> SignInPageViewController {
-        let viewController = SignInPageViewController()
+        let signInVC = SignInPageViewController()
         
-        viewController.onSignIn = { [weak self] in
-            self?.viewModel.login()
+        signInVC.onSignIn = { [weak self] in
+            self?.authViewModel.login()
         }
         
-        viewController.onSignUp = { [weak self] in
-            self?.viewModel.signUp()
+        signInVC.onSignUp = { [weak self] in
+            self?.authViewModel.signUp()
         }
         
-        return viewController
+        return signInVC
     }
     
-    func makeMainPageViewController(with user: AuthUser) -> MainPageViewController {
-        let viewController = MainPageViewController()
+    func makeMainPageViewController(with user: User) -> MainPageViewController {
+        let mainVC = MainPageViewController()
         
-        viewController.onLogout = { [weak self] in
-            self?.viewModel.logout()
+        mainVC.onLogout = { [weak self] in
+            self?.authViewModel.logout()
         }
         
-        return viewController
+        return mainVC
     }
 
     private func show(_ viewController: UIViewController) {
