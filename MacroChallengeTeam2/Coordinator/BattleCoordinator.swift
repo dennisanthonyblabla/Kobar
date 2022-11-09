@@ -15,10 +15,25 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     override func start() {
-        show(RuangTungguViewController())
+        show(makeWaitingRoomViewController())
+    }
+
+    func makeWaitingRoomViewController() -> RuangTungguViewController {
+        let viewController = RuangTungguViewController()
+        
+        viewController.onBack = { [weak self] in
+            self?.pop()
+            self?.completion?()
+        }
+        
+        return viewController
     }
     
     private func show(_ viewController: UIViewController) {
         navigationController.pushViewController(viewController, animated: true)
+    }
+    
+    private func pop() {
+        navigationController.popViewController(animated: true)
     }
 }

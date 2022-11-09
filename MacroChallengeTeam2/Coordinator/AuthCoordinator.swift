@@ -10,53 +10,65 @@ import RxSwift
 
 /// Responsible for navigation when onAuthStateChanged is called
 final class AuthCoordinator: BaseCoordinator {
-    private var makeLoadingViewController: (() -> UIViewController)
-    private var makeLoginViewController: (() -> UIViewController)
-    private var makeMainViewController: ((User) -> UIViewController)
-    
     private let navigationController: UINavigationController
+    private let viewModel: AuthViewModel
+    private let disposeBag = DisposeBag()
     
-    init(
-        _ navigationController: UINavigationController,
-        makeLoadingViewController: @escaping (() -> UIViewController),
-        makeLoginViewController: @escaping (() -> UIViewController),
-        makeMainViewController: @escaping ((User) -> UIViewController)
-    ) {
+    init(_ navigationController: UINavigationController, viewModel: AuthViewModel) {
         self.navigationController = navigationController
-        self.makeLoadingViewController = makeLoadingViewController
-        self.makeLoginViewController = makeLoginViewController
-        self.makeMainViewController = makeMainViewController
+        self.viewModel = viewModel
     }
     
     override func start() {
-        // Show loading page
-        show(makeLoadingViewController())
+        show(makeLoadingPageViewController())
+        
+        // Bind auth coordinator with auth state from view model
+        viewModel.userSubject
+            .observe(on: MainScheduler.instance)
+            .distinctUntilChanged { $0?.id == $1?.id }
+            .subscribe {
+                self.onAuthStateChanged($0)
+            }
+            .disposed(by: self.disposeBag)
     }
     
     func onAuthStateChanged(_ authUser: User?) {
-        // Subscribe to auth state
-        // If (hasUser) -> show main page
-        // Else -> show login page
         guard let user = authUser else {
-            show(makeLoginViewController())
+            show(makeSignInPageViewController())
             return
         }
         
-        show(makeMainViewController(user))
+        show(makeMainPageViewController(with: user))
     }
     
-    func startNextCoordinator(_ makeNextCoordinator: (UINavigationController) -> Coordinator) {
-        let coordinator = makeNextCoordinator(navigationController)
+    func makeLoadingPageViewController() -> LoadingPageViewController {
+        LoadingPageViewController()
+    }
+    
+    func makeSignInPageViewController() -> SignInPageViewController {
+        let viewController = SignInPageViewController()
         
-        store(coordinator)
-        
-        coordinator.completion = { [weak self] in
-            self?.free(coordinator)
+        viewController.onSignIn = { [weak self] in
+            self?.viewModel.login()
         }
         
-        coordinator.start()
+        viewController.onSignUp = { [weak self] in
+            self?.viewModel.signUp()
+        }
+        
+        return viewController
     }
     
+    func makeMainPageViewController(with user: User) -> MainPageViewController {
+        let viewController = MainPageViewController()
+        
+        viewController.onLogout = { [weak self] in
+            self?.viewModel.logout()
+        }
+        
+        return viewController
+    }
+
     private func show(_ viewController: UIViewController) {
         navigationController.pushViewController(viewController, animated: true)
     }

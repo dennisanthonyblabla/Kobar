@@ -19,100 +19,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let winScene = (scene as? UIWindowScene) else { return }
         
-        let navigationController = UINavigationController(rootViewController: OnboardingPVC())
+        let navigationController = UINavigationController()
         
+        _ = URL(string: "http://kobar.up.railway.app")
+
         window = UIWindow(windowScene: winScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
-        let authViewModel = AuthViewModel(Auth0DataSource.shared)
-        let startBattleViewModel = StartBattleViewModel()
-        let authCoordinator = makeAuthCoordinator(
-            navigationController: navigationController,
-            authViewModel: authViewModel,
-            startBattleViewModel: startBattleViewModel)
-        
-        // FIXME: @salman ini harusnya pindah ke makeAuthCoordinator kayanya dia
-        // deallocate subject / authViewModelnya jadi kadang ngga jalan??
-        
-        // Bind auth coordinator with auth state from view model
-        authViewModel.userSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe {
-                authCoordinator.onAuthStateChanged($0)
-            }
-            .disposed(by: self.disposeBag)
-        
-        // Bind auth coordinator with start battle coordinator on start battle event
-        startBattleViewModel.battleEventSubject
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] _ in
-                guard let strongSelf = self else { return }
-                authCoordinator.startNextCoordinator {
-                    strongSelf.makeBattleCoordinator(navigationController: $0)
-                }
-            }
-            .disposed(by: self.disposeBag)
+        let authCoordinator = makeAuthCoordinator(navigationController)
         
         authCoordinator.start()
     }
     
     // MARK: Composition Root
     
-    func makeAuthCoordinator(
-        navigationController: UINavigationController,
-        authViewModel: AuthViewModel,
-        startBattleViewModel: StartBattleViewModel
-    ) -> AuthCoordinator {
+    func makeAuthCoordinator(_ navigationController: UINavigationController) -> AuthCoordinator {
+        let authViewModel = AuthViewModel(Auth0DataSource.shared)
         let coordinator = AuthCoordinator(
             navigationController,
-            makeLoadingViewController: makeLoadingPageViewController,
-            makeLoginViewController: {
-                self.makeSignInPageViewController(viewModel: authViewModel)
-            },
-            makeMainViewController: { user in
-                self.makeMainPageViewController(
-                    with: user,
-                    authViewModel: authViewModel,
-                    startBattleViewModel: startBattleViewModel)
-            })
+            viewModel: authViewModel)
         
         return coordinator
     }
-    
-    func makeBattleCoordinator(navigationController: UINavigationController) -> BattleCoordinator {
-        let coordinator = BattleCoordinator(navigationController)
+
+    func makeBattleCoordinator(_ navigationController: UINavigationController) -> BattleCoordinator {
+        let coordinator = BattleCoordinator(
+            navigationController)
+
         return coordinator
-    }
-    
-    func makeLoadingPageViewController() -> LoadingPageViewController {
-        LoadingPageViewController()
-    }
-    
-    func makeSignInPageViewController(viewModel: AuthViewModel) -> SignInPageViewController {
-        let viewController = SignInPageViewController()
-        viewController.onSignIn = { [weak viewModel] in viewModel?.login() }
-        viewController.onSignUp = { [weak viewModel] in viewModel?.signUp() }
-        return viewController
-    }
-    
-    func makeMainPageViewController(
-        with user: User,
-        authViewModel: AuthViewModel,
-        startBattleViewModel: StartBattleViewModel
-    ) -> MainPageViewController {
-        let viewController = MainPageViewController()
-        viewController.onInviteFriend = { [weak startBattleViewModel] in
-            startBattleViewModel?.inviteFriend()
-        }
-        viewController.onJoinFriend = { [weak startBattleViewModel] in
-            startBattleViewModel?.joinFriend()
-        }
-        viewController.onJoinRandom = { [weak startBattleViewModel] in
-            startBattleViewModel?.joinRandom()
-        }
-        viewController.onLogout = { [weak authViewModel] in authViewModel?.logout() }
-        return viewController
     }
 }
 

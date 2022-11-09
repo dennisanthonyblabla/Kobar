@@ -22,4 +22,14 @@ class BaseCoordinator: Coordinator {
     func free(_ coordinator: Coordinator) {
         childCoordinators = childCoordinators.filter { $0 !== coordinator }
     }
+    
+    func startNextCoordinator(_ coordinator: Coordinator) {
+        store(coordinator)
+        
+        coordinator.completion = { [weak self] in
+            self?.free(coordinator)
+        }
+        
+        coordinator.start()
+    }
 }
