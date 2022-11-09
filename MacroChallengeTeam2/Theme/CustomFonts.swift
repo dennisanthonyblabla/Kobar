@@ -11,6 +11,7 @@ import UIKit
 extension UIFont {
     static let regular17 = UIFont(name: "SFProRounded-Regular", size: 17)
     static let regular22 = UIFont(name: "SFProRounded-Regular", size: 22)
+    static let regular24 = UIFont(name: "SFProRounded-Regular", size: 24)
     static let regular28 = UIFont(name: "SFProRounded-Regular", size: 28)
     static let medium22 = UIFont(name: "SFProRounded-Medium", size: 22)
     static let semi17 = UIFont(name: "SFProRounded-Semibold", size: 17)

@@ -8,9 +8,7 @@
 import Foundation
 import SocketIO
 
-struct ReadyBattleDto: SocketData {
-    
+struct ReadyBattleDto {
     let userId: String
     let battleId: String
-
 }

@@ -9,9 +9,9 @@ import Foundation
 
 struct Battle: Identifiable, Codable {
     let id: UUID
+    let inviteCode: String
     let problemId: UUID
-    let userId: UUID
-    let opponentId: UUID
+    let users: [User]
     let startTime: Date
     let endTime: Date
 }

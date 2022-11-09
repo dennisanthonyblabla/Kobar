@@ -9,11 +9,38 @@ import UIKit
 import SnapKit
 import SwiftUI
 
-class RuangTungguViewController: UIViewController {
-    private lazy var backBtn = SmallBackButtonView(variant: .variant2)
-    private lazy var profileUser = ProfileTandingView(role: .user, name: "John Doe", rating: 100)
-    private lazy var profileInvite = ProfileInviteView(inviteCode: "XYZAB")
+class InviteFriendPageViewController: UIViewController {
+    var onBack: (() -> Void)?
+    
+    var user: User = .empty()
+    var inviteCode: String = ""
+    
+    private lazy var profileUser: ProfileTandingView = {
+        let view = ProfileTandingView(
+            role: .user,
+            name: user.name,
+            rating: user.rating)
+        
+        return view
+    }()
+
+    private lazy var profileInvite: ProfileInviteView = {
+        ProfileInviteView(inviteCode: inviteCode)
+    }()
+    
     private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)
+    
+    private lazy var backBtn: SmallIconButtonView = {
+        let button = SmallIconButtonView(variant: .variant2)
+        
+        button.addAction(
+            UIAction { _ in
+                self.onBack?()
+            },
+            for: .touchDown)
+        
+        return button
+    }()
 
     private lazy var pageTitle: UILabel = {
         let label = UILabel()
@@ -150,7 +177,7 @@ class RuangTungguViewController: UIViewController {
 struct RuangTungguViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return RuangTungguViewController()
+            return InviteFriendPageViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
     }

@@ -9,5 +9,4 @@ import Foundation
 import SocketIO
 
 extension ReadyBattleDto: SocketData {
-    
 }

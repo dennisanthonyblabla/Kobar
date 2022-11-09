@@ -8,7 +8,5 @@
 import Foundation
 
 struct CreateBattleInvitationDto {
-    
     let userId: String
-    
 }

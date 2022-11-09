@@ -14,8 +14,16 @@ class MainPageViewController: UIViewController {
     var onInviteFriend: (() -> Void)?
     var onJoinFriend: (() -> Void)?
     var onJoinRandom: (() -> Void)?
+    var onLogout: (() -> Void)?
     
-    private lazy var profile = ShortProfileView(rating: 2000)
+    var user: User = .empty()
+    
+    private lazy var profileView: ShortProfileView = {
+        let view = ShortProfileView(
+            rating: user.rating,
+            imageURL: URL(string: user.picture))
+        return view
+    }()
     
     private lazy var ajakTemanBtn: MedButtonView = {
         let button = MedButtonView(
@@ -56,6 +64,20 @@ class MainPageViewController: UIViewController {
         button.addAction(
             UIAction { _ in
                 self.onJoinRandom?()
+            },
+            for: .touchDown)
+        
+        return button
+    }()
+    
+    private lazy var logOutBtn: SmallIconButtonView = {
+        let button = SmallIconButtonView(
+            variant: .variant2,
+            buttonImage: UIImage(systemName: "rectangle.portrait.and.arrow.right"))
+        
+        button.addAction(
+            UIAction { _ in
+                self.onLogout?()
             },
             for: .touchDown)
         
@@ -115,8 +137,9 @@ class MainPageViewController: UIViewController {
         view.addSubview(tandingYukTitle)
         view.addSubview(tandingYukDesc)
         view.addSubview(swordGif)
-        view.addSubview(profile)
+        view.addSubview(profileView)
         view.addSubview(buttonsStackView)
+        view.addSubview(logOutBtn)
         
         setupBackgroundConstraints()
         setupDisplayConstraint()
@@ -146,13 +169,16 @@ class MainPageViewController: UIViewController {
     }
     
     private func setupComponentsConstraint() {
-        profile.snp.makeConstraints { make in
+        profileView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
             make.top.equalToSuperview().offset(100)
         }
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(tandingYukDesc).offset(50)
+        }
+        logOutBtn.snp.makeConstraints { make in
+            make.top.right.equalToSuperview().inset(96)
         }
     }
 }

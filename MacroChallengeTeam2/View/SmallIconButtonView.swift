@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class SmallBackButtonView: UIButton {
+final class SmallIconButtonView: UIButton {
     enum Variants {
         case variant1
         case variant2
@@ -17,6 +17,7 @@ final class SmallBackButtonView: UIButton {
     }
 
     var variant: Variants?
+    var buttonIcon: UIImage?
 
     private lazy var frontBG: UIView = {
         let view = UIView()
@@ -40,9 +41,13 @@ final class SmallBackButtonView: UIButton {
         super.init(frame: frame)
     }
 
-    init(variant: Variants) {
+    init(
+        variant: Variants,
+        buttonImage: UIImage? = UIImage(systemName: "arrowshape.backward.fill")
+    ) {
         super.init(frame: .zero)
         self.variant = variant
+        self.buttonIcon = buttonImage
         addSubview(backBG)
         addSubview(frontBG)
         setupButtonVariant()
@@ -55,29 +60,30 @@ final class SmallBackButtonView: UIButton {
 
     private func setupButtonVariant() {
         configuration = .plain()
-        let config = UIImage.SymbolConfiguration(pointSize: 22)
-        let buttonImage = UIImage(systemName: "arrowshape.backward.fill", withConfiguration: config)
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 12)
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
+        buttonIcon = buttonIcon?.withConfiguration(config)
         switch variant {
         case .variant1:
-            setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+            setImage(buttonIcon?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .kobarBlueActive
             backBG.backgroundColor = .kobarDarkBlue
             backBG.layer.opacity = 1
             alpha = 1
         case .variant2:
-            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
+            setImage(buttonIcon?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .white
             backBG.backgroundColor = .white
             backBG.layer.opacity = 0.7
             alpha = 1
         case .variant3:
-            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
+            setImage(buttonIcon?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .white
             backBG.backgroundColor = .white
             backBG.layer.opacity = 0.7
             alpha = 0.7
         case .none:
-            setImage(buttonImage?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+            setImage(buttonIcon?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .kobarBlueActive
             backBG.backgroundColor = .kobarDarkBlue
             backBG.layer.opacity = 1
@@ -86,16 +92,17 @@ final class SmallBackButtonView: UIButton {
     }
 
     private func setupAutoLayout() {
+        self.snp.makeConstraints { make in
+            make.height.width.equalTo(54)
+        }
+        
         backBG.snp.makeConstraints { make in
-            make.width.equalTo(frontBG)
-            make.height.equalTo(frontBG)
-            make.centerX.equalTo(frontBG)
-            make.centerY.equalTo(frontBG).offset(4)
+            make.top.equalToSuperview().offset(4)
+            make.bottom.width.equalToSuperview()
         }
         frontBG.snp.makeConstraints { make in
-            make.width.equalTo(51)
-            make.height.equalTo(51)
-            make.center.equalToSuperview()
+            make.top.width.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-4)
         }
     }
 }

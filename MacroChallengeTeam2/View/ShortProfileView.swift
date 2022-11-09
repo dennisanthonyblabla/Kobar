@@ -10,11 +10,14 @@ import UIKit
 import SnapKit
 
 final class ShortProfileView: UIView {
+    private var imageURL: URL?
     private var rating: Int?
 
     private lazy var profilePicture: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "profilePicture")
+        
+        imageView.load(from: imageURL, fallback: UIImage(named: "profilePicture"))
+        
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 31.5
@@ -70,9 +73,10 @@ final class ShortProfileView: UIView {
         super.init(frame: frame)
     }
 
-    init(rating: Int) {
+    init(rating: Int, imageURL: URL? = nil) {
         super.init(frame: .zero)
         self.rating = rating
+        self.imageURL = imageURL
         addSubview(bannerBackBG)
         addSubview(bannerFrontBG)
         addSubview(backCircle)

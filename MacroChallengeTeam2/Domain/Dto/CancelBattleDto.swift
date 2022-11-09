@@ -8,7 +8,5 @@
 import Foundation
 
 struct CancelBattleDto {
-    
     let battleId: String
-    
 }
