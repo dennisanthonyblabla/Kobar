@@ -27,10 +27,11 @@ class SocketIODataSource: WebSocketService {
 
     func connect(token: String) {
         socketClient.on("idExchanged") { [weak self] data, _ in
-            if let dict = data[0] as? [String: AnyObject] {
-                if let user = try? User(dict: dict) {
-                    self?.onIdExchanged(user)
-                }
+            do {
+                let user: User = try SocketParser.convert(data: data[0])
+                self?.onIdExchanged(user)
+            } catch {
+                print("Failed to parse")
             }
         }
         
