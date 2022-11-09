@@ -121,18 +121,37 @@ class BattlefieldViewController: UIViewController {
                         make.bottom.equalToSuperview().offset(-80)
                         make.trailing.equalTo(view.snp.centerX).offset(-20)
                     }
-                    contohBGInput.snp.removeConstraints()
-                    contohBGOutput.snp.removeConstraints()
+                    contohBGInput.snp.remakeConstraints { make in
+                        make.leading.equalTo(pertanyaan)
+                        make.trailing.equalTo(pertanyaan.snp.centerX)
+                        make.height.equalTo(0)
+                        make.bottom.equalToSuperview().offset(-75)
+                    }
+                    contohBGOutput.snp.remakeConstraints { make in
+                        make.trailing.equalTo(pertanyaan)
+                        make.leading.equalTo(pertanyaan.snp.centerX)
+                        make.height.equalTo(0)
+                        make.bottom.equalToSuperview().offset(-75)
+                    }
+
+                    UIViewPropertyAnimator.runningPropertyAnimator(
+                        withDuration: 0.3,
+                        delay: 0,
+                        options: [.curveEaseInOut],
+                        animations: {
+                            self.view.layoutIfNeeded()
+                        },
+                        completion: nil)
 
                     currentBtn = nil
                 } else {
-                    contohBGInput.snp.makeConstraints { make in
+                    contohBGInput.snp.remakeConstraints { make in
                         make.leading.equalTo(pertanyaan)
                         make.trailing.equalTo(pertanyaan.snp.centerX)
                         make.height.equalTo(200)
                         make.bottom.equalToSuperview().offset(-75)
                     }
-                    contohBGOutput.snp.makeConstraints { make in
+                    contohBGOutput.snp.remakeConstraints { make in
                         make.trailing.equalTo(pertanyaan)
                         make.leading.equalTo(pertanyaan.snp.centerX)
                         make.height.equalTo(200)
@@ -143,6 +162,14 @@ class BattlefieldViewController: UIViewController {
                         make.trailing.equalTo(view.snp.centerX).offset(-18)
                         make.bottom.equalTo(contohBGInput.snp.top).offset(-4.5)
                     }
+                    UIViewPropertyAnimator.runningPropertyAnimator(
+                        withDuration: 0.3,
+                        delay: 0,
+                        options: [.curveEaseInOut],
+                        animations: {
+                            self.view.layoutIfNeeded()
+                        },
+                        completion: nil)
                 }
                 previousBtn = currentBtn
                 }, for: .touchUpInside)
