@@ -36,7 +36,7 @@ final class AuthCoordinator: BaseCoordinator {
         show(makeLoadingPageViewController())
         
         // Bind auth coordinator with auth state from view model
-        authViewModel.userSubject
+        authViewModel.authState()
             .observe(on: MainScheduler.instance)
             .distinctUntilChanged { $0?.id == $1?.id }
             .subscribe {
@@ -51,11 +51,9 @@ final class AuthCoordinator: BaseCoordinator {
             return
         }
         
-        userViewModel.connect(with: authUser)
-        
         // Bind to userId exchange state from view model
-        userViewModel.userSubject
-            .compactMap { $0 }
+        userViewModel.connect(for: authUser)
+            .andThen(userViewModel.exchangeId(from: authUser))
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] user in
                 guard let viewController = self?.makeMainPageViewController(with: user) else { return }
@@ -99,6 +97,7 @@ final class AuthCoordinator: BaseCoordinator {
         
         mainVC.onLogout = { [weak self] in
             self?.authViewModel.logout()
+            self?.userViewModel.disconnect()
         }
         
         return mainVC

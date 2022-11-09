@@ -8,23 +8,24 @@
 import RxSwift
 
 class CreateBattleViewModel {
-    let battleInvitationSubject = BehaviorSubject<(User, BattleInvitation)?>(value: nil)
-    
     private let socketService: SocketIODataSource
     private let user: User
-
+    
     init(socketService: SocketIODataSource, user: User) {
         self.socketService = socketService
         self.user = user
     }
     
-    func createBattle() {
-        socketService.onBattleInvitation = { [weak self] battleInvitation in
-            guard let self = self else { return }
-            self.battleInvitationSubject.onNext((self.user, battleInvitation))
+    func createBattle() -> Single<(User, BattleInvitation)> {
+        Single<(User, BattleInvitation)>.create { [weak self, user] single in
+            self?.socketService.onBattleInvitation = { battleInvitation in
+                single(.success((user, battleInvitation)))
+            }
+            
+            self?.socketService.emitCreateBattleInvitationEvent(
+                data: CreateBattleInvitationDto(userId: user.id))
+            
+            return Disposables.create {}
         }
-        
-        socketService.emitCreateBattleInvitationEvent(
-            data: CreateBattleInvitationDto(userId: user.id))
     }
 }

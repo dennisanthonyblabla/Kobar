@@ -7,25 +7,40 @@
 
 import RxSwift
 
+// TODO: @salman should have some validation to make sure socketHandler is connected on exchangeId and disconnected when done
 class UserViewModel {
-    let userSubject = BehaviorSubject<User?>(value: nil)
-    
     private let socketHandler: SocketIODataSource
     
     init(socketHandler: SocketIODataSource) {
         self.socketHandler = socketHandler
     }
     
-    func connect(with authUser: AuthUser) {
-        socketHandler.onConnect = { [weak self] in
+    func connect(for authUser: AuthUser) -> Completable {
+        Completable.create { [weak self] completable in
+            self?.socketHandler.onConnect = {
+                completable(.completed)
+            }
+            
+            self?.socketHandler.connect(token: authUser.bearerToken)
+            
+            return Disposables.create {}
+        }
+    }
+    
+    func exchangeId(from authUser: AuthUser) -> Single<User> {
+        Single<User>.create { [weak self] single in
+            self?.socketHandler.onIdExchanged = { user in
+                single(.success(user))
+            }
+            
             self?.socketHandler.emitExchangeIdEvent(
                 data: ExchangeIdDto(auth0Id: authUser.id))
+            
+            return Disposables.create {}
         }
-        
-        socketHandler.onIdExchanged = { [weak self] user in
-            self?.userSubject.onNext(user)
-        }
-        
-        socketHandler.connect(token: authUser.bearerToken)
+    }
+    
+    func disconnect() {
+        socketHandler.disconnect()
     }
 }

@@ -33,9 +33,8 @@ final class BattleCoordinator: BaseCoordinator {
         self.battleAction = battleAction
     }
     
+    // TODO: Show loading state
     override func start() {
-        show(makeLoadingPageViewController())
-        
         switch battleAction {
         case .inviteFriend:
             onInviteFriend()
@@ -48,8 +47,7 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     func onInviteFriend() {
-        createBattleViewModel.battleInvitationSubject
-            .compactMap { $0 }
+        createBattleViewModel.createBattle()
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] user, battleInvitation in
                 guard let waitingRoomVC = self?.makeWaitingRoomViewController(
@@ -59,8 +57,6 @@ final class BattleCoordinator: BaseCoordinator {
                 self?.show(waitingRoomVC)
             }
             .disposed(by: disposeBag)
-        
-        createBattleViewModel.createBattle()
     }
     
     func onJoinFriend() {
@@ -85,6 +81,10 @@ final class BattleCoordinator: BaseCoordinator {
         }
         
         return viewController
+    }
+    
+    func makeTungguLawanVC() {
+        
     }
     
     private func show(_ viewController: UIViewController) {

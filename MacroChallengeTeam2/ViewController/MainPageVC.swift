@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 import Lottie
 
 class MainPageViewController: UIViewController {
@@ -179,5 +180,16 @@ class MainPageViewController: UIViewController {
         logOutBtn.snp.makeConstraints { make in
             make.top.right.equalToSuperview().inset(96)
         }
+    }
+}
+
+struct MainPageViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        UIViewControllerPreview {
+            return MainPageViewController()
+        }
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class RuangTungguViewController: UIViewController {
     var onBack: (() -> Void)?
@@ -173,6 +174,14 @@ class RuangTungguViewController: UIViewController {
     }
 }
 
+struct RuangTungguViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        UIViewControllerPreview {
+            return RuangTungguViewController()
+        }
+        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+    }
+}
 
 extension NSAttributedString {
     func withLineSpacing(_ spacing: CGFloat) -> NSAttributedString {
