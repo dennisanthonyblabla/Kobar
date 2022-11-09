@@ -14,6 +14,7 @@ final class SmallIconButtonView: UIButton {
         case variant1
         case variant2
         case variant3
+        case variant4
     }
 
     var variant: Variants?
@@ -82,6 +83,14 @@ final class SmallIconButtonView: UIButton {
             backBG.backgroundColor = .white
             backBG.layer.opacity = 0.7
             alpha = 0.7
+        case .variant4:
+            var config = UIImage.SymbolConfiguration(pointSize: 20)
+            var buttonImage = UIImage(systemName: "book.fill", withConfiguration: config)
+            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
+            frontBG.backgroundColor = .white
+            backBG.backgroundColor = .white
+            backBG.layer.opacity = 0.7
+            alpha = 1
         case .none:
             setImage(buttonIcon?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .kobarBlueActive
@@ -95,7 +104,7 @@ final class SmallIconButtonView: UIButton {
         self.snp.makeConstraints { make in
             make.height.width.equalTo(54)
         }
-        
+
         backBG.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(4)
             make.bottom.width.equalToSuperview()

@@ -40,8 +40,8 @@ class BattleContohView: UIButton {
 
     private func setupButton(title: String) {
         var config = UIButton.Configuration.plain()
-        config.imagePadding = 5
-        config.titlePadding = 5
+        config.imagePadding = 1
+//        config.titlePadding = 5
         configuration = config
         let buttonImage = UIImage(systemName: image ?? "")
         setImage(buttonImage?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal), for: .normal)
@@ -53,7 +53,7 @@ class BattleContohView: UIButton {
     private func setupAutoLayout() {
         titleBanner.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalToSuperview().offset(20)
+            make.width.equalToSuperview().offset(10)
             make.height.equalTo(43)
         }
     }

@@ -13,10 +13,9 @@ class BattlefieldViewController: UIViewController {
     private var statusDesc: String?
     private var contohCount = 3
 
-    private lazy var pertanyaan = CardView(type: .pertanyaan)
-    private lazy var ngodingYuk = CardView(type: .codingCard)
-    private lazy var ujiKodingan = SmallButtonView(variant: .variant2, title: "Uji Kodingan", btnType: .normal)
-    private lazy var tips = SmallIconButtonView(variant: .variant2)
+    private lazy var pertanyaanCard = CardView(type: .pertanyaan)
+    private lazy var ngodingYukCard = CardView(type: .codingCard)
+    private lazy var tipsBtn = SmallBackButtonView(variant: .variant4)
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -40,6 +39,7 @@ class BattlefieldViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .kobarDarkBlueBG
         view.layer.cornerRadius = 20.5
+        view.addSubview(statusLabel)
         return view
     }()
 
@@ -103,6 +103,48 @@ class BattlefieldViewController: UIViewController {
         return view
     }()
 
+    private lazy var contohBGStackView: UIStackView = {
+        let stackView = UIStackView(
+            arrangedSubviews: [contohBGInput, contohBGOutput]
+        )
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    private lazy var ujiKodinganBtn: SmallButtonView = {
+        let btn = SmallButtonView(
+            variant: .variant2,
+            title: "Uji Kodingan",
+            btnType: .normal
+        )
+        var opened: Bool?
+        btn.addAction(
+            UIAction { [self] _ in
+                if opened == true {
+                    backgroundFront.snp.remakeConstraints { make in
+                        make.leading.bottom.equalToSuperview()
+                        make.width.equalToSuperview()
+                        make.top.equalTo(background).offset(8)
+                    }
+                    animationLayout()
+                    opened = nil
+                } else {
+                    backgroundFront.snp.remakeConstraints { make in
+                        make.leading.bottom.equalToSuperview()
+                        make.width.equalTo(850) // harusnya panjangnya 850
+                        make.top.equalTo(background).offset(8)
+                    }
+                    animationLayout()
+                    opened = true
+                }
+            },
+            for: .touchUpInside
+        )
+        return btn
+    }()
+
     private lazy var examples: [BattleContohView] = {
         var contoh: [BattleContohView] = []
         var previousBtn: Int?
@@ -116,60 +158,16 @@ class BattlefieldViewController: UIViewController {
                 UIAction { [self]_ in
                 currentBtn = index
                 if previousBtn == currentBtn {
-                    svContoh.snp.remakeConstraints { make in
-                        make.leading.equalToSuperview().offset(26)
-                        make.bottom.equalToSuperview().offset(-80)
-                        make.trailing.equalTo(view.snp.centerX).offset(-20)
-                    }
-                    contohBGInput.snp.remakeConstraints { make in
-                        make.leading.equalTo(pertanyaan)
-                        make.trailing.equalTo(pertanyaan.snp.centerX)
+                    contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(0)
-                        make.bottom.equalToSuperview().offset(-75)
                     }
-                    contohBGOutput.snp.remakeConstraints { make in
-                        make.trailing.equalTo(pertanyaan)
-                        make.leading.equalTo(pertanyaan.snp.centerX)
-                        make.height.equalTo(0)
-                        make.bottom.equalToSuperview().offset(-75)
-                    }
-
-                    UIViewPropertyAnimator.runningPropertyAnimator(
-                        withDuration: 0.3,
-                        delay: 0,
-                        options: [.curveEaseInOut],
-                        animations: {
-                            self.view.layoutIfNeeded()
-                        },
-                        completion: nil)
-
+                    animationLayout()
                     currentBtn = nil
                 } else {
-                    contohBGInput.snp.remakeConstraints { make in
-                        make.leading.equalTo(pertanyaan)
-                        make.trailing.equalTo(pertanyaan.snp.centerX)
+                    contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(200)
-                        make.bottom.equalToSuperview().offset(-75)
                     }
-                    contohBGOutput.snp.remakeConstraints { make in
-                        make.trailing.equalTo(pertanyaan)
-                        make.leading.equalTo(pertanyaan.snp.centerX)
-                        make.height.equalTo(200)
-                        make.bottom.equalToSuperview().offset(-75)
-                    }
-                    svContoh.snp.remakeConstraints { make in
-                        make.leading.equalToSuperview().offset(26)
-                        make.trailing.equalTo(view.snp.centerX).offset(-18)
-                        make.bottom.equalTo(contohBGInput.snp.top).offset(-4.5)
-                    }
-                    UIViewPropertyAnimator.runningPropertyAnimator(
-                        withDuration: 0.3,
-                        delay: 0,
-                        options: [.curveEaseInOut],
-                        animations: {
-                            self.view.layoutIfNeeded()
-                        },
-                        completion: nil)
+                    animationLayout()
                 }
                 previousBtn = currentBtn
                 }, for: .touchUpInside)
@@ -177,16 +175,14 @@ class BattlefieldViewController: UIViewController {
         return contoh
     }()
 
-    private lazy var svContoh: UIStackView = {
+    private lazy var contohStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: examples)
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.spacing = 3
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
         return stackView
     }()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,61 +190,69 @@ class BattlefieldViewController: UIViewController {
         view.addSubview(backgroundFront)
         view.addSubview(backgroundStatus)
         view.addSubview(statusBG)
-        view.addSubview(statusLabel)
-        view.addSubview(pertanyaan)
-        view.addSubview(ngodingYuk)
-        view.addSubview(ujiKodingan)
-        view.addSubview(tips)
+        view.addSubview(pertanyaanCard)
+        view.addSubview(ngodingYukCard)
+        view.addSubview(ujiKodinganBtn)
+        view.addSubview(tipsBtn)
         view.addSubview(nameCard)
         view.addSubview(hourglass)
         view.addSubview(userName)
         view.addSubview(opponentName)
-        view.addSubview(contohBGInput)
-        view.addSubview(contohBGOutput)
+        view.addSubview(contohStackView)
+        view.addSubview(contohBGStackView)
 
         setupBackground()
         setupDisplays()
         setupComponents()
-        setupButtonTarget()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     private func setupBackground() {
         background.snp.makeConstraints { make in
             make.width.equalToSuperview()
-            make.height.equalToSuperview().offset(50)
-            make.center.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalToSuperview()
         }
         backgroundFront.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview().offset(-5)
-            make.center.equalToSuperview()
+            make.leading.bottom.equalToSuperview()
+            make.width.equalToSuperview() // harusnya panjangnya 850
+            make.top.equalTo(background).offset(8)
         }
         backgroundStatus.snp.makeConstraints { make in
-            make.height.equalTo(20)
             make.width.equalToSuperview()
-            make.top.equalToSuperview().offset(-24)
+            make.top.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         statusBG.snp.makeConstraints { make in
-            make.height.equalTo(41)
+            make.height.equalTo(statusLabel).offset(20)
             make.width.equalTo(statusLabel).offset(48)
-            make.centerX.equalToSuperview()
+            make.centerX.equalTo(nameCard)
             make.top.equalTo(nameCard.snp.bottom)
         }
     }
 
     private func setupDisplays() {
         nameCard.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(-15)
+            make.centerX.equalTo(backgroundFront)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-10)
         }
         statusLabel.snp.makeConstraints { make in
             make.width.equalTo(statusLabel)
             make.height.equalTo(statusLabel)
-            make.center.equalTo(statusBG)
+            make.center.equalToSuperview()
         }
         hourglass.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(12)
-            make.bottom.equalTo(pertanyaan.snp.top)
+            make.leading.equalTo(pertanyaanCard)
+            make.bottom.equalTo(pertanyaanCard.snp.top)
             make.top.equalTo(backgroundFront)
         }
         userName.snp.makeConstraints { make in
@@ -262,59 +266,60 @@ class BattlefieldViewController: UIViewController {
     }
 
     private func setupComponents() {
-        pertanyaan.snp.makeConstraints { make in
+        pertanyaanCard.snp.makeConstraints { make in
             make.top.equalTo(statusBG.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalTo(view.snp.centerX).offset(-8)
-            make.bottom.equalTo(svContoh.snp.top).offset(-23)
+            make.trailing.equalTo(backgroundFront.snp.centerX).offset(-8)
+            make.bottom.equalTo(contohStackView.snp.top).offset(-23)
         }
-        ngodingYuk.snp.makeConstraints { make in
-            make.height.equalTo(593)
-            make.top.equalTo(pertanyaan)
-            make.trailing.equalToSuperview().offset(-16)
-            make.leading.equalTo(view.snp.centerX).offset(8)
+        ngodingYukCard.snp.makeConstraints { make in
+            make.top.equalTo(pertanyaanCard)
+            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.trailing.equalTo(backgroundFront).offset(-16)
+            make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
         }
-        ujiKodingan.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-45)
-            make.top.equalToSuperview()
-            make.bottom.equalTo(ngodingYuk.snp.top)
+        ujiKodinganBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(ngodingYukCard).offset(-30)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(ngodingYukCard.snp.top)
         }
-        tips.snp.makeConstraints { make in
-            make.trailing.equalTo(ujiKodingan.snp.leading).offset(-40)
-            make.centerY.equalTo(ujiKodingan)
+        tipsBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
+            make.centerY.equalTo(ujiKodinganBtn)
         }
-        svContoh.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(26)
-            make.bottom.equalToSuperview().offset(-80)
-            make.trailing.equalTo(view.snp.centerX).offset(-18)
+        contohStackView.snp.makeConstraints { make in
+            make.leading.equalTo(pertanyaanCard).offset(5)
+            make.bottom.equalTo(contohBGStackView.snp.top)
+            make.trailing.equalTo(pertanyaanCard).offset(-5)
         }
-//        contoh1.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(46)
-//            make.bottom.equalToSuperview().offset(-80)
-//        }
-//        contoh2.snp.makeConstraints { make in
-//            make.leading.equalTo(contoh1).offset(189)
-//            make.bottom.equalTo(contoh1)
-//        }
-//        contoh3.snp.makeConstraints { make in
-//            make.leading.equalTo(contoh2).offset(189)
-//            make.bottom.equalTo(contoh1)
-//        }
+        contohBGStackView.snp.makeConstraints { make in
+            make.width.equalTo(contohStackView).offset(10)
+            make.centerX.equalTo(contohStackView)
+            make.bottom.equalTo(backgroundFront).offset(-80)
+            make.top.equalTo(contohBGStackView.snp.top)
+            make.height.equalTo(0)
+        }
     }
-
-    private func setupButtonTarget() {
-//        examples[0].addTarget(self, action: #selector(contoh1Clicked), for: .touchUpInside)
-    }
-
-    @objc func contoh1Clicked() {
+    private func animationLayout() {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 }
 
 struct BattlefieldViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return BattlefieldViewController()
+            return UINavigationController(rootViewController: BattlefieldViewController())
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
     }
 }
