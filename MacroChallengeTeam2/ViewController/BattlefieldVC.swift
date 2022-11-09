@@ -11,11 +11,11 @@ import SwiftUI
 
 class BattlefieldViewController: UIViewController {
     private var statusDesc: String?
-    private var contohCount = 3
+    private var contohInput: [String] = ["Contoh inputnya 1", "Contoh inputnya 2", "Contoh inputnya 3"]
+    private var contohOutput: [String] = ["Contoh Outputnya 1", "Contoh Outputnya 2", "Contoh Outputnya 3"]
 
-    private lazy var pertanyaanCard = CardView(type: .pertanyaan)
     private lazy var ngodingYukCard = CardView(type: .codingCard)
-    private lazy var tipsBtn = SmallBackButtonView(variant: .variant4)
+    private lazy var ujiKodinganView = UjiKodingan()
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -58,6 +58,15 @@ class BattlefieldViewController: UIViewController {
         return label
     }()
 
+    private lazy var timeLeftLabel: UILabel = {
+        let label = UILabel()
+        label.text = "01:30"
+        label.textColor = .white
+        label.textAlignment = .left
+        label.font = .bold36
+        return label
+    }()
+
     private lazy var nameCard: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -65,7 +74,7 @@ class BattlefieldViewController: UIViewController {
         return view
     }()
 
-    private lazy var userName: UILabel = {
+    private lazy var userNameLabel: UILabel = {
         let label = UILabel()
         label.text = "John Doe"
         label.font = .bold22
@@ -74,13 +83,19 @@ class BattlefieldViewController: UIViewController {
         return label
     }()
 
-    private lazy var opponentName: UILabel = {
+    private lazy var opponentNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Jane Doe"
         label.font = .bold22
         label.textColor = .kobarBlack
         label.textAlignment = .left
         return label
+    }()
+
+    private lazy var pertanyaanCard: CardView = {
+        let card = CardView(type: .pertanyaan)
+        card.pertanyaan = "Ini pertanyaanya"
+        return card
     }()
 
     private lazy var contohBGInput: UIView = {
@@ -90,6 +105,7 @@ class BattlefieldViewController: UIViewController {
         view.layer.maskedCorners = [.layerMinXMaxYCorner]
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.kobarBorderGray.cgColor
+        view.addSubview(contohTextInput)
         return view
     }()
 
@@ -100,7 +116,32 @@ class BattlefieldViewController: UIViewController {
         view.layer.maskedCorners = [.layerMaxXMaxYCorner]
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.kobarBorderGray.cgColor
+        view.addSubview(contohTextOutput)
         return view
+    }()
+
+    private lazy var contohTextInput: UITextView = {
+        let textView = UITextView.init()
+        textView.textColor = .kobarBlack
+        textView.font = UIFont.regular17
+        textView.textAlignment = .left
+        textView.isEditable = false
+        textView.isScrollEnabled = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .clear
+        return textView
+    }()
+
+    private lazy var contohTextOutput: UITextView = {
+        let textView = UITextView.init()
+        textView.textColor = .kobarBlack
+        textView.font = UIFont.regular17
+        textView.textAlignment = .left
+        textView.isEditable = false
+        textView.isScrollEnabled = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .clear
+        return textView
     }()
 
     private lazy var contohBGStackView: UIStackView = {
@@ -119,29 +160,39 @@ class BattlefieldViewController: UIViewController {
             title: "Uji Kodingan",
             btnType: .normal
         )
-        var opened: Bool?
         btn.addAction(
             UIAction { [self] _ in
-                if opened == true {
-                    backgroundFront.snp.remakeConstraints { make in
-                        make.leading.bottom.equalToSuperview()
-                        make.width.equalToSuperview()
-                        make.top.equalTo(background).offset(8)
-                    }
-                    animationLayout()
-                    opened = nil
-                } else {
-                    backgroundFront.snp.remakeConstraints { make in
-                        make.leading.bottom.equalToSuperview()
-                        make.width.equalTo(850) // harusnya panjangnya 850
-                        make.top.equalTo(background).offset(8)
-                    }
-                    animationLayout()
-                    opened = true
+                backgroundFront.snp.remakeConstraints { make in
+                    make.leading.bottom.equalToSuperview()
+                    make.width.equalTo(850)
+                    make.top.equalTo(background).offset(8)
                 }
+                ujiKodinganView.playBtn.snp.remakeConstraints { make in
+                    make.bottom.equalTo(ujiKodinganView).offset(-85)
+                    make.trailing.equalTo(ujiKodinganView.snp.centerX).offset(-55)
+                }
+                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
+                    make.bottom.equalToSuperview().offset(-88)
+                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(15)
+                }
+                btn.snp.updateConstraints { make in
+                    make.trailing.equalTo(ngodingYukCard).offset(135)
+                }
+                animationTransparency(view: btn, alpha: 0)
+                animationLayout()
             },
             for: .touchUpInside
         )
+        return btn
+    }()
+
+    private lazy var tipsBtn: SmallBackButtonView = {
+        let btn = SmallBackButtonView(variant: .variant4)
+        btn.addAction(
+            UIAction { _ in
+                print("Tips has been clicked")
+            },
+            for: .touchUpInside)
         return btn
     }()
 
@@ -149,7 +200,7 @@ class BattlefieldViewController: UIViewController {
         var contoh: [BattleContohView] = []
         var previousBtn: Int?
         var currentBtn: Int?
-        for i in 1...contohCount {
+        for i in 1...contohInput.count {
             contoh.append(BattleContohView(title: "contoh " + "(\(i))"))
         }
 
@@ -167,6 +218,8 @@ class BattlefieldViewController: UIViewController {
                     contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(200)
                     }
+                    contohTextInput.text = contohInput[index]
+                    contohTextOutput.text = contohOutput[index]
                     animationLayout()
                 }
                 previousBtn = currentBtn
@@ -179,7 +232,7 @@ class BattlefieldViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: examples)
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 3
+        stackView.spacing = CGFloat(contohInput.count)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -196,26 +249,22 @@ class BattlefieldViewController: UIViewController {
         view.addSubview(tipsBtn)
         view.addSubview(nameCard)
         view.addSubview(hourglass)
-        view.addSubview(userName)
-        view.addSubview(opponentName)
+        view.addSubview(timeLeftLabel)
+        view.addSubview(userNameLabel)
+        view.addSubview(opponentNameLabel)
         view.addSubview(contohStackView)
         view.addSubview(contohBGStackView)
+        view.addSubview(ujiKodinganView)
 
         setupBackground()
         setupDisplays()
         setupComponents()
+        setupButtonFunction()
     }
+}
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
+extension BattlefieldViewController {
+    /// For all Constraints
     private func setupBackground() {
         background.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -224,7 +273,7 @@ class BattlefieldViewController: UIViewController {
         }
         backgroundFront.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview()
-            make.width.equalToSuperview() // harusnya panjangnya 850
+            make.width.equalToSuperview()
             make.top.equalTo(background).offset(8)
         }
         backgroundStatus.snp.makeConstraints { make in
@@ -237,6 +286,11 @@ class BattlefieldViewController: UIViewController {
             make.width.equalTo(statusLabel).offset(48)
             make.centerX.equalTo(nameCard)
             make.top.equalTo(nameCard.snp.bottom)
+        }
+        ujiKodinganView.snp.makeConstraints { make in
+            make.leading.equalTo(backgroundFront.snp.trailing)
+            make.trailing.equalToSuperview()
+            make.top.bottom.equalTo(backgroundFront)
         }
     }
 
@@ -253,15 +307,31 @@ class BattlefieldViewController: UIViewController {
         hourglass.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard)
             make.bottom.equalTo(pertanyaanCard.snp.top)
-            make.top.equalTo(backgroundFront)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
-        userName.snp.makeConstraints { make in
+        timeLeftLabel.snp.makeConstraints { make in
+            make.leading.equalTo(hourglass.snp.trailing).offset(20)
+            make.centerY.equalTo(hourglass)
+        }
+        userNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
             make.trailing.equalTo(nameCard.snp.centerX).offset(-40)
         }
-        opponentName.snp.makeConstraints { make in
+        opponentNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
             make.leading.equalTo(nameCard.snp.centerX).offset(40)
+        }
+        contohTextInput.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.top.equalToSuperview().offset(15)
+            make.bottom.equalToSuperview().offset(-15)
+        }
+        contohTextOutput.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.top.equalToSuperview().offset(15)
+            make.bottom.equalToSuperview().offset(-15)
         }
     }
 
@@ -300,6 +370,53 @@ class BattlefieldViewController: UIViewController {
             make.height.equalTo(0)
         }
     }
+
+    private func setupButtonFunction() {
+        ujiKodinganView.backBtn.addAction(
+            UIAction { [self] _ in
+                backgroundFront.snp.remakeConstraints { make in
+                    make.leading.bottom.equalToSuperview()
+                    make.width.equalToSuperview()
+                    make.top.equalTo(background).offset(8)
+                }
+                ujiKodinganView.playBtn.snp.remakeConstraints { make in
+                    make.leading.equalTo(ujiKodinganView).offset(20)
+                    make.bottom.equalToSuperview().offset(-85)
+                }
+                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
+                    make.bottom.equalToSuperview().offset(-88)
+                    make.leading.equalTo(ujiKodinganView.playBtn.snp.trailing).offset(30)
+                }
+                ujiKodinganBtn.snp.updateConstraints { make in
+                    make.trailing.equalTo(ngodingYukCard).offset(-30)
+                }
+                animationTransparency(view: ujiKodinganBtn, alpha: 1)
+                animationLayout()
+            },
+            for: .touchUpInside)
+        ujiKodinganView.playBtn.addAction(
+            UIAction { _ in
+                print("Play Button Touched")
+            },
+            for: .touchUpInside)
+        ujiKodinganView.submitBtn.addAction(
+            UIAction { _ in
+                print("Submit Button Touched")
+            },
+            for: .touchUpInside)
+        }
+
+    /// Hides navigation bar
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    /// Adds animation for layouting changes
     private func animationLayout() {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.3,
@@ -310,6 +427,77 @@ class BattlefieldViewController: UIViewController {
             },
             completion: nil
         )
+    }
+
+    private func animationTransparency(view: UIView, alpha: CGFloat) {
+        UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+            view.alpha = alpha
+        }.startAnimation()
+    }
+}
+
+final class UjiKodingan: UIView {
+    lazy var backBtn = SmallBackButtonView(variant: .variant2)
+    private lazy var inputCard = CardView(type: .inputCard)
+    private lazy var outputCard = CardView(type: .outputCard)
+    lazy var playBtn = SmallBackButtonView(variant: .variant5)
+    lazy var submitBtn = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = " Uji Kodingan"
+        label.font = .bold17
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .kobarBlueUjiKodingan
+        addSubview(backBtn)
+        addSubview(titleLabel)
+        addSubview(inputCard)
+        addSubview(outputCard)
+        addSubview(playBtn)
+        addSubview(submitBtn)
+
+        setupAutoLayout()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupAutoLayout() {
+        backBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(35)
+            make.leading.equalToSuperview().offset(20)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(85)
+        }
+        inputCard.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.bottom.equalTo(outputCard.snp.top).offset(-15)
+        }
+        outputCard.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(inputCard)
+            make.bottom.equalTo(playBtn.snp.top).offset(-30)
+            make.top.equalTo(inputCard.snp.bottom)
+            make.height.equalToSuperview().multipliedBy(0.4)
+        }
+        playBtn.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-85)
+        }
+        submitBtn.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-88)
+            make.leading.equalTo(playBtn.snp.trailing).offset(30)
+        }
     }
 }
 

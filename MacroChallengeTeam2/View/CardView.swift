@@ -19,6 +19,11 @@ final class CardView: UIView, UITextViewDelegate {
 
     var cardType: CardType?
     var placeholderText: String?
+    var pertanyaan: String? {
+        didSet {
+            textInput.text = pertanyaan
+        }
+    }
 
     private lazy var textInput: UITextView = {
         let textView = UITextView.init()
@@ -49,7 +54,7 @@ final class CardView: UIView, UITextViewDelegate {
         return view
     }()
 
-    private lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = .bold17
@@ -108,7 +113,8 @@ final class CardView: UIView, UITextViewDelegate {
             titleLabel.textColor = .kobarBlack
             titleLabel.text = "Pertanyaan"
             textInput.font = .regular17
-            textInput.text = "Pertanyaan disini"
+            textInput.textColor = .kobarBlack
+            textInput.isEditable = false
             placeholderText = "Pertanyaan disini"
         case .none:
             titleLabel.textColor = .kobarBlueActive

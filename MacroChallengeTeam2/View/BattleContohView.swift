@@ -41,7 +41,6 @@ class BattleContohView: UIButton {
     private func setupButton(title: String) {
         var config = UIButton.Configuration.plain()
         config.imagePadding = 1
-//        config.titlePadding = 5
         configuration = config
         let buttonImage = UIImage(systemName: image ?? "")
         setImage(buttonImage?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal), for: .normal)
