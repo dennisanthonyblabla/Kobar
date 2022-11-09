@@ -164,7 +164,7 @@ class BattlefieldViewController: UIViewController {
             UIAction { [self] _ in
                 backgroundFront.snp.remakeConstraints { make in
                     make.leading.bottom.equalToSuperview()
-                    make.width.equalTo(850)
+                    make.width.equalToSuperview().multipliedBy(0.75)
                     make.top.equalTo(background).offset(8)
                 }
                 ujiKodinganView.playBtn.snp.remakeConstraints { make in
