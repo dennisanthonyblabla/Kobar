@@ -17,7 +17,7 @@ class PembahasanViewController: UIViewController {
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "pembahasanBG")
+        imageView.image = UIImage(named: "background7")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
