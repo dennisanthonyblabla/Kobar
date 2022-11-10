@@ -17,7 +17,7 @@ final class AuthCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     
     private let authViewModel: AuthViewModel
-    private var userViewModel: UserViewModel
+    private let userViewModel: UserViewModel
     
     private let disposeBag = DisposeBag()
     

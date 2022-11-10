@@ -34,10 +34,10 @@ class FindBattleViewModel {
             data: JoinBattleDto(userId: user.id, inviteCode: inviteCode))
     }
     
-    func playersFoundState() -> Single<Battle> {
-        Single<Battle>.create { [weak self] single in
+    func playersFoundState() -> Single<(User, Battle)> {
+        Single<(User, Battle)>.create { [weak self, user] single in
             self?.socketService.onBattleFound = { battle in
-                single(.success(battle))
+                single(.success((user, battle)))
             }
             
             return Disposables.create {}

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Battle: Codable {
+struct Battle: Identifiable, Codable {
     let id: String
     let inviteCode: String
     let problem: Problem?

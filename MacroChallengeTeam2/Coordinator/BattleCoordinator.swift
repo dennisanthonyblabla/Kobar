@@ -47,8 +47,13 @@ final class BattleCoordinator: BaseCoordinator {
         
         findBattleViewModel.playersFoundState()
             .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] battle in
-                
+            .subscribe { [weak self] user, battle in
+                print(battle)
+                guard let readyVC = self?.makeReadyForBattlePageViewController(
+                    user: user,
+                    with: battle)
+                else { return }
+                self?.show(readyVC)
             }
             .disposed(by: disposeBag)
     }
@@ -88,17 +93,38 @@ final class BattleCoordinator: BaseCoordinator {
     }
     
     func makeJoinFriendPageViewController() -> JoinFriendPageViewController {
-        let readyVC = JoinFriendPageViewController()
+        let viewController = JoinFriendPageViewController()
     
-        readyVC.onConfirm = { inviteCode in
+        viewController.onConfirm = { inviteCode in
             self.findBattleViewModel.joinBattle(inviteCode: inviteCode)
+            self.dismiss(viewController)
         }
         
-        readyVC.onCancel = {
-            self.dismiss(readyVC)
+        viewController.onCancel = {
+            self.dismiss(viewController)
         }
         
-        return readyVC
+        return viewController
+    }
+    
+    func makeReadyForBattlePageViewController(
+        user: User,
+        with battle: Battle
+    ) -> ReadyForBattlePageViewController {
+        let viewController = ReadyForBattlePageViewController()
+        
+        viewController.user = battle.users.first { user.id == $0.id } ?? .empty()
+        viewController.user = battle.users.first { user.id != $0.id } ?? .empty()
+        
+        viewController.onBack = {
+            
+        }
+        
+        viewController.onReady = {
+            
+        }
+        
+        return viewController
     }
     
     private func show(_ viewController: UIViewController) {
