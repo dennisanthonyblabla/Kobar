@@ -8,29 +8,28 @@
 import Foundation
 import RxSwift
 
+struct BattleState {
+    let user: User
+    let battle: Battle
+    let status: BattleStatus
+    
+    init(_ user: User, _ battle: Battle, _ status: BattleStatus) {
+        self.user = user
+        self.battle = battle
+        self.status = status
+    }
+}
+
+enum BattleStatus {
+    case pending
+    case started
+    case canceled
+}
 
 class BattleViewModel {
     private let socketService: SocketIODataSource
     private let user: User
     private let battle: Battle
-    
-    struct BattleState {
-        let user: User
-        let battle: Battle
-        let status: BattleStatus
-        
-        init(_ user: User, _ battle: Battle, _ status: BattleStatus) {
-            self.user = user
-            self.battle = battle
-            self.status = status
-        }
-    }
-    
-    enum BattleStatus {
-        case pending
-        case started
-        case canceled
-    }
     
     init(socketService: SocketIODataSource, user: User, battle: Battle) {
         self.socketService = socketService
@@ -50,14 +49,19 @@ class BattleViewModel {
     
     func battleState() -> Observable<BattleState> {
         Observable<BattleState>.create { [weak self, user, battle] observer in
-            observer.onNext(BattleState(user, battle, .pending))
+            // If battle problem is nil, then battle hasn't started
+            // Otherwise, battle must have started already
+            let initialStatus: BattleStatus = battle.problem == nil ? .pending : .started
+            
+            observer.onNext(BattleState(user, battle, initialStatus))
             
             self?.socketService.onBattleCanceled = {
                 observer.onNext(BattleState(user, battle, .canceled))
             }
             
-            self?.socketService.onBattleStarted = { battle in
-                observer.onNext(BattleState(user, battle, .started))
+            self?.socketService.onBattleStarted = { noUserBattle in
+                guard let battle = self?.battle else { return }
+                observer.onNext(BattleState(user, noUserBattle.join(with: battle), .started))
             }
             
             return Disposables.create {}

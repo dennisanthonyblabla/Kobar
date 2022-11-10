@@ -34,19 +34,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             socketService: socketService)
 
         authCoordinator.goToJoinFriendCoordinator = { user in
-            self.makeBattleCoordinator(
+            let findBattleCoordinator = self.makeFindBattleCoordinator(
                 navigationController,
                 socketService: socketService,
                 battleAction: .joinFriend,
                 user: user)
+            
+            findBattleCoordinator.makeNextCoordinator = { user, battle in
+                self.makeBattleCoordinator(
+                    navigationController,
+                    socketService: socketService,
+                    user: user,
+                    battle: battle)
+            }
+            
+            return findBattleCoordinator
         }
 
         authCoordinator.goToInviteFriendCoordinator = { user in
-            self.makeBattleCoordinator(
+            let findBattleCoordinator = self.makeFindBattleCoordinator(
                 navigationController,
                 socketService: socketService,
                 battleAction: .inviteFriend,
                 user: user)
+            
+            findBattleCoordinator.makeNextCoordinator = { user, battle in
+                self.makeBattleCoordinator(
+                    navigationController,
+                    socketService: socketService,
+                    user: user,
+                    battle: battle)
+            }
+            
+            return findBattleCoordinator
         }
 
         coordinator = authCoordinator
@@ -68,17 +88,31 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return coordinator
     }
 
-    func makeBattleCoordinator(
+    func makeFindBattleCoordinator(
         _ navigationController: UINavigationController,
         socketService: SocketIODataSource,
-        battleAction: BattleCoordinator.BattleAction,
+        battleAction: FindBattleCoordinator.BattleAction,
         user: User
-    ) -> BattleCoordinator {
-        let coordinator = BattleCoordinator(
+    ) -> FindBattleCoordinator {
+        let coordinator = FindBattleCoordinator(
             navigationController,
             socketService: socketService,
             battleAction: battleAction,
             user: user)
+        
+        return coordinator
+    }
+    
+    func makeBattleCoordinator(
+        _ navigationController: UINavigationController,
+        socketService: SocketIODataSource,
+        user: User,
+        battle: Battle
+    ) -> BattleCoordinator {
+        let coordinator = BattleCoordinator(
+            navigationController,
+            socketService: socketService,
+            user: user, battle: battle)
         
         return coordinator
     }

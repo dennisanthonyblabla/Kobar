@@ -30,6 +30,7 @@ final class BattleCoordinator: BaseCoordinator {
     
     override func start() {
         battleViewModel.battleState()
+            .distinctUntilChanged { $0.status == $1.status }
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] state in
                 self?.onBattleStateChanged(state)
@@ -37,13 +38,14 @@ final class BattleCoordinator: BaseCoordinator {
             .disposed(by: disposeBag)
     }
     
-    func onBattleStateChanged(_ state: BattleViewModel.BattleState) {
+    func onBattleStateChanged(_ state: BattleState) {
         switch state.status {
         case .pending:
             let readyVC = makeReadyForBattlePageViewController(user: state.user, with: state.battle)
             show(readyVC)
         case .started:
-            break
+            let battleVC = makeBattlefieldPageViewController()
+            show(battleVC)
         case .canceled:
             pop()
             completion?()
@@ -61,6 +63,7 @@ final class BattleCoordinator: BaseCoordinator {
         
         readyVC.onBack = { [weak self] in
             self?.battleViewModel.cancel()
+            self?.pop()
         }
         
         readyVC.onReady = { [weak self] in
@@ -76,8 +79,9 @@ final class BattleCoordinator: BaseCoordinator {
         return readyVC
     }
     
-    func makeBattlefieldPageViewController() {
+    func makeBattlefieldPageViewController() -> BattlefieldViewController{
         let battleVC = BattlefieldViewController()
+        return battleVC
     }
     
     private func pop() {

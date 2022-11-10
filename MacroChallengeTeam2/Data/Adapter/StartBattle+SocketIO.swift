@@ -1,5 +1,5 @@
 //
-//  Battle+SocketIO.swift
+//  StartedBattle+SocketIO.swift
 //  Macro Challenge Team2
 //
 //  Created by Mohammad Alfarisi on 10/11/22.
@@ -7,21 +7,20 @@
 
 import Foundation
 
-struct BattleWrapper: Decodable {
-    private let battle: BattleWithChildWrappers
+struct NoUserBattleWrapper: Decodable {
+    private let battle: NoUserBattleWithChildWrappers
     
-    func toBattle() -> Battle { battle.toBattle() }
+    func toBattle() -> NoUserBattle { battle.toBattle() }
 }
 
-private struct BattleWithChildWrappers: Decodable {
+private struct NoUserBattleWithChildWrappers: Decodable {
     let id: String
     let inviteCode: String
     let problem: ProblemWrapper?
-    let users: [UserWrapper]
     let startTime: String
     let endTime: String
     
-    func toBattle() -> Battle {
+    func toBattle() -> NoUserBattle {
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
             .withFullDate,
@@ -33,11 +32,10 @@ private struct BattleWithChildWrappers: Decodable {
         let startDate = dateFormatter.date(from: startTime)
         let endDate = dateFormatter.date(from: endTime)
 
-        return Battle(
+        return NoUserBattle(
             id: id,
             inviteCode: inviteCode,
             problem: problem?.toProblem(),
-            users: users.map { $0.toUser() },
             startTime: startDate ?? Date.init(timeIntervalSince1970: 0),
             endTime: endDate ?? Date.init(timeIntervalSince1970: 0))
     }

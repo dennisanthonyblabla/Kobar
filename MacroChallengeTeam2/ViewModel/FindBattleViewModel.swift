@@ -40,6 +40,10 @@ class FindBattleViewModel {
                 single(.success((user, battle)))
             }
             
+            self?.socketService.onBattleRejoined = { battle in
+                single(.success((user, battle)))
+            }
+            
             return Disposables.create {}
         }
     }

@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+// TODO: @salman update opponent profile when they left
 class ReadyForBattlePageViewController: UIViewController {
     var onBack: (() -> Void)?
     var onReady: (() -> Void)?

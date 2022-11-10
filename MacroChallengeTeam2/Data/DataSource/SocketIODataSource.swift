@@ -19,7 +19,8 @@ class SocketIODataSource: WebSocketService {
     var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
     var onBattleFound: ((Battle) -> Void) = { _ in }
     var onBattleRejoined: ((Battle) -> Void) = { _ in }
-    var onBattleStarted: ((Battle) -> Void) = { _ in }
+    // TODO: @salman ini harusnya jadi battle :(
+    var onBattleStarted: ((NoUserBattle) -> Void) = { _ in }
     var onBattleCanceled: (() -> Void) = {}
 
     init(url: URL?) {
@@ -40,6 +41,15 @@ class SocketIODataSource: WebSocketService {
             do {
                 let user: User = try SocketParser.convert(data: data[0])
                 self?.onIdExchanged(user)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+
+        socketClient.on("battleInvitationCreated") { [weak self] data, _ in
+            do {
+                let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])
+                self?.onBattleInvitation(battleInvitation)
             } catch {
                 print("Failed to parse")
             }
@@ -74,17 +84,8 @@ class SocketIODataSource: WebSocketService {
         
         socketClient.on("battleStarted") { [weak self] data, _ in
             do {
-                let wrapper: BattleWrapper = try SocketParser.convert(data: data[0])
+                let wrapper: NoUserBattleWrapper = try SocketParser.convert(data: data[0])
                 self?.onBattleStarted(wrapper.toBattle())
-            } catch {
-                print("Failed to parse")
-            }
-        }
-        
-        socketClient.on("battleInvitationCreated") { [weak self] data, _ in
-            do {
-                let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])
-                self?.onBattleInvitation(battleInvitation)
             } catch {
                 print("Failed to parse")
             }

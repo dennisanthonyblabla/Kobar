@@ -38,6 +38,7 @@ final class FindBattleCoordinator: BaseCoordinator {
     
     // TODO: Show loading state
     // TODO: implement join random battle
+    // TODO: implement rejoin
     override func start() {
         switch battleAction {
         case .inviteFriend:
