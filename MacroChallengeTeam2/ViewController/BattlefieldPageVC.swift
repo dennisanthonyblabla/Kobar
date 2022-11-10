@@ -13,6 +13,7 @@ import SwiftUI
 // TODO: implement update statusLabel
 // TODO: implement test case examples
 // TODO: implement run code popup
+// TODO: @dennis refactor BattleContohStackView to new file
 final class BattlefieldPageViewController: UIViewController {
     private var statusDesc: String?
     
@@ -486,131 +487,6 @@ extension BattlefieldPageViewController {
         UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
             view.alpha = alpha
         }.startAnimation()
-    }
-}
-
-final class UjiKodinganView: UIView {
-    var onRunCode: ((String) -> Void)?
-    var onSubmitCode: ((String) -> Void)?
-    
-    var input = ""
-    
-    lazy var backBtn = SmallIconButtonView(variant: .variant2)
-    
-    private lazy var inputCard: CardView = {
-        let card = CardView(type: .inputCard)
-        
-        card.onTextChanged = { text in
-            self.input = text
-        }
-        
-        return card
-    }()
-    
-    private lazy var outputCard: CardView = {
-        let card = CardView(type: .outputCard)
-        
-        card.layer.cornerRadius = 15
-        
-        return card
-    }()
-    
-    lazy var playBtn: SmallIconButtonView = {
-        let button = SmallIconButtonView(
-            variant: .variant2,
-            buttonImage: UIImage(systemName: "play.fill"))
-        
-        button.addVoidAction({
-            self.onRunCode?(self.input)
-        }, for: .touchDown)
-        
-        return button
-    }()
-    
-    lazy var submitBtn: SmallButtonView = {
-        let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
-        
-        button.addVoidAction({
-            self.onSubmitCode?(self.input)
-        }, for: .touchDown)
-        
-        return button
-    }()
-
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Uji Kodingan"
-        label.font = .bold17
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .kobarBlueUjiKodingan
-        addSubview(backBtn)
-        addSubview(titleLabel)
-        addSubview(inputCard)
-        addSubview(outputCard)
-        addSubview(playBtn)
-        addSubview(submitBtn)
-
-        setupAutoLayout()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupAutoLayout() {
-        backBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(35)
-            make.leading.equalToSuperview().offset(20)
-        }
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(85)
-        }
-        inputCard.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(15)
-//            make.leading.equalToSuperview().offset(15).priority(750)
-//            make.trailing.equalToSuperview().offset(-15).priority(750)
-            make.leading.equalToSuperview().offset(15)
-            make.width.greaterThanOrEqualTo(self.snp.width).multipliedBy(0.9).priority(1000)
-            make.bottom.equalTo(outputCard.snp.top).offset(-15)
-        }
-        outputCard.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(inputCard)
-            make.bottom.equalTo(playBtn.snp.top).offset(-30)
-//            make.top.equalTo(inputCard.snp.bottom)
-            make.height.equalToSuperview().multipliedBy(0.4)
-        }
-        playBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-77)
-        }
-        submitBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-88)
-            make.leading.equalTo(playBtn.snp.trailing).offset(30)
-        }
-    }
-    
-    func updateCodeOutput(result: RunCodeResult) {
-        outputCard.text = result.output
-        
-        switch result.type {
-        case .correct:
-            outputCard.textColor = .kobarGreen
-            outputCard.layer.borderWidth = 4
-            outputCard.layer.borderColor = UIColor.kobarGreen.cgColor
-        case .incorrect:
-            outputCard.textColor = .kobarRed
-        case .error:
-            outputCard.textColor = .kobarRed
-            outputCard.layer.borderWidth = 2
-            outputCard.layer.borderColor = UIColor.kobarRed.cgColor
-        }
     }
 }
 
