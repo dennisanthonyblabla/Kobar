@@ -168,7 +168,7 @@ class BattlefieldViewController: UIViewController {
                     make.top.equalTo(background).offset(8)
                 }
                 ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.bottom.equalTo(ujiKodinganView).offset(-85)
+                    make.bottom.equalTo(ujiKodinganView).offset(-77)
                     make.trailing.equalTo(ujiKodinganView.snp.centerX).offset(-55)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
@@ -186,8 +186,8 @@ class BattlefieldViewController: UIViewController {
         return btn
     }()
 
-    private lazy var tipsBtn: SmallBackButtonView = {
-        let btn = SmallBackButtonView(variant: .variant4)
+    private lazy var tipsBtn: SmallIconButtonView = {
+        let btn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "book.fill"))
         btn.addAction(
             UIAction { _ in
                 print("Tips has been clicked")
@@ -350,7 +350,7 @@ extension BattlefieldViewController {
         }
         ujiKodinganBtn.snp.makeConstraints { make in
             make.trailing.equalTo(ngodingYukCard).offset(-30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(13)
             make.bottom.equalTo(ngodingYukCard.snp.top)
         }
         tipsBtn.snp.makeConstraints { make in
@@ -381,7 +381,7 @@ extension BattlefieldViewController {
                 }
                 ujiKodinganView.playBtn.snp.remakeConstraints { make in
                     make.leading.equalTo(ujiKodinganView).offset(20)
-                    make.bottom.equalToSuperview().offset(-85)
+                    make.bottom.equalToSuperview().offset(-77)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)
@@ -437,10 +437,10 @@ extension BattlefieldViewController {
 }
 
 final class UjiKodingan: UIView {
-    lazy var backBtn = SmallBackButtonView(variant: .variant2)
+    lazy var backBtn = SmallIconButtonView(variant: .variant2)
     private lazy var inputCard = CardView(type: .inputCard)
     private lazy var outputCard = CardView(type: .outputCard)
-    lazy var playBtn = SmallBackButtonView(variant: .variant5)
+    lazy var playBtn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "play.fill"))
     lazy var submitBtn = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
 
     private lazy var titleLabel: UILabel = {
@@ -492,7 +492,7 @@ final class UjiKodingan: UIView {
         }
         playBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-85)
+            make.bottom.equalToSuperview().offset(-77)
         }
         submitBtn.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-88)

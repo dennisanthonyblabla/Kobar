@@ -14,8 +14,6 @@ final class SmallIconButtonView: UIButton {
         case variant1
         case variant2
         case variant3
-        case variant4
-        case variant5
     }
 
     var variant: Variants?
@@ -62,7 +60,7 @@ final class SmallIconButtonView: UIButton {
 
     private func setupButtonVariant() {
         configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 12)
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 12, trailing: 12)
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
         buttonIcon = buttonIcon?.withConfiguration(config)
         switch variant {
@@ -84,22 +82,6 @@ final class SmallIconButtonView: UIButton {
             backBG.backgroundColor = .white
             backBG.layer.opacity = 0.7
             alpha = 0.7
-        case .variant4:
-            config = UIImage.SymbolConfiguration(pointSize: 20)
-            buttonImage = UIImage(systemName: "book.fill", withConfiguration: config)
-            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
-            frontBG.backgroundColor = .white
-            backBG.backgroundColor = .white
-            backBG.layer.opacity = 0.7
-            alpha = 1
-        case .variant5:
-            config = UIImage.SymbolConfiguration(pointSize: 20)
-            buttonImage = UIImage(systemName: "play.fill", withConfiguration: config)
-            setImage(buttonImage?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal), for: .normal)
-            frontBG.backgroundColor = .white
-            backBG.backgroundColor = .white
-            backBG.layer.opacity = 0.7
-            alpha = 1
         case .none:
             setImage(buttonIcon?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
             frontBG.backgroundColor = .kobarBlueActive
@@ -117,10 +99,12 @@ final class SmallIconButtonView: UIButton {
         backBG.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(4)
             make.bottom.width.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
         frontBG.snp.makeConstraints { make in
             make.top.width.equalToSuperview()
             make.bottom.equalToSuperview().offset(-4)
+            make.centerX.equalToSuperview()
         }
     }
 }
