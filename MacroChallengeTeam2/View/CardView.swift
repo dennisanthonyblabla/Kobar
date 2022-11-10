@@ -47,6 +47,7 @@ final class CardView: UIView, UITextViewDelegate {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
+        textView.smartQuotesType = .no
         return textView
     }()
 
