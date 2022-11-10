@@ -11,9 +11,11 @@ import SnapKit
 class ReadyForBattlePageViewController: UIViewController {
     var onBack: (() -> Void)?
     var onReady: (() -> Void)?
+    var onCountdownFinished: (() -> Void)?
     
     var user: User = .empty()
     var opponent: User = .empty()
+    var startDate: Date?
     
     private lazy var userProfileTandingView: ProfileTandingView = {
         let view = ProfileTandingView(
@@ -43,7 +45,17 @@ class ReadyForBattlePageViewController: UIViewController {
     
     private lazy var readyButtonView: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Mulai")
-        button.addVoidAction(onReady, for: .touchDown)
+        button.addAction(
+            UIAction { [self] _ in
+                updateButton()
+                self.onReady?()
+            }, for: .touchDown)
+        return button
+    }()
+    
+    private lazy var waitButtonView: MedButtonView = {
+        let button = MedButtonView(variant: .variant3, title: "Tunggu Lawan")
+        button.isHidden = true
         return button
     }()
 
@@ -62,12 +74,20 @@ class ReadyForBattlePageViewController: UIViewController {
         return view
     }()
 
-    private lazy var pageDesc: UILabel = {
+    private lazy var promptLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.text = "Ajak temen lo buat" + "\n" + "tanding sekarang!"
+        label.text = "Tanding koding dimulai dalam..."
         label.textColor = .white
-        label.font = .bold34
+        label.font = .medium28
+        return label
+    }()
+    
+    private lazy var countdownLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.font = .bold38
+        label.textColor = .white
         return label
     }()
 
@@ -99,17 +119,46 @@ class ReadyForBattlePageViewController: UIViewController {
         view.addSubview(backgroundView)
         view.addSubview(backButtonView)
         view.addSubview(readyButtonView)
+        view.addSubview(waitButtonView)
         view.addSubview(pageTitleLabel)
-        view.addSubview(pageDesc)
+        view.addSubview(promptLabel)
         view.addSubview(userProfileTandingView)
         view.addSubview(opponentProfileTandingView)
         view.addSubview(swordVSImageView)
         view.addSubview(bottomTextLabel)
+        view.addSubview(countdownLabel)
         
+        if let date = startDate {
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self, date] timer in
+                if Date.now >= date {
+                    timer.invalidate()
+                    self?.onCountdownFinished?()
+                }
+                
+                DispatchQueue.main.async {
+                    self?.updateCountdown(date: date)
+                }
+            }
+        }
         
         setupBackgroundConstraints()
         setupDisplaysConstraint()
         setupComponentsConstraint()
+    }
+    
+    private func updateCountdown(date: Date) {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        
+        let string = formatter.string(from: .now, to: date)
+        
+        countdownLabel.text = string
+    }
+    
+    private func updateButton() {
+        readyButtonView.isHidden = true
+        waitButtonView.isHidden = false
     }
 
     private func setupBackgroundConstraints() {
@@ -123,7 +172,7 @@ class ReadyForBattlePageViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(25)
         }
-        pageDesc.snp.makeConstraints { make in
+        promptLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(pageTitleLabel.snp.bottom).offset(58)
         }
@@ -136,6 +185,10 @@ class ReadyForBattlePageViewController: UIViewController {
             make.width.height.equalTo(bottomTextLabel)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-50)
+        }
+        countdownLabel.snp.makeConstraints { make in
+            make.top.equalTo(promptLabel.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
         }
     }
 
@@ -156,6 +209,9 @@ class ReadyForBattlePageViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalTo(view.snp.bottom).multipliedBy(0.77)
             make.width.equalTo(160)
+        }
+        waitButtonView.snp.makeConstraints { make in
+            make.height.centerX.centerY.equalTo(readyButtonView)
         }
     }
 }

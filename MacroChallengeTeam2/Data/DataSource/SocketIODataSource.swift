@@ -18,7 +18,9 @@ class SocketIODataSource: WebSocketService {
     var onIdExchanged: ((User) -> Void) = { _ in }
     var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
     var onBattleFound: ((Battle) -> Void) = { _ in }
+    var onBattleRejoined: ((Battle) -> Void) = { _ in }
     var onBattleStarted: ((Battle) -> Void) = { _ in }
+    var onBattleCanceled: (() -> Void) = {}
 
     init(url: URL?) {
         guard let url = url else {
@@ -64,7 +66,7 @@ class SocketIODataSource: WebSocketService {
         socketClient.on("battleRejoined") { [weak self] data, _ in
             do {
                 let wrapper: BattleWrapper = try SocketParser.convert(data: data[0])
-                self?.onBattleStarted(wrapper.toBattle())
+                self?.onBattleRejoined(wrapper.toBattle())
             } catch {
                 print("Failed to parse")
             }
@@ -92,7 +94,9 @@ class SocketIODataSource: WebSocketService {
         
         socketClient.on("waitingForOpponent") { _, _ in }
         
-        socketClient.on("battleCanceled") { _, _ in }
+        socketClient.on("battleCanceled") { [weak self] _, _ in
+            self?.onBattleCanceled()
+        }
         
         socketClient.connect(withPayload: ["token": "Bearer \(token)"])
     }
@@ -111,6 +115,10 @@ class SocketIODataSource: WebSocketService {
     
     func emitCancelBattleEvent(data: CancelBattleDto) {
         socketClient.emit("cancelBattle", data)
+    }
+
+    func emitReadyBattleEvent(data: ReadyBattleDto) {
+        socketClient.emit("readyBattle", data)
     }
 
     func disconnect() {
