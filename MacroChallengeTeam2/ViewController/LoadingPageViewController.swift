@@ -26,13 +26,22 @@ class LoadingPageViewController: UIViewController {
         gif.play()
         return gif
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadingGIF.play()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(background)
         view.addSubview(loadingGIF)
-
         setupAutoLayout()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        loadingGIF.stop()
+        super.viewWillDisappear(animated)
     }
 
     func setupAutoLayout() {

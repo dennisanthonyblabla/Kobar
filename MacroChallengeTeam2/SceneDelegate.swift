@@ -6,12 +6,11 @@
 //
 
 import UIKit
-import RxSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    private var disposeBag = DisposeBag()
+    private var coordinator: Coordinator?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -28,12 +27,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let url = URL(string: "http://kobar.up.railway.app")
         let authService = Auth0DataSource.shared
         let socketService = SocketIODataSource(url: url)
-        
+
         let authCoordinator = makeAuthCoordinator(
             navigationController,
             authService: authService,
             socketService: socketService)
-        
+
         authCoordinator.goToJoinFriendCoordinator = { user in
             self.makeBattleCoordinator(
                 navigationController,
@@ -41,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 battleAction: .joinFriend,
                 user: user)
         }
-        
+
         authCoordinator.goToInviteFriendCoordinator = { user in
             self.makeBattleCoordinator(
                 navigationController,
@@ -49,8 +48,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 battleAction: .inviteFriend,
                 user: user)
         }
-        
-        authCoordinator.start()
+
+        coordinator = authCoordinator
+        coordinator?.start()
     }
     
     // MARK: Composition Root

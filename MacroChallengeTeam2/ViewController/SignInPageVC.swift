@@ -28,7 +28,6 @@ class SignInPageViewController: UIViewController {
         let gif = LottieAnimationView(animation: animation)
         gif.contentMode = .scaleAspectFit
         gif.loopMode = .loop
-        gif.play()
         return gif
     }()
 
@@ -115,6 +114,11 @@ class SignInPageViewController: UIViewController {
 
         return view
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        signInDoorGIF.play()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +133,11 @@ class SignInPageViewController: UIViewController {
         view.addSubview(signInDoorGIF)
 
         setupAutoLayout()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        signInDoorGIF.stop()
+        super.viewDidDisappear(animated)
     }
 
     func setupAutoLayout() {

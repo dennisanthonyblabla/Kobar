@@ -24,8 +24,7 @@ class Auth0DataSource: AuthService {
     }
 
     private func hasValidCredentials() -> Bool {
-        let hasCredentials = credentialsManager.hasValid()
-        return hasCredentials
+        credentialsManager.hasValid()
     }
 
     func getUser(_ callback: @escaping (AuthUser?) -> Void) {

@@ -116,7 +116,6 @@ class MainPageViewController: UIViewController {
         let gif = LottieAnimationView(animation: animation)
         gif.contentMode = .scaleAspectFit
         gif.loopMode = .loop
-        gif.play()
         return gif
     }()
     
@@ -138,6 +137,11 @@ class MainPageViewController: UIViewController {
         return label
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        swordGif.play()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(background)
@@ -151,6 +155,11 @@ class MainPageViewController: UIViewController {
         setupBackgroundConstraints()
         setupDisplayConstraint()
         setupComponentsConstraint()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        swordGif.stop()
+        super.viewWillDisappear(animated)
     }
     
     private func setupBackgroundConstraints() {
