@@ -19,9 +19,14 @@ final class TestCaseButton: UIButton {
         case fill
         case transparent
     }
-    
+
+    var style: Style?{
+        didSet {
+            testCaseStyle()
+            testCaseStatus()
+        }
+    }
     private var status: Status?
-    private var style: Style?
     private var order: Int?
     
     private lazy var testCaseBG: UIView = {
@@ -53,7 +58,7 @@ final class TestCaseButton: UIButton {
         super.init(frame: frame)
     }
     
-    init(style: Style, status: Status, order: Int) {
+    init(style: Style? = .transparent, status: Status, order: Int) {
         super.init(frame: .zero)
         self.style = style
         self.status = status
@@ -77,7 +82,7 @@ final class TestCaseButton: UIButton {
         case .transparent:
             testCaseBG.alpha = 0
         case .none:
-            testCaseBG.alpha = 1
+            break
         }
     }
     
@@ -94,6 +99,7 @@ final class TestCaseButton: UIButton {
             )
             if style == .fill {
                 testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                testCaseOrder.textColor = .white
             } else {
                 testCaseSymbol.image = image?.withTintColor(.kobarGreen, renderingMode: .alwaysOriginal)
                 testCaseOrder.textColor = .kobarGreen
@@ -106,16 +112,14 @@ final class TestCaseButton: UIButton {
             )
             if style == .fill {
                 testCaseSymbol.image = image?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                testCaseOrder.textColor = .white
             } else {
                 testCaseSymbol.image = image?.withTintColor(.kobarRed, renderingMode: .alwaysOriginal)
                 testCaseOrder.textColor = .kobarRed
                 self.setTitleColor(.kobarRed, for: .normal)
             }
         case .none:
-            testCaseSymbol.image = UIImage(
-                systemName: "checkmark",
-                withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .bold)
-            )?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            break
         }
     }
     
