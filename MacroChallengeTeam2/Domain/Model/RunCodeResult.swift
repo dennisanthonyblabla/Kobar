@@ -10,8 +10,4 @@ import Foundation
 struct RunCodeResult: Codable {
     let output: String
     let type: OutputType
-    
-    enum OutputType: Codable {
-        case correct, incorrect, error
-    }
 }

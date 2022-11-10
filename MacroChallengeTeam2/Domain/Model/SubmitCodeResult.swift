@@ -8,5 +8,16 @@
 import Foundation
 
 struct SubmitCodeResult: Codable {
-    let result: Bool
+    let tests: [SubmitTestResult]
+}
+
+struct SubmitTestResult: Codable {
+    let output: String
+    let outputType: OutputType
+    let testCase: SubmitTestCase
+}
+
+struct SubmitTestCase: Codable {
+    let input: String
+    let output: String
 }

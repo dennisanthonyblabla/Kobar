@@ -48,6 +48,8 @@ final class CardView: UIView, UITextViewDelegate {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.smartQuotesType = .no
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
         return textView
     }()
 
@@ -173,7 +175,7 @@ final class CardView: UIView, UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if cardType == .inputCard {
+        if cardType == .codingCard || cardType == .inputCard {
             onTextChanged?(textView.text)
         }
     }

@@ -28,4 +28,16 @@ struct Problem: Identifiable, Codable {
             reviewVideoURL: "",
             reviewText: "")
     }
+    
+    func sorted() -> Problem {
+        Problem(
+            id: id,
+            prompt: prompt,
+            inputFormat: inputFormat,
+            outputFormat: outputFormat,
+            testCases: testCases.sorted { $0.order < $1.order },
+            exampleCount: exampleCount,
+            reviewVideoURL: reviewVideoURL,
+            reviewText: reviewText)
+    }
 }

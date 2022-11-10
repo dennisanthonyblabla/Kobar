@@ -1,5 +1,5 @@
 //
-//  StartBattleViewModel.swift
+//  BattleViewModel.swift
 //  Macro Challenge Team2
 //
 //  Created by Mohammad Alfarisi on 10/11/22.
@@ -8,63 +8,61 @@
 import Foundation
 import RxSwift
 
-struct BattleState {
-    let user: User
-    let battle: Battle
-    let status: BattleStatus
-    
-    init(_ user: User, _ battle: Battle, _ status: BattleStatus) {
-        self.user = user
-        self.battle = battle
-        self.status = status
-    }
+enum FinishedBattleState {
+    case ongoing
+    case waitingForOpponent(SubmitCodeResult)
+    case battleFinished(BattleResult)
 }
 
-enum BattleStatus {
-    case pending
-    case started
-    case canceled
-}
-
-class BattleViewModel {
+final class BattleViewModel {
     private let socketService: SocketIODataSource
     private let user: User
     private let battle: Battle
+    
+    private let runCodeResultSubject = BehaviorSubject<RunCodeResult?>(value: nil)
+    private let finishedBattleSubject = BehaviorSubject<FinishedBattleState>(value: .ongoing)
     
     init(socketService: SocketIODataSource, user: User, battle: Battle) {
         self.socketService = socketService
         self.battle = battle
         self.user = user
-    }
         
-    func start() {
-        socketService.emitReadyBattleEvent(
-            data: ReadyBattleDto(userId: user.id, battleId: battle.id))
-    }
-    
-    func cancel() {
-        socketService.emitCancelBattleEvent(
-            data: CancelBattleDto(battleId: battle.id))
-    }
-    
-    func battleState() -> Observable<BattleState> {
-        Observable<BattleState>.create { [weak self, user, battle] observer in
-            // If battle problem is nil, then battle hasn't started
-            // Otherwise, battle must have started already
-            let initialStatus: BattleStatus = battle.problem == nil ? .pending : .started
-            
-            observer.onNext(BattleState(user, battle, initialStatus))
-            
-            self?.socketService.onBattleCanceled = {
-                observer.onNext(BattleState(user, battle, .canceled))
-            }
-            
-            self?.socketService.onBattleStarted = { noUserBattle in
-                guard let battle = self?.battle else { return }
-                observer.onNext(BattleState(user, noUserBattle.join(with: battle), .started))
-            }
-            
-            return Disposables.create {}
+        self.socketService.onCodeRan = { [weak self] result in
+            self?.runCodeResultSubject.onNext(result)
         }
+        
+        self.socketService.onCodeSubmit = { [weak self] result in
+            self?.finishedBattleSubject.onNext(.waitingForOpponent(result))
+        }
+    }
+    
+    func runCode(problemId: String, submission: RunCodeSubmission) {
+        socketService.emitRunCodeEvent(
+            data: RunCodeDto(
+                userId: user.id,
+                battleId: battle.id,
+                problemId: problemId,
+                code: submission.code,
+                input: submission.input))
+    }
+    
+    func submitCode(problemId: String, submission: SubmitCodeSubmission) {
+        socketService.emitSubmitCodeEvent(
+            data: SubmitCodeDto(
+                userId: user.id,
+                battleId: battle.id,
+                problemId: problemId,
+                code: submission.code))
+    }
+    
+    func runCodeState() -> Observable<RunCodeResult> {
+        runCodeResultSubject
+            .compactMap { $0 }
+            .asObservable()
+    }
+    
+    func battleEndedState() -> Observable<FinishedBattleState> {
+        finishedBattleSubject
+            .asObservable()
     }
 }
