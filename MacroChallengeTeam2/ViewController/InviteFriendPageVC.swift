@@ -11,6 +11,7 @@ import SwiftUI
 
 class InviteFriendPageViewController: UIViewController {
     var onBack: (() -> Void)?
+    var onShowDiscussion: (() -> Void)?
     
     var user: User = .empty()
     var inviteCode: String = ""

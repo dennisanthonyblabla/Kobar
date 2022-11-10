@@ -24,6 +24,7 @@ class SocketIODataSource: WebSocketService {
     var onBattleCanceled: (() -> Void) = {}
     var onCodeRan: ((RunCodeResult) -> Void) = { _ in }
     var onCodeSubmit: ((SubmitCodeResult) -> Void) = { _ in }
+    var onBattleFinished: ((BattleResult) -> Void) = { _ in }
 
     init(url: URL?) {
         guard let url = url else {
@@ -124,7 +125,12 @@ class SocketIODataSource: WebSocketService {
         }
         
         socketClient.on("battleFinished") { [weak self] data, _ in
-            
+            do {
+                let wrapper: BattleResultWrapper = try SocketParser.convert(data: data[0])
+                self?.onBattleFinished(wrapper.toBattleResult())
+            } catch {
+                print("Failed to parse")
+            }
         }
     
         socketClient.connect(withPayload: ["token": "Bearer \(token)"])

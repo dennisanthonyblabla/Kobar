@@ -12,22 +12,82 @@ import RxSwift
 import Lottie
 
 class HasilTandingPageViewController: UIViewController {
-    private var userWin = false
-    private lazy var udahanDehBtn = MedButtonView(variant: .variant2, title: "Udahan Deh")
-    private lazy var pembahasanBtn = MedButtonView(variant: .variant2, title: "Pembahasan")
+    var onFinish: (() -> Void)?
+    var onShowDiscussion: (() -> Void)?
+    
+    enum Winner {
+        case user, opponent, draw
+    }
+    
+    private lazy var udahanDehBtn: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "Udahan Deh")
+        button.addVoidAction(onFinish, for: .touchDown)
+        return button
+    }()
+    
+    private lazy var pembahasanBtn: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "Pembahasan")
+        button.addVoidAction(onShowDiscussion, for: .touchDown)
+        return button
+    }()
+    
+    var result: BattleResult = .empty()
+    var user: User = .empty()
+    var opponent: User = .empty()
+    var testCases: Int = 0
+    
+    lazy var winner: Winner = {
+        if result.isDraw {
+            return .draw
+        }
+        
+        if user.id == result.winnerId {
+            return .user
+        }
+        
+        return .opponent
+    }()
+    
+    lazy var userEvaluation: BattleEvaluation = {
+        result.evaluations.first { $0.userId == user.id } ?? .empty()
+    }()
+    
+    lazy var opponentEvaluation: BattleEvaluation = {
+        result.evaluations.first { $0.userId == opponent.id } ?? .empty()
+    }()
+    
+    func formatCorrectness(count: Int) -> String {
+        "\(count)/\(testCases)"
+    }
+    
+    func formatPerformance(performance: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        
+        return "\(formatter.string(for: performance) ?? "0") ms"
+    }
+    
+    func formatTime(time: Double) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        
+        return formatter.string(from: time) ?? ""
+    }
 
     private lazy var userProfile = ProfileTandingView(
         role: .user,
-        name: "John Doe",
-        rating: 32,
-        state: "+"
+        name: user.nickname,
+        rating: result.score,
+        state: winner == .user ? "+" : "-"
     )
 
     private lazy var opponentProfile = ProfileTandingView(
         role: .opponent,
-        name: "Jane Doe",
-        rating: 32,
-        state: "-"
+        name: opponent.nickname,
+        rating: result.score,
+        state: winner == .opponent ? "+" : "-"
     )
 
     private lazy var background: UIImageView = {
@@ -124,7 +184,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var userKebenaranRateLabel: UILabel = {
         let label = UILabel()
-        label.text = "2/3"
+        label.text = formatCorrectness(count: userEvaluation.correctness)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -133,7 +193,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var opponentKebenaranRateLabel: UILabel = {
         let label = UILabel()
-        label.text = "1/3"
+        label.text = formatCorrectness(count: opponentEvaluation.correctness)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -142,7 +202,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var userKinerjaLabel: UILabel = {
         let label = UILabel()
-        label.text = "5 ms"
+        label.text = formatPerformance(performance: userEvaluation.performance)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -151,7 +211,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var opponentKinerjaLabel: UILabel = {
         let label = UILabel()
-        label.text = "20ms"
+        label.text = formatPerformance(performance: opponentEvaluation.performance)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -160,7 +220,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var userKecepatanLabel: UILabel = {
         let label = UILabel()
-        label.text = "05:30"
+        label.text = formatTime(time: userEvaluation.time)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -169,7 +229,7 @@ class HasilTandingPageViewController: UIViewController {
 
     private lazy var opponentKecepatanLabel: UILabel = {
         let label = UILabel()
-        label.text = "07:38"
+        label.text = formatTime(time: opponentEvaluation.time)
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
@@ -221,6 +281,13 @@ class HasilTandingPageViewController: UIViewController {
         gif.contentMode = .scaleAspectFit
         return gif
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if winner == .user {
+            confettiGif.play()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -240,6 +307,11 @@ class HasilTandingPageViewController: UIViewController {
         setupDisplays()
         setupComponents()
         checkIfUserWin()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        confettiGif.stop()
+        super.viewWillDisappear(animated)
     }
 }
 
@@ -313,7 +385,7 @@ extension HasilTandingPageViewController {
     }
 
     private func checkIfUserWin() {
-        if userWin == true {
+        if winner == .user {
             self.view.addSubview(crown)
             self.view.addSubview(confettiGif)
             self.descLabel.text = "Keren lo menang Coy!\nMantep banget!"
@@ -341,7 +413,6 @@ extension HasilTandingPageViewController {
                 make.width.height.equalToSuperview()
                 make.center.equalToSuperview()
             }
-            confettiGif.play()
         } else {
             self.view.addSubview(crown)
             let flippedCrown = UIImage(named: "crown")?.withHorizontallyFlippedOrientation()

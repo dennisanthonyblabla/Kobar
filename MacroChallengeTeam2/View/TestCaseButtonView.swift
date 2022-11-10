@@ -1,5 +1,5 @@
 //
-//  testCaseView.swift
+//  TestCaseButtonView.swift
 //  Macro Challenge Team2
 //
 //  Created by Dennis Anthony on 24/10/22.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class TestCaseButton: UIButton {
+final class TestCaseButtonView: UIButton {
     enum Status {
         case correct
         case wrong
@@ -20,7 +20,7 @@ final class TestCaseButton: UIButton {
         case transparent
     }
 
-    var style: Style?{
+    var style: Style? {
         didSet {
             testCaseStyle()
             testCaseStatus()

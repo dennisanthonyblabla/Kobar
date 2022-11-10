@@ -38,40 +38,42 @@ final class BattleCoordinator: BaseCoordinator {
             .distinctUntilChanged { $0.status == $1.status }
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] state in
-                self?.onBattleStateChanged(state)
+                self?.onStartBattleStateChanged(state)
             }
             .disposed(by: disposeBag)
         
-        battleViewModel.battleEndedState()
-            .subscribe { [weak self] state in
-                self?.onBattleFinished(state)
+        battleViewModel.battleStatus()
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] status in
+                self?.onBattleStatusChanged(status)
             }
             .disposed(by: disposeBag)
     }
     
-    func onBattleStateChanged(_ state: BattleState) {
+    func onStartBattleStateChanged(_ state: StartBattleState) {
         switch state.status {
         case .pending:
             let readyVC = makeReadyForBattlePageViewController(user: state.user, with: state.battle)
-            show(readyVC)
+            replaceAllExceptRoot(with: readyVC)
         case .started:
             let battleVC = makeBattlefieldPageViewController(state)
-            show(battleVC)
+            replaceAllExceptRoot(with: battleVC)
         case .canceled:
             pop()
             completion?()
         }
     }
     
-    func onBattleFinished(_ state: FinishedBattleState) {
-        switch state {
+    func onBattleStatusChanged(_ state: BattleState) {
+        switch state.status {
         case .ongoing:
             break
-        case .waitingForOpponent(_):
-            let doneVC = makeBattleDoneViewController()
-            show(doneVC)
-        case .battleFinished(_):
-            break
+        case let .waitingForOpponent(result):
+            let doneVC = makeBattleDoneViewController(result, state.battle.endTime)
+            replace(with: doneVC)
+        case let .battleFinished(result):
+            let resultVC = makeBattleResultViewController(state.user, state.battle, result)
+            replaceAllExceptRoot(with: resultVC)
         }
     }
     
@@ -102,7 +104,7 @@ final class BattleCoordinator: BaseCoordinator {
         return readyVC
     }
     
-    func makeBattlefieldPageViewController(_ state: BattleState) -> BattlefieldPageViewController {
+    func makeBattlefieldPageViewController(_ state: StartBattleState) -> BattlefieldPageViewController {
         let battleVC = BattlefieldPageViewController()
         
         battleVC.userName = state.user.nickname
@@ -134,10 +136,75 @@ final class BattleCoordinator: BaseCoordinator {
         return battleVC
     }
     
-    func makeBattleDoneViewController() -> BattleDoneVC {
+    func makeBattleDoneViewController(_ result: SubmitCodeResult, _ endDate: Date) -> BattleDoneVC {
         let doneVC = BattleDoneVC()
         
+        doneVC.onComplete = {
+            self.replace(with: self.makeTestCaseViewController(result, endDate))
+        }
+        
         return doneVC
+    }
+    
+    func makeTestCaseViewController(_ result: SubmitCodeResult, _ endDate: Date) -> TestCaseViewController {
+        let testVC = TestCaseViewController()
+        
+        testVC.submitCodeResult = result
+        
+        testVC.onNext = {
+            self.replace(with: self.makeWaitingRoomViewController(endDate))
+        }
+        
+        return testVC
+    }
+    
+    func makeWaitingRoomViewController(_ endDate: Date) -> TungguLawanViewController {
+        let waitVC = TungguLawanViewController()
+        
+        waitVC.endDate = endDate
+        
+        waitVC.onNewBattle = {
+            self.navigationController.popToRootViewController(animated: true)
+        }
+        
+        return waitVC
+    }
+    
+    func makeBattleResultViewController(
+        _ user: User,
+        _ battle: Battle,
+        _ result: BattleResult
+    ) -> HasilTandingPageViewController {
+        let resultVC = HasilTandingPageViewController()
+
+        resultVC.user = user
+        resultVC.opponent = battle.users.first { $0.id != user.id } ?? .empty()
+        
+        resultVC.testCases = battle.problem?.testCases.count ?? 0
+        
+        resultVC.result = result
+        
+        resultVC.onFinish = {
+            self.navigationController.popToRootViewController(animated: true)
+        }
+        
+        return resultVC
+    }
+    
+    private func replaceAllExceptRoot(with viewController: UIViewController) {
+        guard navigationController.viewControllers.count > 1 else { return }
+        
+        let viewControllers = [navigationController.viewControllers[0], viewController]
+        
+        navigationController.setViewControllers(viewControllers, animated: true)
+    }
+    
+    private func replace(with viewController: UIViewController) {
+        let count = navigationController.viewControllers.count
+        let viewControllers: [UIViewController] =
+            navigationController.viewControllers[..<(count - 1)] + [viewController]
+        
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
     
     private func pop() {

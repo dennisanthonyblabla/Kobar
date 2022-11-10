@@ -10,7 +10,19 @@ import SwiftUI
 import SnapKit
 
 class TestCaseViewController: UIPageViewController {
-    private lazy var lanjutBtn = MedButtonView(variant: .variant2, title: "lanjut")
+    var onNext: (() -> Void)?
+    
+    var submitCodeResult: SubmitCodeResult = .empty()
+    
+    var selectedIndex = 0
+    
+    private lazy var testCaseBtn: [TestCaseButtonView] = []
+    
+    private lazy var lanjutBtn: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "lanjut")
+        button.addVoidAction(onNext, for: .touchDown)
+        return button
+    }()
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -44,7 +56,7 @@ class TestCaseViewController: UIPageViewController {
 
     private lazy var outputHarapLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ouptut Yang Diharapkan"
+        label.text = "Output Yang Diharapkan"
         label.font = .semi17
         label.textColor = .kobarBlack
         return label
@@ -113,13 +125,13 @@ class TestCaseViewController: UIPageViewController {
         return textView
     }()
 
-    private lazy var testCases: [TestCaseButton] = {
-        var testCases: [TestCaseButton] = [
-            TestCaseButton(status: .correct, order: 1),
-            TestCaseButton(status: .correct, order: 2),
-            TestCaseButton(status: .wrong, order: 3),
-            TestCaseButton(status: .correct, order: 4),
-            TestCaseButton(status: .wrong, order: 5)
+    private lazy var testCases: [TestCaseButtonView] = {
+        var testCases: [TestCaseButtonView] = [
+            TestCaseButtonView(status: .correct, order: 1),
+            TestCaseButtonView(status: .correct, order: 2),
+            TestCaseButtonView(status: .wrong, order: 3),
+            TestCaseButtonView(status: .correct, order: 4),
+            TestCaseButtonView(status: .wrong, order: 5)
         ]
         testCases[0].isSelected = true
         isTestCaseSelected(btn: testCases[0])
@@ -237,7 +249,7 @@ class TestCaseViewController: UIPageViewController {
         }
     }
 
-    private func isTestCaseSelected(btn: TestCaseButton) {
+    private func isTestCaseSelected(btn: TestCaseButtonView) {
         if btn.isSelected == true {
             btn.style = .fill
         } else {

@@ -8,7 +8,19 @@
 import Foundation
 import RxSwift
 
-enum FinishedBattleState {
+struct BattleState {
+    let user: User
+    let battle: Battle
+    let status: BattleStatus
+    
+    init(_ user: User, _ battle: Battle, _ status: BattleStatus) {
+        self.user = user
+        self.battle = battle
+        self.status = status
+    }
+}
+
+enum BattleStatus {
     case ongoing
     case waitingForOpponent(SubmitCodeResult)
     case battleFinished(BattleResult)
@@ -20,7 +32,7 @@ final class BattleViewModel {
     private let battle: Battle
     
     private let runCodeResultSubject = BehaviorSubject<RunCodeResult?>(value: nil)
-    private let finishedBattleSubject = BehaviorSubject<FinishedBattleState>(value: .ongoing)
+    private let finishedBattleSubject = BehaviorSubject<BattleState?>(value: nil)
     
     init(socketService: SocketIODataSource, user: User, battle: Battle) {
         self.socketService = socketService
@@ -31,8 +43,15 @@ final class BattleViewModel {
             self?.runCodeResultSubject.onNext(result)
         }
         
-        self.socketService.onCodeSubmit = { [weak self] result in
-            self?.finishedBattleSubject.onNext(.waitingForOpponent(result))
+        self.socketService.onCodeSubmit = { [weak self, user, battle] result in
+            self?.finishedBattleSubject.onNext(
+                BattleState(user, battle, .waitingForOpponent(result)))
+        }
+        
+        self.socketService.onBattleFinished = { [weak self, user, battle] result in
+            self?.finishedBattleSubject.onNext(
+                BattleState(user, battle, BattleStatus.battleFinished(result)))
+            self?.finishedBattleSubject.onCompleted()
         }
     }
     
@@ -61,8 +80,9 @@ final class BattleViewModel {
             .asObservable()
     }
     
-    func battleEndedState() -> Observable<FinishedBattleState> {
+    func battleStatus() -> Observable<BattleState> {
         finishedBattleSubject
+            .compactMap { $0 }
             .asObservable()
     }
 }

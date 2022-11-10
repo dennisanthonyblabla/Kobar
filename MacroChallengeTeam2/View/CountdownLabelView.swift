@@ -16,6 +16,8 @@ final class CountdownLabelView: UILabel {
         super.init(frame: .zero)
         self.endDate = endDate
         
+        text = "00:00"
+        
         setupTimer()
     }
     

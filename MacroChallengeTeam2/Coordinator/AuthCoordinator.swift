@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 
 /// Responsible for navigation when onAuthStateChanged is called
+// TODO: @salman give this proper state mgmt handling
 final class AuthCoordinator: BaseCoordinator {
     // TODO: @salman i think there's a better way to do this, but for now isoke
     var goToInviteFriendCoordinator: ((User) -> Coordinator)?
@@ -47,7 +48,7 @@ final class AuthCoordinator: BaseCoordinator {
     
     func onAuthStateChanged(_ authUser: AuthUser?) {
         guard let authUser = authUser else {
-            show(makeSignInPageViewController())
+            replace(with: makeSignInPageViewController())
             return
         }
         
@@ -57,7 +58,7 @@ final class AuthCoordinator: BaseCoordinator {
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] user in
                 guard let viewController = self?.makeMainPageViewController(with: user) else { return }
-                self?.show(viewController)
+                self?.replace(with: viewController)
             }
             .disposed(by: disposeBag)
     }
@@ -101,6 +102,10 @@ final class AuthCoordinator: BaseCoordinator {
         }
         
         return mainVC
+    }
+    
+    private func replace(with viewController: UIViewController) {
+        navigationController.setViewControllers([viewController], animated: true)
     }
 
     private func show(_ viewController: UIViewController) {

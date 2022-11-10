@@ -9,6 +9,10 @@ import Foundation
 
 struct SubmitCodeResult: Codable {
     let tests: [SubmitTestResult]
+    
+    static func empty() -> SubmitCodeResult {
+        SubmitCodeResult(tests: [])
+    }
 }
 
 struct SubmitTestResult: Codable {

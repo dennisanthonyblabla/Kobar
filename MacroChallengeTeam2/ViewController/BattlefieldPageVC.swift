@@ -253,7 +253,7 @@ final class BattlefieldPageViewController: UIViewController {
         var previousBtn: Int?
         var currentBtn: Int?
         for i in 0..<problem.exampleCount {
-            contoh.append(BattleContohView(title: "contoh " + "(\(i))"))
+            contoh.append(BattleContohView(title: "contoh " + "(\(i + 1))"))
         }
         
         for (index, i) in contoh.enumerated() {

@@ -8,19 +8,19 @@
 import Foundation
 import RxSwift
 
-struct BattleState {
+struct StartBattleState {
     let user: User
     let battle: Battle
-    let status: BattleStatus
+    let status: StartBattleStatus
     
-    init(_ user: User, _ battle: Battle, _ status: BattleStatus) {
+    init(_ user: User, _ battle: Battle, _ status: StartBattleStatus) {
         self.user = user
         self.battle = battle
         self.status = status
     }
 }
 
-enum BattleStatus {
+enum StartBattleStatus {
     case pending
     case started
     case canceled
@@ -47,21 +47,23 @@ class StartBattleViewModel {
             data: CancelBattleDto(battleId: battle.id))
     }
     
-    func battleState() -> Observable<BattleState> {
-        Observable<BattleState>.create { [weak self, user, battle] observer in
+    func battleState() -> Observable<StartBattleState> {
+        Observable<StartBattleState>.create { [weak self, user, battle] observer in
             // If battle problem is nil, then battle hasn't started
             // Otherwise, battle must have started already
-            let initialStatus: BattleStatus = battle.problem == nil ? .pending : .started
+            let initialStatus: StartBattleStatus = battle.problem == nil ? .pending : .started
             
-            observer.onNext(BattleState(user, battle, initialStatus))
+            observer.onNext(StartBattleState(user, battle, initialStatus))
             
             self?.socketService.onBattleCanceled = {
-                observer.onNext(BattleState(user, battle, .canceled))
+                observer.onNext(StartBattleState(user, battle, .canceled))
+                observer.onCompleted()
             }
             
             self?.socketService.onBattleStarted = { noUserBattle in
                 guard let battle = self?.battle else { return }
-                observer.onNext(BattleState(user, noUserBattle.join(with: battle), .started))
+                observer.onNext(StartBattleState(user, noUserBattle.join(with: battle), .started))
+                observer.onCompleted()
             }
             
             return Disposables.create {}
