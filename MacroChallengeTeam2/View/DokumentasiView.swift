@@ -10,7 +10,16 @@ import SnapKit
 import WebKit
 
 final class DokumentasiView: UIView {
-    private lazy var closeBtn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
+    private lazy var closeBtn: SmallIconButtonView = {
+        let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
+        btn.addAction(
+            UIAction { _ in
+                print("Touched Close")
+            },
+            for: .touchUpInside
+        )
+        return btn
+    }()
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -188,7 +197,7 @@ final class DokumentasiView: UIView {
     }
 
     private func loadHTML(name: String) {
-        var htmlPath = Bundle.main.path(forResource: name, ofType: "html")
+        let htmlPath = Bundle.main.path(forResource: name, ofType: "html")
         let url = URL(fileURLWithPath: htmlPath ?? "none")
         let request = URLRequest(url: url)
         self.showHTML.load(request)
@@ -200,6 +209,17 @@ final class DokumentasiView: UIView {
                 btn.setTitleColor(.white, for: .normal)
                 btn.setTitleColor(.white, for: .highlighted)
                 btn.backgroundColor = .kobarBlueActive
+                UIView.animate(
+                    withDuration: 1.5,
+                    delay: 0,
+                    options: [.curveEaseInOut],
+                    animations: {
+                        btn.transform = CGAffineTransform.identity.scaledBy(x: 0.8, y: 0.8)
+                        btn.transform = CGAffineTransform.identity.scaledBy(x: 1, y: 1)
+                        btn.alpha = 1
+                    },
+                    completion: nil
+                )
             } else {
                 self.defaultBtnConf(btn: btn)
             }
@@ -212,6 +232,4 @@ final class DokumentasiView: UIView {
         btn.layer.cornerRadius = 22
         btn.addTarget(self, action: #selector(isBtnSelected(_: )), for: .touchUpInside)
     }
-
-
 }
