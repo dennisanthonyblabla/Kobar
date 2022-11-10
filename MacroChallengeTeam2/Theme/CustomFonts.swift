@@ -13,6 +13,7 @@ extension UIFont {
     static let regular22 = UIFont(name: "SFProRounded-Regular", size: 22)
     static let regular24 = UIFont(name: "SFProRounded-Regular", size: 24)
     static let regular28 = UIFont(name: "SFProRounded-Regular", size: 28)
+    static let regular34 = UIFont(name: "SFProRounded-Regular", size: 34)
     static let medium17 = UIFont(name: "SFProRounded-Medium", size: 17)
     static let medium22 = UIFont(name: "SFProRounded-Medium", size: 22)
     static let medium28 = UIFont(name: "SFProRounded-Medium", size: 28)

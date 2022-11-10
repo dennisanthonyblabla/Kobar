@@ -1,0 +1,727 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Looping</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ed350f4e-a280-40df-94c3-4604d55ab69b" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🔁</span></div><h1 class="page-title">Looping</h1></header><div class="page-body"><p id="5accdd8c-b1d9-4081-9aaf-173783e11945" class="">Kayak yang kita tau, kode yang kita tulis di Gaul-lang bakal dijalanin dari atas kebawah.</p><p id="bf65d0d3-5359-4cd4-9740-e41d12f5f7f9" class="">Kadang-kadang, kita perlu ngelakuin hal yang sama berulang kali, di Gaul-lang kita bisa lakuin itu dengan cara tulis perintah nya berkali-kali.</p><p id="76bac1af-7c53-46a1-be31-a71a7f6c061e" class="">Contohnya kalo kita mau nulis teks <code>“Apaan tuh”</code> 5 kali, berarti kita harus tulis perintah nya 5 kali juga.</p><pre id="db436012-9bb2-4946-aaa4-b39f7365b8de" class="code"><code>tulis &quot;Apaan tuh&quot;
+tulis &quot;Apaan tuh&quot;
+tulis &quot;Apaan tuh&quot;
+tulis &quot;Apaan tuh&quot;
+tulis &quot;Apaan tuh&quot;</code></pre><p id="95a885d8-69d7-42de-b5c0-d5e06c72602a" class="">Gampang banget kan, tinggal copas aja. Tapi, sekarang gimana kalo kita harus tulis dia 10 kali? Ato 100 kali? 1000 kali sekalian. Makin lama makin ga efektif kalo kita harus tulis dia manual.</p><p id="1b78a914-7031-4e99-98ec-1ba1baece41e" class="">Kita bisa mencapai hasil yang sama dengan konsep yang namanya perulangan atau looping. </p><p id="5e0e77c7-3931-499a-92f0-64dce35f08c4" class="">Di Gaul-lang, ada 2 jenis perulangan, <code>ulangin</code> dan <code>selama</code>. Coba kita liat cara kerjanya.</p><h2 id="e9f22845-3649-4a82-bbcf-ad12789ccc06" class="">1. Selama (while loop)</h2><p id="6d4f3692-8400-475a-b675-55f3948e5313" class="">Cara kerjanya <code>selama</code> itu mirip sama cara kerjanya <code>kalo</code>. </p><p id="9276ddb9-3160-49bc-96fb-3235d03cfc22" class=""><code>selama</code> butuh syarat yang nilainya itu <code>benar</code> atau <code>salah</code>, bedanya kalau <code>kalo</code> bakal masuk ke blok kode nya kalau syaratnya bernilai <code>benar</code> dan di skip kalau dia bernilai <code>salah</code>.</p><p id="00a108a6-5517-4ba0-9a5c-feebb97d2390" class="">Kalau <code>selama</code> bakal masuk ke blok kode nya selama syaratnya bernilai <code>benar</code> dan akan ngulang-ngulang terus jalanin blok kode itu. </p><p id="b7bc80cc-e87a-4343-a73a-525c82a435e8" class="">Dia cuma akan berhenti ngulangin blok kode nya ketika syaratnya bernilai <code>salah</code>.</p><pre id="65856344-f1d7-4e0f-a4c2-48ab2ab441e3" class="code"><code>gua_ganteng itu benar
+
+selama gua_ganteng
+	tulis &quot;Ganteng banget coy&quot;
+yaudah</code></pre><p id="cff89aac-7a36-4a01-ae58-81130f623d20" class="">Nah, program diatas bakal nulis <code>“Gua ganteng banget coy”</code> berulang kali. Berapa kali tepatnya? Jawabannya selamanya, alias ga berhenti-berhenti. </p><p id="f12957be-450b-474b-821b-7c47b5de7663" class="">Kenapa tuh? Soalnya variabel <code>gua_ganteng</code> nilainya <code>benar</code> terus. Setiap habis jalanin blok kode nya, <code>selama</code> bakal cek lagi syarat nya, karena <code>gua_ganteng</code> nilainya gapernah berubah, jadi dia ngulang aja terus disitu sampe kiamat.</p><p id="9db77d4d-7616-4a71-bf03-1bb590d961b0" class="">Kalau kita mau <code>selama</code> berhenti ngulang, kita harus ubah supaya syarat yang dia cek nilainya <code>salah</code>. </p><pre id="05bc1a87-8491-4bce-ac96-7d23ba6420c1" class="code"><code>i itu 1
+
+selama i &lt;= 5
+	tulis i
+	i itu i + 1
+yaudah</code></pre><p id="5ebc14b5-d442-4f5a-b047-a1a98aa2db69" class="">Kalau program diatas bakal ngulang 5 kali. Soalnya kita kasih syaratnya adalah kita bakal ngulangin blok kode nya selama nilai <code>i</code> kurang dari atau sama dengan <code>5</code>. </p><p id="9409d7cd-82f4-47b8-ae50-770b4a5d00e5" class="">Di setiap perulangan, nilai <code>i</code> kita tambahin <code>1</code>, makannya waktu nilai <code>i</code> jadi 6, syaratnya bakal ngehasilin nilai <code>salah</code>. Keluar deh kita dari perulangan kita.</p><p id="51aae067-f3b0-47ee-b36d-e4776226abc7" class="">Hasil dari program diatas adalah</p><pre id="17c3db08-25dd-4747-b46c-5069d1ade1dd" class="code"><code>1
+2
+3
+4
+5</code></pre><p id="c214d02b-9e32-4e1c-b4a8-44e3d7faf84a" class="">Jadi kalau kita mau bikin program kayak contoh kita yang pertama, kita bisa tulisnya kayak gini</p><pre id="2e0e9325-a6a7-42cb-8c3a-13a3abfbc17c" class="code"><code>i itu 1
+selama i &lt;= 5
+	tulis &quot;Apaan tuh&quot;
+	i itu i + 1
+yaudah</code></pre><p id="2dfbc357-0f33-43e5-8fbc-ed55a8191afc" class="">Kalau kita mau dia ngulangnya 10 kali tinggal diubah aja syaratnya</p><pre id="11875d44-5d68-4b39-a7e5-121850eac4a2" class="code"><code>i itu 1
+selama i &lt;= 10
+	tulis &quot;Apaan tuh&quot;
+	i itu i + 1
+yaudah</code></pre><p id="c8f6f0c4-8eec-45f9-973c-590a4bb5ae08" class="">100 kali? Ga masalah!</p><pre id="37f5a47d-b195-4d2c-a3ae-c6e24563695b" class="code"><code>i itu 1
+selama i &lt;= 100
+	tulis &quot;Apaan tuh&quot;
+	i itu i + 1
+yaudah</code></pre><p id="02364b4e-8514-4e21-99d4-7dd1f8dda872" class="">Kerennya lagi, kita bisa minta user kita untuk nentuin mau ngulangnya berapa kali pake <code>baca</code></p><pre id="64efd372-efe9-4635-9af1-4c03ba94becd" class="code"><code>baca n
+i itu 1
+
+selama i &lt;= n
+	tulis &quot;Apaan tuh&quot;
+	i itu i + 1
+yaudah</code></pre><p id="9634a05d-7405-46f5-a292-a9eec2ea9a43" class="">Nah, jadi tiap kali kita mau bikin perulangan pake <code>selama</code>, jangan lupa 3 hal ini:</p><ul id="799196e8-d8ff-4807-bd7d-7d97647fb22c" class="bulleted-list"><li style="list-style-type:disc">Siapin variabel untuk jadi syaratnya</li></ul><ul id="7efd7329-d37a-4970-a6fb-7674a374f4d5" class="bulleted-list"><li style="list-style-type:disc">Cek syarat perulangannya</li></ul><ul id="095c2e7e-d6c6-4265-9e36-e848040f1e80" class="bulleted-list"><li style="list-style-type:disc">Update nilai variabel yang jadi syaratnya supaya dia ga ngulang terus tanpa batas</li></ul><h2 id="351d4a11-0531-4ac6-9c06-d98d4c85c005" class="">2. Ulangin (for loop)</h2><p id="55af2695-1a42-4a6f-a4c6-3bf00f7ef2ec" class="">Oke, kita udah tau cara ngulangin kode pake <code>selama</code></p><p id="f2aa8d73-6a6b-464d-bb47-5f9070e9b26b" class="">Tapi ga enaknya pake <code>selama</code>, kita harus inget untuk implementasiin 3 hal yang wajib ga boleh kita lupain, variabelnya, syaratnya, sama update variabel nya. Apalagi yang update nilai variabel, pasti sering banget kelupaan.</p><p id="9b5a78da-dbaf-4df6-9256-96c90f43773f" class="">Biar lebih gampang, kita punya cara lain untuk ngulangin kode di Gaul-lang. Kita bisa pake <code>ulangin</code></p><p id="85e95127-1607-4687-915c-ed32e19cabfa" class="">Contohnya kita pake program tadi</p><pre id="3fa5e8ed-5f3c-450f-8445-657fdeb7cc17" class="code"><code>i itu 1
+selama i &lt;= 5
+	tulis &quot;Apaan tuh&quot;
+	i itu i + 1
+yaudah</code></pre><p id="3f072c4d-601c-4bb5-9b3b-ac38807d5301" class="">Banyak banget yang mesti kita inget dan ga boleh kelupaan, kalau versi <code>ulangin</code> kayak gini</p><pre id="ad5d2146-d979-4bac-8ba3-dc8f5f5e7e8f" class="code"><code>ulangin i dari 1 sampe 5
+	tulis &quot;Apaan tuh&quot;
+yaudah</code></pre><p id="25063fc1-4c78-45dd-994a-e0bd68a367dc" class="">Sebenernya yang dia lakuin sama persis kayak <code>selama</code>, bedanya kita langsung tetapin variabel nya, nilai awalnya, sekaligus syaratnya.</p><p id="8d136dec-1deb-4892-8624-b98dad82a9f8" class="">Update nilai nya dimana dong? Atau simpelnya, nambahin nilai ke variabel <code>i</code> nya kapan? Nah, si <code>ulangin</code> ini udah pinter. Dia otomatis bakal nambahin <code>1</code> ke variabel <code>i</code> di setiap perulangan.</p><p id="3a1dd35b-a56d-429e-b2b6-ba2ed67362ea" class="">Oke, tapi kalau kita gamau nambahnya cuman <code>1</code> tiap ngulang gimana?</p><p id="1fd15a85-2e9c-42f0-8e73-3f38c5b8b87a" class="">Ambil contoh ini</p><pre id="aa5c102c-f5ba-4ce6-b79a-945e14caf16a" class="code"><code>i itu 1
+selama i &lt;= 5
+	tulis i
+	i itu i + 2
+yaudah</code></pre><p id="c28afae6-e9c2-40f7-a924-66de9a877cf7" class="">Di program ini <code>i</code> nya nambah 2 tiap perulangan, jadi hasilnya</p><pre id="ec6d2c39-2768-469c-8e7e-0222dcd4e7ac" class="code"><code>1
+3
+5</code></pre><p id="6a0ec3f3-dcef-40e8-8e27-a9fbadef5275" class="">Kalau di <code>ulangin </code>cara nya gimana untuk bisa ubah penambahan nya? Gampang, tinggal tambahin <code>longkap</code>.</p><pre id="f167f2f0-9296-4f5b-b46d-8fe78b0f9d15" class="code"><code>ulangin i dari 1 sampe 5 longkap 2
+	tulis i
+yaudah</code></pre><p id="9e8dc0ab-eb44-4d59-8c84-32581f8a9c90" class="">Hasilnya persis kayak versi <code>selama</code> nya</p><pre id="795a2c2e-86b4-4cc4-b69e-a352aea07cd3" class="code"><code>1
+3
+5</code></pre><p id="bf2577bb-f832-43a5-8dcf-a54db3efd115" class="">Jadi kalau <code>longkap</code> nya ga kita tulis, dia otomatis bakal nambahin <code>1</code>, kalau mau diubah tinggal kita kasih tau aja.</p><p id="0b4d1f57-3772-49c8-9972-8db22e87a8d7" class="">Oiya, <code>longkap</code> juga bisa kita pake buat perulangan yang ngitungnya mundur.</p><pre id="8dddc018-acfa-4abb-b64b-e33f8e5cbcfb" class="code"><code>ulangin i dari 5 sampe 1 longkap -1
+	tulis i
+yaudah</code></pre><p id="2e052730-3280-4820-91b8-c9028b4481c7" class="">Hasilnya jadi gini</p><pre id="48e7f117-75ec-49b9-bbe6-3748c487ae11" class="code"><code>5
+4
+3
+2
+1</code></pre><p id="94be4c36-85ea-4f95-97c4-05240cf5c47a" class="">
+</p></div></article></body></html>

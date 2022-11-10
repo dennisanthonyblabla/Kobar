@@ -1,0 +1,689 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Variabel</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ea438e45-d25a-489d-b75c-581de4aab9ae" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🖖</span></div><h1 class="page-title">Variabel</h1></header><div class="page-body"><p id="7807429b-7341-4b6c-9f75-f8468d38d6da" class="">Variabel itu bisa kita pake buat nampung ato nyimpen nilai.</p><p id="4e34d5a2-4ab4-4269-b1a5-9695a4f70d07" class="">Kalo di Gaul-lang, kita bisa bikin variabel langsung aja, ga usah kasih tipe data lagi, jadi langsung kita kasih nama sama nilai nya, ga pake ribet.</p><pre id="60be3ced-b2c8-48aa-8251-fbb43c2b7d36" class="code"><code>umur itu 21
+nama itu &quot;Awesa&quot;</code></pre><p id="11541185-a2d8-4983-89fc-b19c481c5d91" class="">Si <code>itu</code> kita pake buat ngasih nilai ke variabel kita.</p><p id="a9423d48-c63d-4f9c-9d36-de4e522b8039" class="">Contohnya nih, nilai <code>21</code> kita simpen ke variabel <code>umur</code>, terus nilai <code>“Awesa”</code> kita simpen ke variabel <code>nama</code> .</p><h2 id="956d26c3-3c9d-4e18-88c0-f46defafac06" class="">Penamaan Variabel</h2><p id="ebea06ec-6638-46c8-a336-1d62c78fd68a" class="">Setiap variabel yang kita bikin di Gaul-lang mesti kita kasih nama. Kayak orang aja, kalo ga tau namanya ga bisa dipanggil kan? </p><p id="3eaec7e9-f357-4594-887e-4687c9fadb7d" class="">Sebelom bikin nama buat variabel di Gaul-lang, ada beberapa syarat yang wajib kudu musti lu perhatiin nih. Disimak ye.</p><h3 id="97e38711-cb8c-4836-842c-be41da2856d2" class="">1. Harus Unik!</h3><p id="bcf52721-6504-4b77-9662-c5f5c3c81ac3" class="">Pernah ga sih lu sekelas sama 2 orang yang namanya sama? Pasti bingung kan manggilnya? Kalo yang satu dipanggil dua-dua nya nyaut, ribet! </p><p id="56ed64b3-f515-4594-ab50-5325b6f7d936" class="">Nah, sama kayak gitu, nama variabel di Gaul-lang juga ga boleh sama ato dobel, alias harus unik.</p><pre id="cf76d6bc-4f5f-4cb2-8bfe-64ccba478e27" class="code"><code>nama itu &quot;Awesa&quot;
+nama itu &quot;Salman&quot;</code></pre><p id="031f6bd8-e039-476e-b9a3-68b0673d166c" class="">Kalo kasusnya kayak diatas ini, nanti pas lu cek nilai nya <code>nama</code>, dia cuman simpen si <code>“Salman”</code> doang, si <code>“Awesa”</code> kagak kesimpen, soalnya ketiban sama <code>“Salman”</code>.</p><p id="225b3636-fbc5-45e1-b5de-5682a2d7da22" class="">Kalo mau simpen dua-duanya, kita bedain aja namanya.</p><pre id="052ff67d-e8d0-4773-8733-385c1b40311d" class="code"><code>nama1 itu &quot;Awesa&quot;
+nama2 itu &quot;Salman&quot;</code></pre><p id="ffbb40bc-7268-46df-9cad-9d20f638e1e2" class="">Nah, cakep.</p><h3 id="74c82d2d-893f-4539-90b5-db407876e8df" class="">2. Ga Boleh Pake Spasi!</h3><p id="d9fd00c1-fd0a-49cd-b341-a6944dcc2769" class="">Kalo ini agak beda nih sama nama orang, di Gaul-lang, nama variabel ga boleh ada spasinya, alias cuman boleh 1 kata doang.</p><pre id="1922a4c8-9088-4061-ab73-d4f3b96fb33f" class="code"><code>umur dennis itu 23</code></pre><p id="55b853f3-a534-4802-a9cb-c27cdffbd70f" class="">Ini kagak boleh bray, soalnya umur dennis itu 2 kata. Jadi kalo kasusnya kayak gitu gimana dong? Biar tetep 1 kata, spasinya lu ganti aja sama <code>_</code> kayak alamat email.</p><pre id="e6c87266-52e2-4005-b487-d94ffa4d90b3" class="code"><code>umur_dennis itu 23</code></pre><h3 id="d0c7f0e0-de45-4e88-8e76-ba8d789db486" class="">3. Cuman Boleh Pake Huruf dan Angka</h3><p id="074644d0-aa8a-4437-95a1-2dba10f8adc0" class="">Pas ngasih nama variabel, lu boleh sekreatip mungkin, asal masih batas wajar ye, alias cuman boleh pake huruf sama angka. Jadi gaboleh tuh lu pake simbol aneh-aneh apalagi emoji.</p><pre id="27c02975-9b62-478b-8481-a9502d1621c4" class="code"><code>// Contoh yang bener
+hobi itu &quot;Memancing keributan&quot;
+tanggal_lah1r itu &quot;39 Januari 2001&quot;
+cekcek123 itu &quot;Mau Jumatan&quot;
+
+// Contoh yang salah
+h@!_gaes itu &quot;alay&quot;
+$5%6(*&amp; itu &quot;salah banget coy&quot;
+🤡 itu &quot;juga gaboleh&quot;</code></pre><p id="5e08066f-4b6e-459a-b2cf-74375e16fef4" class="">Oiya, satu lagi, nama variabel awalnya mesti huruf, gaboleh angka dulu.</p><pre id="08e91572-c245-4081-8ab3-9e5c283c6d44" class="code"><code>// Ini boleh
+kamar1 itu 206
+
+// Ini ga boleh
+1kamar itu &quot;haram&quot;</code></pre><h3 id="ad0c8bd8-80f8-443f-86d9-1ec2771a2f63" class="">4. Kata Sakral Ga Boleh Dipake</h3><p id="bc51c6b0-1815-4f6c-a26e-ad5a9c2c2f56" class="">Di Gaul-lang, ada beberapa kata-kata yang sakral dan ga boleh lu pake buat nama variabel. Mereka itu adalah perintah-perintah Gaul-lang, kayak</p><ul id="4e9ed774-9da4-45d2-a671-88dfd68812eb" class="bulleted-list"><li style="list-style-type:disc"><code>itu</code></li></ul><ul id="0b5edb44-c88b-45f3-896e-f3b57d51b4c4" class="bulleted-list"><li style="list-style-type:disc"><code>benar</code></li></ul><ul id="c34cacbc-46f5-48bf-a66c-70c3830f0522" class="bulleted-list"><li style="list-style-type:disc"><code>salah</code></li></ul><ul id="809f809c-b222-4f16-ae75-6345d4461b08" class="bulleted-list"><li style="list-style-type:disc"><code>kalo</code></li></ul><ul id="bc904616-c6bf-4f93-b78c-5d5cac8783fe" class="bulleted-list"><li style="list-style-type:disc"><code>yaudah</code></li></ul><ul id="369468e9-8c43-4824-8cfb-fbe442e26c0d" class="bulleted-list"><li style="list-style-type:disc"><code>lainnya</code></li></ul><ul id="e1cfd00e-eb9a-4e21-8f8d-00c17b2e8e5c" class="bulleted-list"><li style="list-style-type:disc"><code>baca</code></li></ul><ul id="4c4a7e6b-5bb5-4b11-b426-f18a6a707c1c" class="bulleted-list"><li style="list-style-type:disc"><code>tulis</code></li></ul><ul id="f6dacc30-bc78-4934-840c-fe6b5538f3b2" class="bulleted-list"><li style="list-style-type:disc">dan masih banyak lagi</li></ul><p id="3e66ad6e-ccb2-4f69-bb9c-bb805d40d232" class="">Simpelnya, kalo ada kata-kata yang dipake buat ngelakuin sesuatu di Gaul-lang, dia gaboleh dipake buat nama variabel.</p><h2 id="1201fd9d-c2ae-4298-99a2-a36824f3cb86" class="">Tipe Data</h2><p id="11b3843e-3af0-47c3-81ab-5d062a18264f" class="">Nilai ato data yang boleh kita simpen di variabel Gaul-lang ada beberapa tipe:</p><ul id="25ae9a3f-1cb9-4e82-bb4c-6584f6f5544d" class="bulleted-list"><li style="list-style-type:disc">Bilangan bulat (integer)</li></ul><ul id="ba7cdbee-b603-474b-af37-b0d66654d4e5" class="bulleted-list"><li style="list-style-type:disc">Desimal (float)</li></ul><ul id="4a619b1d-60de-437e-a9b2-7c9abb5a3492" class="bulleted-list"><li style="list-style-type:disc">Nilai benar / salah (boolean)</li></ul><ul id="f920cc30-c73c-4396-87cf-4a945212e77d" class="bulleted-list"><li style="list-style-type:disc">Teks (string)</li></ul><pre id="495d3c5b-f50b-4b20-b04e-75b676ae9440" class="code"><code>tahun itu 2022
+suhu itu 28.2
+aku_slay itu benar
+buat_dosa itu salah
+kota itu &quot;Jekardah&quot;</code></pre><p id="203dd994-ee1a-41bb-913f-9b2c5c7c032c" class="">
+</p></div></article></body></html>
