@@ -1,0 +1,730 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Operator &amp; Aritmatika</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="93af491d-84f4-4b64-aaca-7055384b35d2" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📐</span></div><h1 class="page-title">Operator &amp; Aritmatika</h1></header><div class="page-body"><h2 id="8260f694-2db3-4eac-b1d1-66bfb63bf1b3" class="">Operator</h2><p id="b6b7392a-591c-47c4-98f7-af385b3c9544" class="">Operator di Gaul-lang bukan berarti operator telepon ato warnet ya gaes, tapi simbol yang punya arti tertentu dan bisa kita pake buat melakukan sesuatu.</p><p id="df0454b9-c010-4d1c-a596-e469e51aa260" class="">Di Gaul-lang ada beberapa macem operator.</p><h3 id="a7d938f5-d584-445b-b42b-5373e6a1789e" class="">1. Assignment Operator - Operator buat Ngasih Nilai</h3><p id="8600e165-f9e0-4b1a-ba11-32b965b01050" class="">Di Gaul-lang, kalo kita mau kasih nilai, contohnya ke variabel, kita bisa pake kata <code>itu</code></p><pre id="6af1ee9c-f020-4b2c-bc82-c087bb56ee8a" class="code"><code>alamat itu &quot;Permata Hijau&quot;
+tinggi_badan itu 150
+rajin_beribadah itu benar</code></pre><p id="d2dcfa24-7504-49a4-9647-e83f137301ff" class="">Selain simpen nilai langsung, kita juga bisa simpen nilai dari variabel yang udah kita bikin sebelomnya loh.</p><pre id="97eb0815-52c6-45e5-84e4-2221b5b89250" class="code"><code>berat_badan itu 58
+berat_badan_juga itu berat_badan</code></pre><p id="b6670662-e8ab-4a55-bf3b-493913b0a641" class="">Kayak diatas itu, nilai <code>berat_badan</code> dan <code>berat_badan_juga</code> sama sama <code>58</code></p><h3 id="53b9a2e5-7923-4e30-a124-f9fcfa44485f" class="">2. Operator Penjumlahan</h3><p id="aac4978c-5e64-4910-ac6a-5775abb3f390" class="">Kalo kita punya 2 angka ato lebih, terus mau kita jumlahin, kita bisa pake operator <code>+</code></p><pre id="c1575e00-fd47-4945-bc71-31efe5efc33a" class="code"><code>lima_belas itu 10 + 5
+angka_juga itu 7 + 7 + 3
+angka1 itu 9
+angka2 itu angka1 + 1 // 9 + 1 = 10
+angka2 itu angka2 + 1 // 10 + 1 = 11</code></pre><p id="1a4c988f-1f89-4157-b4ab-0584b3c58aba" class="">Yang keren lagi, selain jumlahin angka, <code>+</code> juga bisa dipake buat gabungin teks.</p><p id="14061308-f17d-4705-8cc5-40626ae476dd" class="">
+</p><pre id="11183b3c-6612-46cc-8156-722f299a4615" class="code"><code>nama_depan itu &quot;Ahmad&quot;
+nama_belakang itu &quot;Supocky&quot;
+nama_lengkap itu nama_depan + nama_belakang // AhmadSupocky</code></pre><p id="2dae68a4-ba2a-4329-b8da-d03be7599f09" class="">Pas kita cek, nilai <code>nama_lengkap</code> jadinya <code>“AhmadSupocky”</code>. Kok dempet? Soalnya kita ga kasih spasi diantara <code>nama_depan</code> sama <code>nama_belakang</code>. Kalo mau ada spasinya bisa gini</p><pre id="f749de99-e197-4f6f-afe8-ecad657e7f6f" class="code"><code>nama_depan itu &quot;Ahmad&quot;
+nama_belakang itu &quot;Supocky&quot;
+nama_lengkap itu nama_depan + &quot; &quot; + nama_belakang</code></pre><p id="c7bcd678-77f7-46f9-bca4-a4e5fe2ae146" class="">Nah, ganteng.</p><h3 id="1b000092-9e3a-4ce4-ac35-133382dcbcbf" class="">3. Operator Pengurangan</h3><p id="f3d4dd54-5425-4e9c-9dc5-1efae603d462" class="">Buat ngurangin, kita bisa pake operator <code>-</code></p><pre id="b4bd8ded-a0b3-452e-a814-eb9c4b0a474e" class="code"><code>hasil itu 10 - 5
+hasil_juga itu hasil - 3
+hasil_lagi itu hasil_juga - hasil</code></pre><h3 id="18a85e18-c754-4ee4-ad8a-b5fd34ebf26c" class="">4. Operator Perkalian</h3><p id="df0241d0-42c5-479c-bd0b-b4d5fe8e87c8" class="">Kalo buat ngaliin, kita pakenya <code>*</code></p><pre id="59c707a9-8c73-4172-8caf-11efb903b758" class="code"><code>sembilan itu 3 * 3
+dua_tujuh itu sembilan * 3
+hasil_perkalian itu sembilan * dua_tujuh</code></pre><h3 id="a2ca3002-3a5a-4eb5-a0ee-0b8ea0e053ff" class="">5. Operator Pembagian</h3><p id="d708303a-2390-4878-bc66-061664c34c31" class="">Lawannya kali, pembagian, kita bisa pake <code>/</code></p><pre id="9b2d20c3-00de-486a-97f4-d64571f35794" class="code"><code>ongkos_greb itu 200000
+penumpang itu 5
+patungan itu ongkos_greb / penumpang</code></pre><h3 id="a622926f-72d1-45fa-ac36-348c5dce548b" class="">6. Operator Modulus - Sisa Bagi</h3><p id="936ff24d-ebd9-4db9-a0f8-9e8fec34eff6" class="">Nah yang ini mungkin ga biasa dipake kalo di sekolah. Coba kita liat dulu cara kerjanya.</p><p id="9579a28b-a3d6-45f1-a272-f83b7364c518" class="">Misal kita mau bagi angka nih. Ambil aja <code>15</code> dibagi <code>2</code>. Hasilnya <code>7.5.</code></p><p id="3b534fb5-693d-4f2e-8285-c4ba3b7ff775" class="">Nah gimana kalo kita gamau ada koma nya? Berarti hasilnya jadi <code>7</code>. </p><p id="9a79ab3d-87ba-44ff-9872-105adcaaeaf8" class="">Tapi <code>7</code> dikali <code>2</code> hasilnya <code>14</code>, kurang <code>1</code> dari <code>15</code>. </p><p id="18723a9e-af48-47cc-a82e-f8fcea4bdb8a" class="">Dalam kata lain <code>15 / 2 = 7, sisa 1</code>. Nah, si modulus itu adalah operator yang bisa kita pake untuk nyari sisa dari pembagian tadi. </p><p id="b831f806-5ce2-4574-b7f1-f7f7615746b2" class="">Kalo digambarin jadi gini</p><figure id="2e92980f-bbfe-4697-9a81-c4f5ec00d8af" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable rowspacing="0.1600em" columnalign="left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mphantom><mrow><mn>5</mn><mpadded height="0px" depth="0px"><mo stretchy="false" lspace="0em" rspace="0em">)</mo></mpadded></mrow></mphantom><mn>7</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>2</mn><mover accent="true"><mrow><mpadded height="0px" depth="0px"><mo stretchy="false" lspace="0em" rspace="0em">)</mo></mpadded><mn>15</mn></mrow><mo stretchy="true">‾</mo></mover></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mphantom><mrow><mn>5</mn><mpadded height="0px" depth="0px"><mo stretchy="false" lspace="0em" rspace="0em">)</mo></mpadded></mrow></mphantom><munder accentunder="true"><mn>14</mn><mo stretchy="true">‾</mo></munder></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mphantom><mrow><mn>10</mn><mpadded height="0px" depth="0px"><mo stretchy="false" lspace="0em" rspace="0em">)</mo></mpadded></mrow></mphantom><mn>1</mn></mrow></mstyle></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{array}{l}
+\phantom{
+  {5\smash{)}}
+}{
+  7
+} \\
+{2}\overline{\smash{)}15} \\
+\phantom{{5\smash{)}}}\underline{14} \\
+\phantom{{10\smash{)}}}1 \\
+\end{array}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:4.80444em;vertical-align:-2.15222em;"></span><span class="mord"><span class="mtable"><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.6522200000000002em;"><span style="top:-4.812220000000001em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="color:transparent;"><span class="mord" style="color:transparent;">5</span><span class="mord" style="color:transparent;"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mord" style="color:transparent;"><span class="mclose" style="color:transparent;">)</span></span></span></span></span></span></span></span></span><span class="mord"><span class="mord">7</span></span></span></span><span style="top:-3.60778em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8444400000000001em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mord"><span class="mclose">)</span></span></span></span></span></span></span></span><span class="mord">15</span></span></span><span style="top:-3.76444em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span><span style="top:-2.4077800000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="color:transparent;"><span class="mord" style="color:transparent;">5</span><span class="mord" style="color:transparent;"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mord" style="color:transparent;"><span class="mclose" style="color:transparent;">)</span></span></span></span></span></span></span></span></span><span class="mord underline"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6444399999999999em;"><span style="top:-2.84em;"><span class="pstrut" style="height:3em;"></span><span class="underline-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">14</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.20000000000000007em;"><span></span></span></span></span></span></span></span><span style="top:-1.2077800000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="color:transparent;"><span class="mord" style="color:transparent;">10</span><span class="mord" style="color:transparent;"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mord" style="color:transparent;"><span class="mclose" style="color:transparent;">)</span></span></span></span></span></span></span></span></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15222em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span></span></span></span></span></span></span></div></figure><p id="1dd42419-9421-4618-88a3-605f4a990dca" class="">Di Gaul-lang, operatornya modulus itu <code>%</code></p><pre id="a2ef8083-ff71-4974-a88f-675b700aa7e5" class="code"><code>hasil itu 15 % 2 // 15 % 2 = 1
+hasil itu 29 % 10 // 29 % 10 = 9
+hasil itu hasil % 5 // 9 % 5 = 4</code></pre><h2 id="219c6c13-5d0e-4df4-af4d-db53f874208e" class="">Operator Perbandingan</h2><p id="c62b8dd3-ce6a-41e1-82aa-dd950e6d92e2" class="">Sekarang ga cuman nyokap lu aja yang bisa banding-bandingin lu sama anak tetangga, lu juga bisa banding-bandingin nilai di Gaul-lang.</p><p id="5749af60-23c9-48bc-8aeb-980764ffc0ca" class="">Ada beberapa macem operator perbandingan di Gaul-lang, tapi semua operator nya ngehasilin nilai benar / salah, nama kerennya, boolean.</p><h3 id="07481bac-dc6c-4071-92fa-440ac55dbbc1" class="">1. Operator Sama Dengan</h3><p id="4879960a-d89a-43ef-9a5a-0e23ffe3eaec" class="">Perbadingan yang pertama, kita bisa bandingin apakah 2 hal punya nilai yang sama. Operatornya <code>==</code></p><pre id="c480627f-5fb1-4e47-943e-7d9ff1b9d2f2" class="code"><code>sama itu 10 == 10 // benar
+tidak_sama itu 10 == 5 // salah</code></pre><p id="3f95b26c-c71a-4c30-9f45-5a64567a6d66" class="">Perbandingan pertama, <code>10 == 10</code> hasilnya <code>benar</code>, soalnya 10 kan sama dengan 10. Nah kalo yang bawahnya, <code>10 == 5</code> hasilnya <code>salah</code>, soalnya 10 udah jelas beda dong sama 5.</p><h3 id="5e704d67-b1be-49ef-af52-f546b3510ce3" class="">2. Operator Tidak Sama Dengan</h3><p id="3e238685-402f-42d3-ab33-c1bd136e97d5" class="">Kadang, kita ga mau disama-samain sama orang lain, kayak sama anak tetangga ato mantan pacar gebetan, di Gaul-lang pun juga gitu, kadang kita pengen memastikan apakah 2 hal itu punya nilai yang <strong>GAK</strong><strong><em> </em></strong>sama. </p><p id="08514321-4361-4d3d-b8f2-39e495cddb97" class="">Operatornya <code>!=</code>.</p><pre id="fca56446-c2e3-4eaa-81b0-16f9ca5f64fd" class="code"><code>sama itu 10 != 10 // salah
+tidak_sama itu 10 != 5 // benar</code></pre><p id="d15f5c6c-a90f-4ce4-95f7-a4189f88690a" class="">Nah kalo sekarang hasilnya jadi kebalikan dari yang sama dengan.</p><h3 id="659f027f-c21c-48cb-bea4-0e9e9ee54fdc" class="">3. Operator Kurang Dari</h3><p id="c235781b-168f-4a91-a52b-69f06357bdc3" class="">Kita juga bisa cek apakah satu nilai lebih kecil dari nilai lainnya dengan operator <code>&lt;</code></p><pre id="814c984b-d123-4075-aae3-01ef86cfc4bf" class="code"><code>umur_kamel itu 19
+umur_awesa itu 21
+
+kamel_lebih_muda itu umur_kamel &lt; umur_awesa // benar
+awesa_lebih_muda itu umur_awesa &lt; umur_kamel // salah</code></pre><h3 id="e482bf69-6543-4c30-bf86-fa73cc8a7dd5" class="">4. Operator Lebih Dari</h3><p id="17dbbcf8-e308-413c-9510-ca7b74719dd3" class="">Kalo ini kebalikannya kurang dari, operator nya <code>&gt;</code></p><pre id="07a5a966-987d-4706-841c-85b10a41bf98" class="code"><code>umur_kamel itu 19
+umur_awesa itu 21
+
+kamel_lebih_tua itu umur_kamel &gt; umur_awesa // salah
+awesa_lebih_muda itu umur_awesa &gt; umur_kamel // benar</code></pre><h3 id="e03962ab-7eee-4fb3-a772-bbe6ab27bcb9" class="">5. Operator Kurang Dari Sama Dengan</h3><p id="a5575688-56b1-44d3-b432-c8e09063c25c" class="">Kadang-kadang, kita nilai yang pengen kita cek bisa kurang dari ato sama dengan standar tertentu. Contohnya kalo berat badan kita 80 ato kebawah, berarti kita belom perlu diet. Buat cek yang ini operatornya <code>&lt;=</code></p><pre id="8eaf9094-523a-4c56-b303-e345b3f98212" class="code"><code>berat itu 80
+belom_harus_diet itu berat &lt;= 80 // benar
+berat itu 75
+belom_harus_diet_juga itu berat &lt;= 80 // benar
+berat itu 81
+belom_harus_diet_lagi itu berat &lt;= 80 // salah, lo udah harus diet</code></pre><h3 id="1c3516d0-22bf-4e59-8aaf-a6fab72d0679" class="">6. Operator Lebih Dari Sama Dengan</h3><p id="b2fa1403-656e-4a9c-8003-39082b94e8c5" class="">Ini juga kebalikannya dari kurang dari sama dengan. Operatornya <code>&gt;=</code></p><pre id="6e9d4066-2323-44bb-a889-72b30479e47b" class="code"><code>kkm itu 75
+ga_dimarahin_emak itu 75 &gt;= kkm // benar
+ga_dimarahin_emak_juga itu 74 &gt;= kkm // salah, kena deh lo</code></pre><h2 id="b7ee89d5-8953-41e2-b05a-f4cd1da056b2" class="">Operator Logis</h2><p id="601896bd-e449-4367-a31d-7fc1582f06b3" class="">Nah, kalo yang ini buat gabungin hasil dari 2 nilai boolean (benar / salah).</p><h3 id="5deb4876-31c2-4560-8a9f-f7611cba2074" class="">1. Operator Dan</h3><p id="62035826-4989-42e5-9f18-25b83e44143c" class="">Ibarat pasangan, <code>dan</code> itu solid banget. Mereka cuman bakal bernilai <code>benar</code> kalo mereka berdua nilainya juga <code>benar</code>. Kalo salah satu aja diantara mereka <code>salah</code>, hasilnya juga <code>salah</code></p><p id="a8fc0864-649a-43d3-a637-796cfc2f5cbc" class="">Biar lebih jelas kita jabarin pake tabel yak</p><table id="6d8407e1-60ef-40d2-9373-02cd691aa427" class="simple-table"><tbody><tr id="c9462d4a-485d-4e34-ab52-d327d403465f"><td id="~uBG" class=""><strong>Nilai 1</strong></td><td id="\V~J" class=""><strong>Nilai 2</strong></td><td id="c{EK" class=""><strong>Hasil</strong></td></tr><tr id="d0c1c520-0e4a-4668-883e-0f30952aa3ef"><td id="~uBG" class="">benar</td><td id="\V~J" class="">benar</td><td id="c{EK" class="">benar</td></tr><tr id="e7a1684e-ad33-4ad9-9bc6-33781d7d5c49"><td id="~uBG" class="">benar</td><td id="\V~J" class="">salah</td><td id="c{EK" class="">salah</td></tr><tr id="b975db9f-3305-4445-ad86-f366ddae1897"><td id="~uBG" class="">salah</td><td id="\V~J" class="">benar</td><td id="c{EK" class="">salah</td></tr><tr id="1139740d-af30-4845-92e6-8b5aec6b1103"><td id="~uBG" class="">salah</td><td id="\V~J" class="">salah</td><td id="c{EK" class="">salah</td></tr></tbody></table><p id="3a191705-eb27-47e1-984b-a78ff5626ba6" class="">Contohnya gini</p><pre id="3d1e101a-776d-4423-94b4-9b6aeb7668ab" class="code"><code>nilai itu 80
+nilai_valid itu nilai &gt;= 0 dan nilai &lt;= 100 // benar
+
+nilai itu -10
+nilai_valid itu nilai &gt;= 0 dan nilai &lt;= 100 // salah</code></pre><p id="eca099ea-8ed1-4c1a-bd90-543b2aed1af1" class="">Di contoh pertama, <code>nilai</code> nya <code>80</code>, pas kita cek, dia lebih besar sama dengan <code>0</code> <strong><strong><strong><strong>DAN </strong></strong></strong></strong>lebih kecil dari <code>100</code>, karena dua perbandingan ini nilainya benar, jadi <code>nilai_valid</code> juga <code>benar</code></p><p id="48780dc4-8b3d-4c98-a9bb-98f2116cf082" class="">Coba kita liat contoh lain</p><pre id="cbb4a74a-d723-4d56-8f78-0144bc5fa6ce" class="code"><code>naik_motor itu benar
+musim_ujan itu salah
+
+harus_bawa_jas_ujan itu naik_motor == benar dan musim_ujan == benar <br />// salah</code></pre><p id="cb467e43-f58d-44be-ba71-206664212dbb" class="">Btw, kalo nilai yang kita cek itu boolean alias <code>benar</code> ato <code>salah</code>, kayak <code>naik_motor</code> sama <code>musim_ujan</code> di contoh ini, kita bisa langsung tulis aja nama variabel nya tanpa pake operator <code>==</code> lagi. Jadi contoh tadi bisa kita tulis kayak gini</p><pre id="76c14886-853c-4c82-9479-3abe1a7438b1" class="code"><code>naik_motor itu benar
+musim_ujan itu salah
+
+harus_bawa_jas_ujan itu naik_motor dan musim_ujan // salah</code></pre><h3 id="72879c48-f17e-4cfc-8b5d-a4f0b130fe7b" class="">2. Operator Atau</h3><p id="aea2afde-c5cf-4a0b-b925-ab19e7c34ad8" class="">Kalo si <code>atau</code>, mereka maunya menang sendiri. Asal salah satu <code>benar</code>, hasilnya juga <code>benar</code></p><table id="9138f893-898a-48a2-885e-b2979569b101" class="simple-table"><tbody><tr id="ed2d7b29-456f-44dc-98c2-a3fa976a1287"><td id="~uBG" class=""><strong>Nilai 1</strong></td><td id="\V~J" class=""><strong>Nilai 2</strong></td><td id="c{EK" class=""><strong>Hasil</strong></td></tr><tr id="93313c72-3684-480e-9f77-a798a6e97458"><td id="~uBG" class="">benar</td><td id="\V~J" class="">benar</td><td id="c{EK" class="">benar</td></tr><tr id="6c97460b-1159-4f3f-a579-75ab9998bb1d"><td id="~uBG" class="">benar</td><td id="\V~J" class="">salah</td><td id="c{EK" class="">benar</td></tr><tr id="ebb64257-932b-4b20-b46f-62e0b21e0cc1"><td id="~uBG" class="">salah</td><td id="\V~J" class="">benar</td><td id="c{EK" class="">benar</td></tr><tr id="1bf6cc89-7442-460e-b0cf-64fba0799d9b"><td id="~uBG" class="">salah</td><td id="\V~J" class="">salah</td><td id="c{EK" class="">salah</td></tr></tbody></table><p id="98c940cf-73d9-47cc-9afe-590ec7ac5559" class="">Kita kasih contoh lagi ya</p><pre id="4f6e3fcd-b2b6-4ff9-97b6-466fb3b02b3f" class="code"><code>jam itu 12
+capek itu salah
+
+bobok itu jam &gt; 10 atau capek // benar</code></pre><p id="10740dba-8a03-4bfc-b8e5-0d73a2d3ac8e" class="">Kalo kita coba artiin pake bahasa kita, kita bakal bobok kalo udah lewat dari jam 10 atau udah capek.</p><h3 id="f3d51a39-8ae8-47eb-ad17-b93336a8d777" class="">3. Operator Bukan (Kebalikan)</h3><p id="7af3fecb-6212-411b-9c5c-b160d8ca968b" class="">Si <code>bukan</code> ini rada spesial kayak martabak. Dia ga butuh pasangan kayak temen-temen nya yang diatas. Tapi hobinya rada aneh, suka ngebolak balik nilai.</p><table id="fded3149-2101-460e-870b-76f55a456ebe" class="simple-table"><tbody><tr id="705d77bf-a715-4cc3-8e6b-7909e431ff92"><td id="GBxQ" class=""><strong>Nilai</strong></td><td id="_YfD" class=""><strong>Hasil</strong></td></tr><tr id="f64d60f1-3136-4b40-8749-258b1ae4a0d0"><td id="GBxQ" class="">benar</td><td id="_YfD" class="">salah</td></tr><tr id="3b4b5d9d-3655-4b54-b960-e7a03ba1e1a4"><td id="GBxQ" class="">salah</td><td id="_YfD" class="">benar</td></tr></tbody></table><p id="939ff90f-4018-4566-aa95-7e164ac525cb" class="">Contohnya gini</p><pre id="1f9ac702-5627-4e82-9869-922ad1f806bf" class="code"><code>seger itu benar
+harus_minum_kopi itu bukan seger // salah</code></pre><p id="08a866c0-4ba8-4f28-9e4f-eb0e0fb84ff4" class="">Kalo diartiin, kalo masih seger, gausah minum kopi dulu.</p><p id="d0893937-55c8-4f0d-8ccf-a951a76c0652" class="">
+</p></div></article></body></html>
