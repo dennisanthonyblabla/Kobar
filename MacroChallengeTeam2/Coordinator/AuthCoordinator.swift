@@ -17,7 +17,7 @@ final class AuthCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     
     private let authViewModel: AuthViewModel
-    private var userViewModel: UserViewModel
+    private let userViewModel: UserViewModel
     
     private let disposeBag = DisposeBag()
     
@@ -39,10 +39,10 @@ final class AuthCoordinator: BaseCoordinator {
         authViewModel.authState()
             .observe(on: MainScheduler.instance)
             .distinctUntilChanged { $0?.id == $1?.id }
-            .subscribe {
-                self.onAuthStateChanged($0)
+            .subscribe { [weak self] in
+                self?.onAuthStateChanged($0)
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
     
     func onAuthStateChanged(_ authUser: AuthUser?) {

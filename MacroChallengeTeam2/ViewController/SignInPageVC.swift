@@ -28,7 +28,6 @@ class SignInPageViewController: UIViewController {
         let gif = LottieAnimationView(animation: animation)
         gif.contentMode = .scaleAspectFit
         gif.loopMode = .loop
-        gif.play()
         return gif
     }()
 
@@ -64,13 +63,11 @@ class SignInPageViewController: UIViewController {
 
     private lazy var asikinAjaLabel: UILabel = {
         let label = UILabel()
-        let text = NSMutableAttributedString(
-            string: "Yuk masuk untuk\nlanjutin akun lo!",
-            attributes: [
-                .font: UIFont.bold34 ?? UIFont.systemFont(ofSize: 34)
-            ]
+        let text = NSAttributedString(
+            string: "Yuk masuk untuk\nlanjutin akun lo!"
         ).withLineSpacing(8)
 
+        label.font = .bold34
         label.attributedText = text
         label.textColor = .white
         label.numberOfLines = 2
@@ -117,6 +114,11 @@ class SignInPageViewController: UIViewController {
 
         return view
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        signInDoorGIF.play()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,6 +133,11 @@ class SignInPageViewController: UIViewController {
         view.addSubview(signInDoorGIF)
 
         setupAutoLayout()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        signInDoorGIF.stop()
+        super.viewDidDisappear(animated)
     }
 
     func setupAutoLayout() {

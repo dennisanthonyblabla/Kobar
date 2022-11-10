@@ -19,7 +19,6 @@ final class MedButtonView: UIButton {
     private var variant: Variants?
     private var title: String?
     private var isPressed = false
-    private var width: Double?
 
     private lazy var frontBG: UIView = {
         let view = UIView()
@@ -41,11 +40,10 @@ final class MedButtonView: UIButton {
         super.init(frame: frame)
     }
 
-    init(variant: Variants, title: String, width: Double? = nil) {
+    init(variant: Variants, title: String) {
         super.init(frame: .zero)
         self.title = title
         self.variant = variant
-        self.width = width
 
         addSubview(backBG)
         addSubview(frontBG)
@@ -99,9 +97,6 @@ final class MedButtonView: UIButton {
     private func setupAutoLayout() {
         self.snp.makeConstraints { make in
             make.height.equalTo(64)
-            if let width = self.width {
-                make.width.equalTo(width)
-            }
         }
 
         backBG.snp.makeConstraints { make in

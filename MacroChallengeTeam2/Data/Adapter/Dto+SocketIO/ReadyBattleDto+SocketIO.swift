@@ -9,4 +9,7 @@ import Foundation
 import SocketIO
 
 extension ReadyBattleDto: SocketData {
+    func socketRepresentation() -> SocketData {
+        ["userId": userId, "battleId": battleId]
+    }
 }

@@ -13,10 +13,10 @@ extension UIImageView {
         
         guard let validURL = url else { return }
         
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: validURL) {
                 DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
+                    self?.image = UIImage(data: data)
                 }
             }
         }

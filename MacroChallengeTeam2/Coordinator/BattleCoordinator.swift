@@ -2,118 +2,93 @@
 //  BattleCoordinator.swift
 //  Macro Challenge Team2
 //
-//  Created by Mohammad Alfarisi on 09/11/22.
+//  Created by Mohammad Alfarisi on 10/11/22.
 //
 
 import UIKit
 import RxSwift
 
 final class BattleCoordinator: BaseCoordinator {
-    enum BattleAction {
-        case inviteFriend, joinFriend, joinRandom
-    }
-    
     private let navigationController: UINavigationController
-    private let battleAction: BattleAction
     
-    private let startBattleViewModel: StartBattleViewModel
+    private let battleViewModel: BattleViewModel
     
     private let disposeBag = DisposeBag()
     
     init(
         _ navigationController: UINavigationController,
         socketService: SocketIODataSource,
-        battleAction: BattleAction,
-        user: User
+        user: User,
+        battle: Battle
     ) {
         self.navigationController = navigationController
-        self.startBattleViewModel = StartBattleViewModel(
+        self.battleViewModel = BattleViewModel(
             socketService: socketService,
-            user: user)
-        self.battleAction = battleAction
+            user: user,
+            battle: battle)
     }
     
-    // TODO: Show loading state
-    // TODO: implement join random battle
     override func start() {
-        switch battleAction {
-        case .inviteFriend:
-            onInviteFriend()
-        case .joinFriend:
-            onJoinFriend()
-        case .joinRandom:
-            break
+        battleViewModel.battleState()
+            .distinctUntilChanged { $0.status == $1.status }
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] state in
+                self?.onBattleStateChanged(state)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func onBattleStateChanged(_ state: BattleState) {
+        switch state.status {
+        case .pending:
+            let readyVC = makeReadyForBattlePageViewController(user: state.user, with: state.battle)
+            show(readyVC)
+        case .started:
+            let battleVC = makeBattlefieldPageViewController()
+            show(battleVC)
+        case .canceled:
+            pop()
+            completion?()
         }
-        
-        startBattleViewModel.playersFoundState()
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] battle in
-                
-            }
-            .disposed(by: disposeBag)
     }
     
-    func onInviteFriend() {
-        startBattleViewModel.createBattle()
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] user, battleInvitation in
-                guard let waitingRoomVC = self?.makeInviteFriendPageViewController(
-                    user: user,
-                    with: battleInvitation)
-                else { return }
-                self?.show(waitingRoomVC)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    func onJoinFriend() {
-        popup(makeJoinFriendPageViewController())
-    }
-
-    func makeInviteFriendPageViewController(
+    func makeReadyForBattlePageViewController(
         user: User,
-        with battleInvitation: BattleInvitation
-    ) -> InviteFriendPageViewController {
-        let viewController = InviteFriendPageViewController()
+        with battle: Battle
+    ) -> ReadyForBattlePageViewController {
+        let readyVC = ReadyForBattlePageViewController()
         
-        viewController.user = user
-        viewController.inviteCode = battleInvitation.inviteCode
+        readyVC.user = battle.users.first { user.id == $0.id } ?? .empty()
+        readyVC.opponent = battle.users.first { user.id != $0.id } ?? .empty()
         
-        viewController.onBack = {
-            self.pop()
-            self.completion?()
+        readyVC.onBack = { [weak self] in
+            self?.battleViewModel.cancel()
+            self?.pop()
         }
         
-        return viewController
-    }
-    
-    func makeJoinFriendPageViewController() -> JoinFriendPageViewController {
-        let readyVC = JoinFriendPageViewController()
-    
-        readyVC.onConfirm = { inviteCode in
-            self.startBattleViewModel.joinBattle(inviteCode: inviteCode)
+        readyVC.onReady = { [weak self] in
+            self?.battleViewModel.start()
         }
         
-        readyVC.onCancel = {
-            self.dismiss(readyVC)
+        readyVC.onCountdownFinished = { [weak self] in
+            self?.battleViewModel.start()
         }
+        
+        readyVC.startDate = battle.startTime
         
         return readyVC
     }
     
-    private func show(_ viewController: UIViewController) {
-        navigationController.pushViewController(viewController, animated: true)
-    }
-    
-    private func popup(_ viewController: UIViewController) {
-        navigationController.present(viewController, animated: true)
-    }
-    
-    private func dismiss(_ viewController: UIViewController) {
-        navigationController.dismiss(animated: true)
+    func makeBattlefieldPageViewController() -> BattlefieldViewController{
+        let battleVC = BattlefieldViewController()
+        return battleVC
     }
     
     private func pop() {
         navigationController.popViewController(animated: true)
+    }
+    
+    private func show(_ viewController: UIViewController) {
+        navigationController.pushViewController(viewController, animated: true)
     }
 }

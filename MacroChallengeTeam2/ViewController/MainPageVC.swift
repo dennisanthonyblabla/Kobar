@@ -28,8 +28,7 @@ class MainPageViewController: UIViewController {
     private lazy var ajakTemanBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Ajak Teman",
-            width: 245)
+            title: "Ajak Teman")
         
         button.addAction(
             UIAction { _ in
@@ -43,8 +42,7 @@ class MainPageViewController: UIViewController {
     private lazy var gabungBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Gabung Sama Teman",
-            width: 245)
+            title: "Gabung Sama Teman")
         
         button.addAction(
             UIAction { _ in
@@ -58,8 +56,7 @@ class MainPageViewController: UIViewController {
     private lazy var siapaAjaBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Siapa Aja Bebas",
-            width: 245)
+            title: "Siapa Aja Bebas")
         
         button.addAction(
             UIAction { _ in
@@ -94,6 +91,16 @@ class MainPageViewController: UIViewController {
     private lazy var buttonsStackView: UIStackView = {
         let view = UIStackView()
         
+        ajakTemanBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
+        gabungBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
+        siapaAjaBtn.snp.makeConstraints { make in
+            make.width.equalTo(245)
+        }
+        
         view.addArrangedSubview(ajakTemanBtn)
         view.addArrangedSubview(gabungBtn)
         view.addArrangedSubview(siapaAjaBtn)
@@ -109,7 +116,6 @@ class MainPageViewController: UIViewController {
         let gif = LottieAnimationView(animation: animation)
         gif.contentMode = .scaleAspectFit
         gif.loopMode = .loop
-        gif.play()
         return gif
     }()
     
@@ -131,6 +137,11 @@ class MainPageViewController: UIViewController {
         return label
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        swordGif.play()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(background)
@@ -144,6 +155,11 @@ class MainPageViewController: UIViewController {
         setupBackgroundConstraints()
         setupDisplayConstraint()
         setupComponentsConstraint()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        swordGif.stop()
+        super.viewWillDisappear(animated)
     }
     
     private func setupBackgroundConstraints() {

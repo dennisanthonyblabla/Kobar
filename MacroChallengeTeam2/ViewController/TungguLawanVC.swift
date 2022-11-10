@@ -17,12 +17,10 @@ class TungguLawanViewController: UIViewController {
 
     private lazy var tandingBaruBtn = MedButtonView(
         variant: .variant2,
-        title: "Tanding Baru",
-        width: 200)
+        title: "Tanding Baru")
     private lazy var pembahasanBtn = MedButtonView(
         variant: .variant2,
-        title: "Pembahasan",
-        width: 200)
+        title: "Pembahasan")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -131,11 +129,13 @@ class TungguLawanViewController: UIViewController {
     private func setupComponents() {
         tandingBaruBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(-170)
+            make.width.equalTo(200)
             make.bottom.equalToSuperview().offset(-100)
         }
         pembahasanBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview().offset(170)
             make.bottom.equalToSuperview().offset(-100)
+            make.width.equalTo(200)
         }
     }
 
