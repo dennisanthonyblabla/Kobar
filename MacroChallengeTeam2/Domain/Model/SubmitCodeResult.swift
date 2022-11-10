@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SubmitResponse: Codable {
+struct SubmitCodeResult: Codable {
     let result: Bool
 }

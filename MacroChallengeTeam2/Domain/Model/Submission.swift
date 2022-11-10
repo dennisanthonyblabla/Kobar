@@ -7,12 +7,11 @@
 
 import Foundation
 
-struct Submission: Identifiable, Codable {
-    let id: UUID
+struct RunCodeSubmission: Codable {
     let code: String
     let input: String
-    enum SubmissionType {
-        case run
-        case submit
-    }
+}
+
+struct SubmitCodeSubmission: Codable {
+    let code: String
 }

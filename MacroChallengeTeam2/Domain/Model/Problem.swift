@@ -16,4 +16,16 @@ struct Problem: Identifiable, Codable {
     let exampleCount: Int
     let reviewVideoURL: String
     let reviewText: String
+    
+    static func empty() -> Problem {
+        Problem(
+            id: "",
+            prompt: "",
+            inputFormat: "",
+            outputFormat: "",
+            testCases: [],
+            exampleCount: 0,
+            reviewVideoURL: "",
+            reviewText: "")
+    }
 }

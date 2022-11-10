@@ -74,13 +74,13 @@ final class BattleCoordinator: BaseCoordinator {
             self?.battleViewModel.start()
         }
         
-        readyVC.startDate = battle.startTime
+        readyVC.battleStartDate = battle.startTime
         
         return readyVC
     }
     
-    func makeBattlefieldPageViewController() -> BattlefieldViewController {
-        let battleVC = BattlefieldViewController()
+    func makeBattlefieldPageViewController() -> BattlefieldPageViewController {
+        let battleVC = BattlefieldPageViewController()
         return battleVC
     }
     

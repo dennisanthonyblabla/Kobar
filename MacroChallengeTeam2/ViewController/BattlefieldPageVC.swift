@@ -7,15 +7,24 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 import SwiftUI
 
-class BattlefieldViewController: UIViewController {
+// TODO: implement update statusLabel
+// TODO: implement test case examples
+// TODO: implement run code popup
+final class BattlefieldPageViewController: UIViewController {
     private var statusDesc: String?
-    private var contohInput: [String] = ["Contoh inputnya 1", "Contoh inputnya 2", "Contoh inputnya 3"]
-    private var contohOutput: [String] = ["Contoh Outputnya 1", "Contoh Outputnya 2", "Contoh Outputnya 3"]
-
-    private lazy var ngodingYukCard = CardView(type: .codingCard)
-    private lazy var ujiKodinganView = UjiKodingan()
+    
+    var onSubmitCode: ((SubmitCodeSubmission) -> Void)?
+    var onRunCode: ((RunCodeSubmission) -> Void)?
+    
+    var userName = ""
+    var opponentName = ""
+    var battleEndDate = Date.now
+    var problem: Problem = .empty()
+    
+    var code = ""
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -58,9 +67,14 @@ class BattlefieldViewController: UIViewController {
         return label
     }()
 
-    private lazy var timeLeftLabel: UILabel = {
-        let label = UILabel()
-        label.text = "01:30"
+    private lazy var timeLeftLabel: CountdownLabelView = {
+        let label = CountdownLabelView(endDate: battleEndDate)
+        
+        label.onCountdownFinished = {
+            let submission = SubmitCodeSubmission(code: self.code)
+            self.onSubmitCode?(submission)
+        }
+        
         label.textColor = .white
         label.textAlignment = .left
         label.font = .bold36
@@ -76,7 +90,7 @@ class BattlefieldViewController: UIViewController {
 
     private lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "John Doe"
+        label.text = userName
         label.font = .bold22
         label.textColor = .kobarBlack
         label.textAlignment = .right
@@ -85,7 +99,7 @@ class BattlefieldViewController: UIViewController {
 
     private lazy var opponentNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Jane Doe"
+        label.text = opponentName
         label.font = .bold22
         label.textColor = .kobarBlack
         label.textAlignment = .left
@@ -94,8 +108,42 @@ class BattlefieldViewController: UIViewController {
 
     private lazy var pertanyaanCard: CardView = {
         let card = CardView(type: .pertanyaan)
-        card.pertanyaan = "Ini pertanyaanya"
+        let string = NSMutableAttributedString()
+            .appendWithFont("\(problem.prompt) \n\n", font: .regular17)
+            .appendWithFont("Input Format \n", font: .bold17)
+            .appendWithFont("\(problem.inputFormat) \n\n", font: .regular17)
+            .appendWithFont("Output Format \n", font: .bold17)
+            .appendWithFont("\(problem.outputFormat) \n\n", font: .regular17)
+        
+        card.attributedText = string
+        
         return card
+    }()
+    
+    private lazy var ngodingYukCard: CardView = {
+        let card = CardView(type: .codingCard)
+        
+        card.onTextChanged = { code in
+            self.code = code
+        }
+        
+        return card
+    }()
+    
+    private lazy var ujiKodinganView: UjiKodinganView = {
+        let view = UjiKodinganView()
+        
+        view.onRunCode = { input in
+            let submission = RunCodeSubmission(code: self.code, input: input)
+            self.onRunCode?(submission)
+        }
+        
+        view.onSubmitCode = { _ in
+            let submission = SubmitCodeSubmission(code: self.code)
+            self.onSubmitCode?(submission)
+        }
+
+        return view
     }()
 
     private lazy var contohBGInput: UIView = {
@@ -187,7 +235,8 @@ class BattlefieldViewController: UIViewController {
         )
         return btn
     }()
-
+    
+    // TODO: implement Tips
     private lazy var tipsBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "book.fill"))
         btn.addAction(
@@ -202,11 +251,12 @@ class BattlefieldViewController: UIViewController {
         var contoh: [BattleContohView] = []
         var previousBtn: Int?
         var currentBtn: Int?
-        for i in 1...contohInput.count {
+        for i in 0..<problem.exampleCount {
             contoh.append(BattleContohView(title: "contoh " + "(\(i))"))
         }
-
+        
         for (index, i) in contoh.enumerated() {
+            let testCase = problem.testCases[index]
             i.addAction(
                 UIAction { [self]_ in
                 currentBtn = index
@@ -222,8 +272,8 @@ class BattlefieldViewController: UIViewController {
                     contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(200)
                     }
-                    contohTextInput.text = contohInput[index]
-                    contohTextOutput.text = contohOutput[index]
+                    contohTextInput.text = testCase.input
+                    contohTextOutput.text = testCase.output
                     animationLayout()
                     animationTransparency(view: contohTextInput, alpha: 1)
                     animationTransparency(view: contohTextOutput, alpha: 1)
@@ -238,7 +288,7 @@ class BattlefieldViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: examples)
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = CGFloat(contohInput.count)
+        stackView.spacing = CGFloat(problem.exampleCount)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -267,9 +317,13 @@ class BattlefieldViewController: UIViewController {
         setupComponents()
         setupButtonFunction()
     }
+    
+    func updateRunCodeResult(result: RunCodeResult) {
+        ujiKodinganView.updateCodeOutput(result: result)
+    }
 }
 
-extension BattlefieldViewController {
+extension BattlefieldPageViewController {
     /// For all Constraints
     private func setupBackground() {
         background.snp.makeConstraints { make in
@@ -402,16 +456,6 @@ extension BattlefieldViewController {
                 animationLayout()
             },
             for: .touchUpInside)
-        ujiKodinganView.playBtn.addAction(
-            UIAction { _ in
-                print("Play Button Touched")
-            },
-            for: .touchUpInside)
-        ujiKodinganView.submitBtn.addAction(
-            UIAction { _ in
-                print("Submit Button Touched")
-            },
-            for: .touchUpInside)
         }
 
     /// Hides navigation bar
@@ -424,6 +468,7 @@ extension BattlefieldViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+
     /// Adds animation for layouting changes
     private func animationLayout() {
         UIViewPropertyAnimator.runningPropertyAnimator(
@@ -444,16 +489,57 @@ extension BattlefieldViewController {
     }
 }
 
-final class UjiKodingan: UIView {
+final class UjiKodinganView: UIView {
+    var onRunCode: ((String) -> Void)?
+    var onSubmitCode: ((String) -> Void)?
+    
+    var input = ""
+    
     lazy var backBtn = SmallIconButtonView(variant: .variant2)
-    private lazy var inputCard = CardView(type: .inputCard)
-    private lazy var outputCard = CardView(type: .outputCard)
-    lazy var playBtn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "play.fill"))
-    lazy var submitBtn = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+    
+    private lazy var inputCard: CardView = {
+        let card = CardView(type: .inputCard)
+        
+        card.onTextChanged = { text in
+            self.input = text
+        }
+        
+        return card
+    }()
+    
+    private lazy var outputCard: CardView = {
+        let card = CardView(type: .outputCard)
+        
+        card.layer.cornerRadius = 15
+        
+        return card
+    }()
+    
+    lazy var playBtn: SmallIconButtonView = {
+        let button = SmallIconButtonView(
+            variant: .variant2,
+            buttonImage: UIImage(systemName: "play.fill"))
+        
+        button.addVoidAction({
+            self.onRunCode?(self.input)
+        }, for: .touchDown)
+        
+        return button
+    }()
+    
+    lazy var submitBtn: SmallButtonView = {
+        let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+        
+        button.addVoidAction({
+            self.onSubmitCode?(self.input)
+        }, for: .touchDown)
+        
+        return button
+    }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = " Uji Kodingan"
+        label.text = "Uji Kodingan"
         label.font = .bold17
         label.textColor = .white
         label.textAlignment = .center
@@ -509,12 +595,29 @@ final class UjiKodingan: UIView {
             make.leading.equalTo(playBtn.snp.trailing).offset(30)
         }
     }
+    
+    func updateCodeOutput(result: RunCodeResult) {
+        outputCard.text = result.output
+        
+        switch result.type {
+        case .correct:
+            outputCard.textColor = .kobarGreen
+            outputCard.layer.borderWidth = 4
+            outputCard.layer.borderColor = UIColor.kobarGreen.cgColor
+        case .incorrect:
+            outputCard.textColor = .kobarRed
+        case .error:
+            outputCard.textColor = .kobarRed
+            outputCard.layer.borderWidth = 2
+            outputCard.layer.borderColor = UIColor.kobarRed.cgColor
+        }
+    }
 }
 
 struct BattlefieldViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return UINavigationController(rootViewController: BattlefieldViewController())
+            return UINavigationController(rootViewController: BattlefieldPageViewController())
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)")
         .previewInterfaceOrientation(.landscapeLeft)

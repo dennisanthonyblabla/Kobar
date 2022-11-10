@@ -14,4 +14,14 @@ struct Battle: Identifiable, Codable {
     let users: [User]
     let startTime: Date
     let endTime: Date
+    
+    static func empty() -> Battle {
+        Battle(
+            id: "",
+            inviteCode: "",
+            problem: nil,
+            users: [],
+            startTime: Date.now,
+            endTime: Date.now)
+    }
 }

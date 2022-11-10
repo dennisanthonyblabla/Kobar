@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 final class CardView: UIView, UITextViewDelegate {
+    var onTextChanged: ((String) -> Void)?
+    
     enum CardType {
         case codingCard
         case inputCard
@@ -19,9 +21,19 @@ final class CardView: UIView, UITextViewDelegate {
 
     var cardType: CardType?
     var placeholderText: String?
-    var pertanyaan: String? {
+    var text: String? {
         didSet {
-            textInput.text = pertanyaan
+            textInput.text = text
+        }
+    }
+    var attributedText: NSAttributedString? {
+        didSet {
+            textInput.attributedText = attributedText
+        }
+    }
+    var textColor: UIColor? {
+        didSet {
+            textInput.textColor = textColor
         }
     }
 
@@ -107,6 +119,7 @@ final class CardView: UIView, UITextViewDelegate {
             titleLabel.textColor = .kobarBlack
             titleLabel.text = "Output"
             textInput.font = .regular17
+            textInput.isEditable = false
             textInput.text = "Nanti hasil dari input lo akan muncul"
             placeholderText = "Nanti hasil dari input lo akan muncul"
         case .pertanyaan:
@@ -149,13 +162,19 @@ final class CardView: UIView, UITextViewDelegate {
             make.height.equalTo(titleLabel.snp.height)
         }
     }
-
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textInput.text == placeholderText && textInput.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .black
         }
         textView.becomeFirstResponder() // Optional
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if cardType == .inputCard {
+            onTextChanged?(textView.text)
+        }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
