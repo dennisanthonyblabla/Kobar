@@ -10,8 +10,6 @@ import SwiftUI
 import SnapKit
 
 class TestCaseViewController: UIPageViewController {
-    private var testCaseCount = 5
-    private lazy var testCaseBtn: [TestCaseButton] = []
     private lazy var lanjutBtn = MedButtonView(variant: .variant2, title: "lanjut")
 
     private lazy var background: UIImageView = {
@@ -116,9 +114,26 @@ class TestCaseViewController: UIPageViewController {
     }()
 
     private lazy var testCases: [TestCaseButton] = {
-        var testCases: [TestCaseButton] = []
-        for i in 1...testCaseCount {
-            testCases.append(TestCaseButton(style: .fill, status: .correct, order: i))
+        var testCases: [TestCaseButton] = [
+            TestCaseButton(status: .correct, order: 1),
+            TestCaseButton(status: .correct, order: 2),
+            TestCaseButton(status: .wrong, order: 3),
+            TestCaseButton(status: .correct, order: 4),
+            TestCaseButton(status: .wrong, order: 5)
+        ]
+        testCases[0].isSelected = true
+        isTestCaseSelected(btn: testCases[0])
+        for (index, i) in testCases.enumerated() {
+            i.addAction(
+                UIAction { [self]_ in
+                    for each in testCases {
+                        each.isSelected = false
+                    }
+                    i.isSelected = true
+                    for each in testCases {
+                        isTestCaseSelected(btn: each)
+                    }
+                }, for: .touchUpInside)
         }
         return testCases
     }()
@@ -219,6 +234,14 @@ class TestCaseViewController: UIPageViewController {
         testCaseSV.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(165)
             make.top.equalToSuperview().offset(180)
+        }
+    }
+
+    private func isTestCaseSelected(btn: TestCaseButton) {
+        if btn.isSelected == true {
+            btn.style = .fill
+        } else {
+            btn.style = .transparent
         }
     }
 }
