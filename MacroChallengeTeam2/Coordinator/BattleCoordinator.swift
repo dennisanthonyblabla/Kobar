@@ -79,7 +79,7 @@ final class BattleCoordinator: BaseCoordinator {
         return readyVC
     }
     
-    func makeBattlefieldPageViewController() -> BattlefieldViewController{
+    func makeBattlefieldPageViewController() -> BattlefieldViewController {
         let battleVC = BattlefieldViewController()
         return battleVC
     }

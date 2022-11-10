@@ -12,7 +12,7 @@ import SnapKit
 class TestCaseViewController: UIPageViewController {
     private var testCaseCount = 5
     private lazy var testCaseBtn: [TestCaseButton] = []
-    private lazy var lanjutBtn = MedButtonView(variant: .variant2, title: "lanjut", width: 150)
+    private lazy var lanjutBtn = MedButtonView(variant: .variant2, title: "lanjut")
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -213,6 +213,7 @@ class TestCaseViewController: UIPageViewController {
     private func setupComponents() {
         lanjutBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.width.equalTo(150)
             make.bottom.equalToSuperview().offset(-30)
         }
         testCaseSV.snp.makeConstraints { make in

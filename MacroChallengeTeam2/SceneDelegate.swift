@@ -112,7 +112,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coordinator = BattleCoordinator(
             navigationController,
             socketService: socketService,
-            user: user, battle: battle)
+            user: user,
+            battle: battle)
         
         return coordinator
     }

@@ -16,8 +16,7 @@ class BattleDoneVC: UIViewController {
 
     private lazy var testCaseBtn = MedButtonView(
         variant: .variant2,
-        title: "Test Case",
-        width: 200)
+        title: "Test Case")
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -112,6 +111,7 @@ class BattleDoneVC: UIViewController {
     private func setupComponents() {
         testCaseBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.width.equalTo(200)
             make.bottom.equalToSuperview().offset(-100)
         }
     }
