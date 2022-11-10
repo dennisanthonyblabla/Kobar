@@ -133,8 +133,8 @@ final class CardView: UIView, UITextViewDelegate {
         }
 
         textInput.snp.makeConstraints { make in
-            make.trailing.equalTo(textViewBG).offset(-16)
-            make.leading.equalTo(textViewBG).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.leading.equalToSuperview().offset(16)
             make.top.equalTo(textViewBG).offset(62)
             make.bottom.equalTo(textViewBG).offset(-16)
         }

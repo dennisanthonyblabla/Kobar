@@ -129,6 +129,7 @@ class BattlefieldViewController: UIViewController {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
+        textView.alpha = 0
         return textView
     }()
 
@@ -141,6 +142,7 @@ class BattlefieldViewController: UIViewController {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
+        textView.alpha = 0
         return textView
     }()
 
@@ -213,6 +215,8 @@ class BattlefieldViewController: UIViewController {
                         make.height.equalTo(0)
                     }
                     animationLayout()
+                    animationTransparency(view: contohTextInput, alpha: 0)
+                    animationTransparency(view: contohTextOutput, alpha: 0)
                     currentBtn = nil
                 } else {
                     contohBGStackView.snp.updateConstraints { make in
@@ -221,6 +225,8 @@ class BattlefieldViewController: UIViewController {
                     contohTextInput.text = contohInput[index]
                     contohTextOutput.text = contohOutput[index]
                     animationLayout()
+                    animationTransparency(view: contohTextInput, alpha: 1)
+                    animationTransparency(view: contohTextOutput, alpha: 1)
                 }
                 previousBtn = currentBtn
                 }, for: .touchUpInside)
@@ -325,13 +331,15 @@ extension BattlefieldViewController {
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview().offset(-15)
+            make.bottom.equalToSuperview().offset(-15).priority(750)
+            make.height.greaterThanOrEqualTo(100)
         }
         contohTextOutput.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.top.equalToSuperview().offset(15)
-            make.bottom.equalToSuperview().offset(-15)
+            make.bottom.equalToSuperview().offset(-15).priority(750)
+            make.height.greaterThanOrEqualTo(100)
         }
     }
 
@@ -480,14 +488,16 @@ final class UjiKodingan: UIView {
         }
         inputCard.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(15)
+//            make.leading.equalToSuperview().offset(15).priority(750)
+//            make.trailing.equalToSuperview().offset(-15).priority(750)
             make.leading.equalToSuperview().offset(15)
-            make.trailing.equalToSuperview().offset(-15)
+            make.width.greaterThanOrEqualTo(self.snp.width).multipliedBy(0.9).priority(1000)
             make.bottom.equalTo(outputCard.snp.top).offset(-15)
         }
         outputCard.snp.makeConstraints { make in
             make.leading.trailing.equalTo(inputCard)
             make.bottom.equalTo(playBtn.snp.top).offset(-30)
-            make.top.equalTo(inputCard.snp.bottom)
+//            make.top.equalTo(inputCard.snp.bottom)
             make.height.equalToSuperview().multipliedBy(0.4)
         }
         playBtn.snp.makeConstraints { make in
