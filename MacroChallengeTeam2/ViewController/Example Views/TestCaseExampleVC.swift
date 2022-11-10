@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-class TestCaseViewController: UIViewController {
+class TestCaseExampleViewController: UIViewController {
     private lazy var testCaseView = TestCaseButton(style: .fill, status: .correct, order: 1)
 
     override func viewDidLoad() {
@@ -33,10 +33,10 @@ class TestCaseViewController: UIViewController {
     }
 }
 
-struct TestCaseViewControllerPreviews: PreviewProvider {
+struct TestCaseExampleViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return TestCaseViewController()
+            return TestCaseExampleViewController()
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeRight)
     }
