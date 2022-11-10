@@ -54,7 +54,7 @@ final class BattleCoordinator: BaseCoordinator {
         switch state.status {
         case .pending:
             let readyVC = makeReadyForBattlePageViewController(user: state.user, with: state.battle)
-            replaceAllExceptRoot(with: readyVC)
+            show(readyVC)
         case .started:
             let battleVC = makeBattlefieldPageViewController(state)
             replaceAllExceptRoot(with: battleVC)
@@ -164,7 +164,7 @@ final class BattleCoordinator: BaseCoordinator {
         waitVC.endDate = endDate
         
         waitVC.onNewBattle = {
-            self.navigationController.popToRootViewController(animated: true)
+            self.popToRoot()
         }
         
         return waitVC
@@ -185,7 +185,7 @@ final class BattleCoordinator: BaseCoordinator {
         resultVC.result = result
         
         resultVC.onFinish = {
-            self.navigationController.popToRootViewController(animated: true)
+            self.popToRoot()
         }
         
         return resultVC
@@ -205,6 +205,11 @@ final class BattleCoordinator: BaseCoordinator {
             navigationController.viewControllers[..<(count - 1)] + [viewController]
         
         navigationController.setViewControllers(viewControllers, animated: true)
+    }
+    
+    private func popToRoot() {
+        navigationController.popToRootViewController(animated: true)
+        completion?()
     }
     
     private func pop() {
