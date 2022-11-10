@@ -60,7 +60,7 @@ final class SmallIconButtonView: UIButton {
 
     private func setupButtonVariant() {
         configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 18, bottom: 12, trailing: 12)
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 12, trailing: 12)
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
         buttonIcon = buttonIcon?.withConfiguration(config)
         switch variant {
@@ -95,14 +95,16 @@ final class SmallIconButtonView: UIButton {
         self.snp.makeConstraints { make in
             make.height.width.equalTo(54)
         }
-        
+
         backBG.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(4)
             make.bottom.width.equalToSuperview()
+            make.centerX.equalToSuperview()
         }
         frontBG.snp.makeConstraints { make in
             make.top.width.equalToSuperview()
             make.bottom.equalToSuperview().offset(-4)
+            make.centerX.equalToSuperview()
         }
     }
 }
