@@ -22,11 +22,28 @@ class PembahasanViewController: UIViewController {
         return imageView
     }()
 
+    private lazy var pembahasanTextView: UITextView = {
+        let textView = UITextView.init()
+        textView.text = "TestTest"
+        textView.textColor = .kobarBlack
+        textView.font = UIFont.regular17
+        textView.textAlignment = .left
+        textView.isEditable = false
+        textView.isScrollEnabled = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.backgroundColor = .clear
+        textView.alpha = 0
+        return textView
+    }()
+
     private lazy var pembahasanBG: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.kobarBorderGray.cgColor
+        view.layer.cornerRadius = 15
+        view.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        view.addSubview(pembahasanTextView)
         return view
     }()
 
@@ -79,10 +96,10 @@ class PembahasanViewController: UIViewController {
             make.bottom.trailing.leading.top.equalToSuperview()
         }
         pembahasanBG.snp.makeConstraints { make in
-            make.width.equalTo(pembahasanSV).offset(20)
+            make.width.equalTo(pembahasanSV).offset(10)
             make.centerX.equalTo(pembahasanSV)
             make.bottom.equalTo(kodingan)
-            make.top.equalTo(pembahasanSV.snp.bottom)
+            make.top.equalTo(pembahasanSV.snp.bottom).offset(4)
         }
     }
 
@@ -95,6 +112,12 @@ class PembahasanViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(43)
             make.centerX.equalTo(titleLabel)
             make.width.equalToSuperview().multipliedBy(0.4)
+        }
+        pembahasanTextView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(15)
+            make.bottom.equalToSuperview().offset(-15)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
         }
     }
 
@@ -119,13 +142,17 @@ class PembahasanViewController: UIViewController {
     private func buttonFunction() {
         videoPembahasanBtn.addAction(
             UIAction { _ in
-                print("Video Touched")
+                UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+                    self.pembahasanTextView.alpha = 0
+                }.startAnimation()
             },
             for: .touchUpInside
         )
         pembahasanSingkatBtn.addAction(
-            UIAction { _ in
-                print("Pembahasan Touched")
+            UIAction { [self] _ in
+                UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+                    self.pembahasanTextView.alpha = 1
+                }.startAnimation()
             },
             for: .touchUpInside
         )
