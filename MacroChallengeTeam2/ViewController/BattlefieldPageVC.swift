@@ -19,6 +19,7 @@ final class BattlefieldPageViewController: UIViewController {
     
     var onSubmitCode: ((SubmitCodeSubmission) -> Void)?
     var onRunCode: ((RunCodeSubmission) -> Void)?
+    var onShowDocumentation: (() -> Void)?
     
     var userName = ""
     var opponentName = ""
@@ -237,14 +238,9 @@ final class BattlefieldPageViewController: UIViewController {
         return btn
     }()
     
-    // TODO: implement Tips
     private lazy var tipsBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "book.fill"))
-        btn.addAction(
-            UIAction { _ in
-                print("Tips has been clicked")
-            },
-            for: .touchUpInside)
+        btn.addVoidAction(onShowDocumentation, for: .touchUpInside)
         return btn
     }()
 

@@ -125,6 +125,11 @@ final class BattleCoordinator: BaseCoordinator {
             }
         }
         
+        battleVC.onShowDocumentation = {
+            let docVC = self.makeDocumentationViewController()
+            self.present(docVC)
+        }
+        
         battleViewModel.runCodeState()
             .distinctUntilChanged { $0.output }
             .observe(on: MainScheduler.instance)
@@ -175,6 +180,21 @@ final class BattleCoordinator: BaseCoordinator {
         return waitVC
     }
     
+    func makeDocumentationViewController() -> UIViewController {
+        let controller = UIViewController()
+        let view = DokumentasiView()
+        
+        controller.view = DokumentasiView()
+        
+        // TODO: button not working
+        view.onClose = { [weak self, controller] in
+            controller.dismiss(animated: true)
+            self?.navigationController.dismiss(animated: true)
+        }
+        
+        return controller
+    }
+    
     func makeBattleResultViewController(
         _ user: User,
         _ battle: Battle,
@@ -213,6 +233,10 @@ final class BattleCoordinator: BaseCoordinator {
         }
         
         return pembahasanVC
+    }
+    
+    private func present(_ viewController: UIViewController) {
+        navigationController.present(viewController, animated: true)
     }
     
     private func replaceAllExceptRoot(with viewController: UIViewController) {

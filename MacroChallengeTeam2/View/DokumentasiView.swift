@@ -10,14 +10,11 @@ import SnapKit
 import WebKit
 
 final class DokumentasiView: UIView {
+    var onClose: (() -> Void)?
+    
     private lazy var closeBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
-        btn.addAction(
-            UIAction { _ in
-                print("Touched Close")
-            },
-            for: .touchUpInside
-        )
+        btn.addVoidAction(onClose, for: .touchDown)
         return btn
     }()
 
