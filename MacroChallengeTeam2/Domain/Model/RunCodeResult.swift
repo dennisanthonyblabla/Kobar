@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RunResponse: Codable {
-    let valid: Bool
+struct RunCodeResult: Codable {
     let output: String
+    let type: OutputType
 }

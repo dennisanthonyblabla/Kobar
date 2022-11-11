@@ -8,10 +8,30 @@
 import UIKit
 import SwiftUI
 import SnapKit
+import AVKit
+import AVFoundation
 
 class PembahasanViewController: UIViewController {
-    private lazy var backBtn = SmallIconButtonView(variant: .variant2)
-    private lazy var kodingan = CardView(type: .codingCard)
+    var onBack: (() -> Void)?
+    
+    var code: String = ""
+    var reviewText: String = ""
+    var reviewVideoURL: String = ""
+    
+    private lazy var backBtn: SmallIconButtonView = {
+        let button = SmallIconButtonView(variant: .variant2)
+        button.addVoidAction(onBack, for: .touchDown)
+        return button
+    }()
+    
+    private lazy var kodingan: CardView = {
+        let view = CardView(type: .codingCard, isEditable: false)
+        
+        view.text = code
+        
+        return view
+    }()
+    
     private lazy var videoPembahasanBtn = BattleContohView(title: "Video Pembahasan")
     private lazy var pembahasanSingkatBtn = BattleContohView(title: "Pembahasan Singkat")
 
@@ -23,8 +43,8 @@ class PembahasanViewController: UIViewController {
     }()
 
     private lazy var pembahasanTextView: UITextView = {
-        let textView = UITextView.init()
-        textView.text = "TestTest"
+        let textView = UITextView()
+        textView.text = reviewText
         textView.textColor = .kobarBlack
         textView.font = UIFont.regular17
         textView.textAlignment = .left
@@ -32,8 +52,23 @@ class PembahasanViewController: UIViewController {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
-        textView.alpha = 0
+        textView.isHidden = true
+            
         return textView
+    }()
+    
+    private lazy var videoPlayerViewController: AVPlayerViewController = {
+        let controller = AVPlayerViewController()
+        
+        if let url = URL(string: reviewVideoURL) {
+            let player = AVPlayer(url: url)
+            controller.player = player
+        }
+        
+        controller.view.backgroundColor = .white
+        controller.view.layer.cornerRadius = 15
+        
+        return controller
     }()
 
     private lazy var pembahasanBG: UIView = {
@@ -84,11 +119,19 @@ class PembahasanViewController: UIViewController {
         view.addSubview(kodingan)
         view.addSubview(pembahasanBG)
         view.addSubview(pembahasanSV)
+        
+        setupVideoPlayer()
 
         setupBackground()
         setupDisplays()
         setupComponents()
         buttonFunction()
+    }
+    
+    private func setupVideoPlayer() {
+        addChild(videoPlayerViewController)
+        pembahasanBG.addSubview(videoPlayerViewController.view)
+        videoPlayerViewController.didMove(toParent: self)
     }
 
     private func setupBackground() {
@@ -137,13 +180,21 @@ class PembahasanViewController: UIViewController {
             make.leading.equalTo(kodingan.snp.trailing).offset(50)
             make.trailing.equalToSuperview().offset(-50)
         }
+        videoPlayerViewController.view.snp.makeConstraints { make in
+            make.height.width.equalToSuperview()
+        }
+    }
+    
+    func embedViewController(_ viewController: UIViewController) {
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buttonFunction() {
         videoPembahasanBtn.addAction(
             UIAction { _ in
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-                    self.pembahasanTextView.alpha = 0
+                    self.pembahasanTextView.isHidden = true
+                    self.videoPlayerViewController.view.isHidden = false
                 }.startAnimation()
             },
             for: .touchUpInside
@@ -151,7 +202,8 @@ class PembahasanViewController: UIViewController {
         pembahasanSingkatBtn.addAction(
             UIAction { [self] _ in
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-                    self.pembahasanTextView.alpha = 1
+                    self.pembahasanTextView.isHidden = false
+                    self.videoPlayerViewController.view.isHidden = true
                 }.startAnimation()
             },
             for: .touchUpInside

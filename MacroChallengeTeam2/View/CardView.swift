@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 final class CardView: UIView, UITextViewDelegate {
+    var onTextChanged: ((String) -> Void)?
+    
     enum CardType {
         case codingCard
         case inputCard
@@ -19,9 +21,19 @@ final class CardView: UIView, UITextViewDelegate {
 
     var cardType: CardType?
     var placeholderText: String?
-    var pertanyaan: String? {
+    var text: String? {
         didSet {
-            textInput.text = pertanyaan
+            textInput.text = text
+        }
+    }
+    var attributedText: NSAttributedString? {
+        didSet {
+            textInput.attributedText = attributedText
+        }
+    }
+    var textColor: UIColor? {
+        didSet {
+            textInput.textColor = textColor
         }
     }
 
@@ -35,6 +47,9 @@ final class CardView: UIView, UITextViewDelegate {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
+        textView.smartQuotesType = .no
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
         return textView
     }()
 
@@ -75,7 +90,7 @@ final class CardView: UIView, UITextViewDelegate {
         super.init(frame: frame)
     }
 
-    init(type: CardType) {
+    init(type: CardType, isEditable: Bool? = nil) {
         super.init(frame: .zero)
         cardType = type
         addSubview(textViewBG)
@@ -83,6 +98,8 @@ final class CardView: UIView, UITextViewDelegate {
         addSubview(textInput)
         setupCardType()
         setupAutoLayout()
+        
+        textInput.isEditable = isEditable ?? (cardType == .codingCard || cardType == .inputCard)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -114,7 +131,6 @@ final class CardView: UIView, UITextViewDelegate {
             titleLabel.text = "Pertanyaan"
             textInput.font = .regular17
             textInput.textColor = .kobarBlack
-            textInput.isEditable = false
             placeholderText = "Pertanyaan disini"
         case .none:
             titleLabel.textColor = .kobarBlueActive
@@ -149,13 +165,19 @@ final class CardView: UIView, UITextViewDelegate {
             make.height.equalTo(titleLabel.snp.height)
         }
     }
-
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textInput.text == placeholderText && textInput.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .black
         }
         textView.becomeFirstResponder() // Optional
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.isEditable {
+            onTextChanged?(textView.text)
+        }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

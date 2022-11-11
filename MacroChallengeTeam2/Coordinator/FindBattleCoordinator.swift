@@ -59,6 +59,7 @@ final class FindBattleCoordinator: BaseCoordinator {
             .disposed(by: disposeBag)
     }
     
+    // FIXME: @salman fix invite friend page opened twice
     func onInviteFriend() {
         findBattleViewModel.createBattle()
             .observe(on: MainScheduler.instance)

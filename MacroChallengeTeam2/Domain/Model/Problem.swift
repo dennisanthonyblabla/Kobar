@@ -16,4 +16,28 @@ struct Problem: Identifiable, Codable {
     let exampleCount: Int
     let reviewVideoURL: String
     let reviewText: String
+    
+    static func empty() -> Problem {
+        Problem(
+            id: "",
+            prompt: "",
+            inputFormat: "",
+            outputFormat: "",
+            testCases: [],
+            exampleCount: 0,
+            reviewVideoURL: "",
+            reviewText: "")
+    }
+    
+    func sorted() -> Problem {
+        Problem(
+            id: id,
+            prompt: prompt,
+            inputFormat: inputFormat,
+            outputFormat: outputFormat,
+            testCases: testCases.sorted { $0.order < $1.order },
+            exampleCount: exampleCount,
+            reviewVideoURL: reviewVideoURL,
+            reviewText: reviewText)
+    }
 }

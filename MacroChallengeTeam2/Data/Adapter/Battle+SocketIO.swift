@@ -16,7 +16,7 @@ struct BattleWrapper: Decodable {
 private struct BattleWithChildWrappers: Decodable {
     let id: String
     let inviteCode: String
-    let problem: ProblemWrapper?
+    let problem: Problem?
     let users: [UserWrapper]
     let startTime: String
     let endTime: String
@@ -32,11 +32,11 @@ private struct BattleWithChildWrappers: Decodable {
         
         let startDate = dateFormatter.date(from: startTime)
         let endDate = dateFormatter.date(from: endTime)
-
+        
         return Battle(
             id: id,
             inviteCode: inviteCode,
-            problem: problem?.toProblem(),
+            problem: problem,
             users: users.map { $0.toUser() },
             startTime: startDate ?? Date.init(timeIntervalSince1970: 0),
             endTime: endDate ?? Date.init(timeIntervalSince1970: 0))

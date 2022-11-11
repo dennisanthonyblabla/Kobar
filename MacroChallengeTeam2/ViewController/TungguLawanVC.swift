@@ -11,16 +11,26 @@ import SwiftUI
 import Lottie
 
 class TungguLawanViewController: UIViewController {
-    private var seconds = 90
-    private var timer = Timer()
-    private var isTimerRunning = false
-
-    private lazy var tandingBaruBtn = MedButtonView(
-        variant: .variant2,
+    var onShowDiscussion: (() -> Void)?
+    var onNewBattle: (() -> Void)?
+    
+    var endDate: Date = .now
+    
+    private lazy var tandingBaruBtn: MedButtonView = {
+        let button = MedButtonView(
+        variant: .variant3,
         title: "Tanding Baru")
-    private lazy var pembahasanBtn = MedButtonView(
+        button.addVoidAction(onNewBattle, for: .touchDown)
+        return button
+    }()
+    
+    private lazy var pembahasanBtn: MedButtonView = {
+        let button = MedButtonView(
         variant: .variant2,
         title: "Pembahasan")
+        button.addVoidAction(onShowDiscussion, for: .touchDown)
+        return button
+    }()
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -46,9 +56,8 @@ class TungguLawanViewController: UIViewController {
         return gif
     }()
 
-
-    private var timerLabel: UILabel = {
-        let timer = UILabel()
+    private lazy var timerLabel: CountdownLabelView = {
+        let timer = CountdownLabelView(endDate: endDate)
         timer.font = .bold38
         timer.textColor = .white
         return timer
@@ -89,7 +98,6 @@ class TungguLawanViewController: UIViewController {
         setupBackground()
         setupDisplays()
         setupComponents()
-        runTimer()
     }
 
     private func setupBackground() {
@@ -137,28 +145,6 @@ class TungguLawanViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-100)
             make.width.equalTo(200)
         }
-    }
-
-    private func runTimer() {
-        timer = Timer.scheduledTimer(
-            timeInterval: 1,
-            target: self,
-            selector: #selector(TungguLawanViewController.updateTimer),
-            userInfo: nil,
-            repeats: true)
-    }
-
-    @objc func updateTimer() {
-        seconds -= 1
-        if seconds == 0 {
-            timer.invalidate()
-        }
-        timerLabel.text = timeString(time: TimeInterval(seconds))
-    }
-
-    func timeString(time: TimeInterval) -> String {
-        let formatter = DateComponentsFormatter()
-        return formatter.string(from: time) ?? "00"
     }
 }
 

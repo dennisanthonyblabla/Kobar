@@ -10,13 +10,17 @@ import SwiftUI
 import Lottie
 
 class BattleDoneVC: UIViewController {
-    private var seconds = 90
-    private var timer = Timer()
-    private var isTimerRunning = false
+    var onComplete: (() -> Void)?
 
-    private lazy var testCaseBtn = MedButtonView(
-        variant: .variant2,
-        title: "Test Case")
+    private lazy var testCaseBtn: MedButtonView = {
+        let button = MedButtonView(
+            variant: .variant2,
+            title: "Test Case")
+        
+        button.addVoidAction(onComplete, for: .touchDown)
+        
+        return button
+    }()
 
     private lazy var background: UIView = {
         let view = UIView()
@@ -26,7 +30,7 @@ class BattleDoneVC: UIViewController {
 
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleToFill
         view.image = UIImage(named: "background4")
         return view
     }()
