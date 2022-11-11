@@ -31,6 +31,12 @@ final class BattleViewModel {
     private let user: User
     private let battle: Battle
     
+    // TODO: @salman exposing state
+    var problem: Problem {
+        battle.problem ?? .empty()
+    }
+    var code: String = ""
+    
     private let runCodeResultSubject = BehaviorSubject<RunCodeResult?>(value: nil)
     private let finishedBattleSubject = BehaviorSubject<BattleState?>(value: nil)
     
@@ -44,6 +50,7 @@ final class BattleViewModel {
         }
         
         self.socketService.onCodeSubmit = { [weak self, user, battle] result in
+            self?.code = result.code
             self?.finishedBattleSubject.onNext(
                 BattleState(user, battle, .waitingForOpponent(result)))
         }

@@ -167,6 +167,11 @@ final class BattleCoordinator: BaseCoordinator {
             self.popToRoot()
         }
         
+        waitVC.onShowDiscussion = {
+            let reviewVC = self.makeReviewViewController()
+            self.show(reviewVC)
+        }
+        
         return waitVC
     }
     
@@ -188,7 +193,26 @@ final class BattleCoordinator: BaseCoordinator {
             self.popToRoot()
         }
         
+        resultVC.onShowDiscussion = {
+            let reviewVC = self.makeReviewViewController()
+            self.show(reviewVC)
+        }
+        
         return resultVC
+    }
+    
+    func makeReviewViewController() -> PembahasanViewController {
+        let pembahasanVC = PembahasanViewController()
+        
+        pembahasanVC.code = battleViewModel.code
+        pembahasanVC.reviewText = battleViewModel.problem.reviewText
+        pembahasanVC.reviewVideoURL = battleViewModel.problem.reviewVideoURL
+        
+        pembahasanVC.onBack = {
+            self.pop()
+        }
+        
+        return pembahasanVC
     }
     
     private func replaceAllExceptRoot(with viewController: UIViewController) {

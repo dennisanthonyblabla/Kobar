@@ -8,10 +8,11 @@
 import Foundation
 
 struct SubmitCodeResult: Codable {
+    let code: String
     let tests: [SubmitTestResult]
     
     static func empty() -> SubmitCodeResult {
-        SubmitCodeResult(tests: [])
+        SubmitCodeResult(code: "", tests: [])
     }
 }
 
