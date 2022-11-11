@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SwiftUI
 import SnapKit
 import WebKit
 
-final class DokumentasiView: UIView {
+final class DokumentasiViewController: UIViewController {
     private lazy var closeBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
         btn.addAction(
@@ -102,25 +103,22 @@ final class DokumentasiView: UIView {
         return stackView
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(background)
-        addSubview(showHTML)
-        addSubview(titleLabel)
-        addSubview(closeBtn)
-        addSubview(leftBtnSV)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(background)
+        view.addSubview(showHTML)
+        view.addSubview(titleLabel)
+        view.addSubview(closeBtn)
+        view.addSubview(leftBtnSV)
 
         setupAutoLayout()
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupAutoLayout() {
         background.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
+            make.width.equalTo(background.snp.width)
+            make.height.equalTo(background.snp.height)
         }
         showHTML.snp.makeConstraints { make in
             make.trailing.equalTo(background).offset(-18)
@@ -231,5 +229,16 @@ final class DokumentasiView: UIView {
         btn.setTitleColor(.kobarBlueActive, for: .normal)
         btn.layer.cornerRadius = 22
         btn.addTarget(self, action: #selector(isBtnSelected(_: )), for: .touchUpInside)
+    }
+}
+
+struct DokumentasiViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        UIViewControllerPreview {
+            return UINavigationController(rootViewController: DokumentasiViewController())
+        }
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
     }
 }
