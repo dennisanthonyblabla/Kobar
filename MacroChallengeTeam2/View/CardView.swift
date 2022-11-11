@@ -90,7 +90,7 @@ final class CardView: UIView, UITextViewDelegate {
         super.init(frame: frame)
     }
 
-    init(type: CardType) {
+    init(type: CardType, isEditable: Bool? = nil) {
         super.init(frame: .zero)
         cardType = type
         addSubview(textViewBG)
@@ -98,6 +98,8 @@ final class CardView: UIView, UITextViewDelegate {
         addSubview(textInput)
         setupCardType()
         setupAutoLayout()
+        
+        textInput.isEditable = isEditable ?? (cardType == .codingCard || cardType == .inputCard)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -122,7 +124,6 @@ final class CardView: UIView, UITextViewDelegate {
             titleLabel.textColor = .kobarBlack
             titleLabel.text = "Output"
             textInput.font = .regular17
-            textInput.isEditable = false
             textInput.text = "Nanti hasil dari input lo akan muncul"
             placeholderText = "Nanti hasil dari input lo akan muncul"
         case .pertanyaan:
@@ -130,7 +131,6 @@ final class CardView: UIView, UITextViewDelegate {
             titleLabel.text = "Pertanyaan"
             textInput.font = .regular17
             textInput.textColor = .kobarBlack
-            textInput.isEditable = false
             placeholderText = "Pertanyaan disini"
         case .none:
             titleLabel.textColor = .kobarBlueActive
@@ -175,7 +175,7 @@ final class CardView: UIView, UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if cardType == .codingCard || cardType == .inputCard {
+        if textView.isEditable {
             onTextChanged?(textView.text)
         }
     }
