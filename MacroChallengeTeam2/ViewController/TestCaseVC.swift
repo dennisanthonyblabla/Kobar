@@ -16,10 +16,8 @@ class TestCaseViewController: UIPageViewController {
     
     var selectedIndex = 0
     
-    private lazy var testCaseBtn: [TestCaseButtonView] = []
-    
     private lazy var lanjutBtn: MedButtonView = {
-        let button = MedButtonView(variant: .variant2, title: "lanjut")
+        let button = MedButtonView(variant: .variant2, title: "Lanjut")
         button.addVoidAction(onNext, for: .touchDown)
         return button
     }()
@@ -108,7 +106,7 @@ class TestCaseViewController: UIPageViewController {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
-        textView.text = "Ini Ouptut Lo"
+        textView.text = "Ini Output Lo"
         return textView
     }()
 
@@ -126,21 +124,34 @@ class TestCaseViewController: UIPageViewController {
     }()
 
     private lazy var testCases: [TestCaseButtonView] = {
-        var testCases: [TestCaseButtonView] = [
-            TestCaseButtonView(status: .correct, order: 1),
-            TestCaseButtonView(status: .correct, order: 2),
-            TestCaseButtonView(status: .wrong, order: 3),
-            TestCaseButtonView(status: .correct, order: 4),
-            TestCaseButtonView(status: .wrong, order: 5)
-        ]
-        testCases[0].isSelected = true
-        isTestCaseSelected(btn: testCases[0])
+        let tests = submitCodeResult.tests
+        let testCases = zip(tests.indices, tests).map { index, testCase in
+            TestCaseButtonView(
+                status: testCase.outputType == .correct ? .correct : .wrong,
+                order: index + 1)
+        }
+        
+        // Just in case there are no test cases
+        if !testCases.isEmpty {
+            testCases[0].isSelected = true
+            isTestCaseSelected(btn: testCases[0])
+            
+            textInput.text = tests[0].testCase.input
+            textOutputHarap.text = tests[0].testCase.output
+            textOutputLo.text = tests[0].output
+        }
+        
         for (index, i) in testCases.enumerated() {
             i.addAction(
                 UIAction { [self]_ in
+                    self.textInput.text = tests[index].testCase.input
+                    self.textOutputHarap.text = tests[index].testCase.output
+                    self.textOutputLo.text = tests[index].output
+                    
                     for each in testCases {
                         each.isSelected = false
                     }
+                    
                     i.isSelected = true
                     for each in testCases {
                         isTestCaseSelected(btn: each)
