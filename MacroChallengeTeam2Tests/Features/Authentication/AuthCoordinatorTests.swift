@@ -15,12 +15,26 @@ final class AuthCoordinatorTests: XCTestCase {
         XCTAssertTrue(sut.pages.isEmpty)
     }
     
-    func test_start_ShouldPushLoadingPageView() {
+    func test_start_ShouldPushLoadingPage() {
         let sut = makeSUT()
         
         sut.start()
         
+        XCTAssertEqual(sut.pages.count, 1)
         XCTAssertTrue(sut.page(at: 0) is LoadingPageViewController)
+    }
+    
+    func test_start_ShouldPushSignInPage_WhenServiceReturnsNil() {
+        let sut = makeSUT()
+        
+        sut.start()
+        
+        let exp = expectation(description: "wait for viewModel")
+        exp.isInverted = true
+        wait(for: [exp], timeout: 2)
+        
+        XCTAssertEqual(sut.pages.count, 2)
+        XCTAssertTrue(sut.page(at: 1) is SignInPageViewController)
     }
     
     private func makeSUT() -> AuthCoordinator {
@@ -45,7 +59,9 @@ private extension AuthCoordinator {
 }
 
 private class MockAuthService: AuthService {
-    func getUser(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
+    func getUser(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {
+        callback(nil)
+    }
     
     func signUp(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
     
