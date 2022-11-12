@@ -1,6 +1,8 @@
 name: MacroChallengeTeam2
+
 options:
   bundleIdPrefix: com.namanya-apa
+
 packages:
   RxSwift:
     url: https://github.com/ReactiveX/RxSwift
@@ -17,17 +19,21 @@ packages:
   Auth0:
     url: https://github.com/auth0/Auth0.swift
     from: 2.3.2
+
 targets:
-  Macro Challenge Team2:
+  MacroChallengeTeam2:
     type: application
     platform: iOS
     deploymentTarget: 15.0
-    settings:
-      INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
-    postCompileScripts:
+    preBuildScripts:
       - path: swiftlint.sh
         name: SwiftLint
         basedOnDependencyAnalysis: false
+    scheme:
+      gatherCoverageData: true
+      testTargets:
+        - name: MacroChallengeTeam2Tests
+          parallelizable: true
     sources:
       - MacroChallengeTeam2
     dependencies:
@@ -36,3 +42,14 @@ targets:
       - package: SocketIO
       - package: Lottie
       - package: Auth0
+
+  MacroChallengeTeam2Tests:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
+    sources:
+      - MacroChallengeTeam2Tests
+    dependencies:
+      - target: MacroChallengeTeam2
+    
