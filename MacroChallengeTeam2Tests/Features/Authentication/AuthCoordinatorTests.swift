@@ -10,19 +10,37 @@ import XCTest
 
 final class AuthCoordinatorTests: XCTestCase {
     func test_InitialState() {
-        let (_, navigationController) = makeSUT()
+        let sut = makeSUT()
         
-        XCTAssertTrue(navigationController.viewControllers.isEmpty)
+        XCTAssertTrue(sut.pages.isEmpty)
     }
     
-    private func makeSUT() -> (AuthCoordinator, UINavigationController) {
+    func test_start_ShouldPushLoadingPageView() {
+        let sut = makeSUT()
+        
+        sut.start()
+        
+        XCTAssertTrue(sut.page(at: 0) is LoadingPageViewController)
+    }
+    
+    private func makeSUT() -> AuthCoordinator {
         let navigationController = UINavigationController()
         let sut = AuthCoordinator(
             navigationController,
             authService: MockAuthService(),
             socketService: SocketIODataSource(url: URL(string: "http://www.google.com")))
         
-        return (sut, navigationController)
+        return sut
+    }
+}
+
+private extension AuthCoordinator {
+    var pages: [UIViewController] {
+        navigationController.viewControllers
+    }
+    
+    func page(at index: Int) -> UIViewController {
+        pages[index]
     }
 }
 

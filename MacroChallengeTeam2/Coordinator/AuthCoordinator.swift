@@ -14,7 +14,7 @@ final class AuthCoordinator: BaseCoordinator {
     var goToInviteFriendCoordinator: ((User) -> Coordinator)?
     var goToJoinFriendCoordinator: ((User) -> Coordinator)?
     
-    private let navigationController: UINavigationController
+    let navigationController: UINavigationController
     
     private let authViewModel: AuthViewModel
     private let userViewModel: UserViewModel
