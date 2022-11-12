@@ -29,11 +29,6 @@ targets:
       - path: swiftlint.sh
         name: SwiftLint
         basedOnDependencyAnalysis: false
-    scheme:
-      gatherCoverageData: true
-      testTargets:
-        - name: MacroChallengeTeam2Tests
-          parallelizable: true
     sources:
       - MacroChallengeTeam2
     dependencies:
@@ -46,10 +41,21 @@ targets:
   MacroChallengeTeam2Tests:
     type: bundle.unit-test
     platform: iOS
-    settings:
-      INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
+    info:
+      path: MacroChallengeTeam2Tests/Info.plist
     sources:
       - MacroChallengeTeam2Tests
     dependencies:
       - target: MacroChallengeTeam2
     
+schemes:
+  MacroChallengeTeam2:
+    build:
+      targets:
+        MacroChallengeTeam2: all
+        MacroChallengeTeam2Tests: [test]
+    test:
+      gatherCoverageData: true
+      debugEnabled: false
+      targets:
+        -  MacroChallengeTeam2Tests
