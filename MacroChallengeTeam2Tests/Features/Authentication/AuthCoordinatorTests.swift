@@ -6,13 +6,32 @@
 //
 
 import XCTest
+@testable import MacroChallengeTeam2
 
-final class AuthenticationCoordinatorTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+final class AuthCoordinatorTests: XCTestCase {
+    func test_InitialState() {
+        let (_, navigationController) = makeSUT()
+        
+        XCTAssertTrue(navigationController.viewControllers.isEmpty)
     }
+    
+    private func makeSUT() -> (AuthCoordinator, UINavigationController) {
+        let navigationController = UINavigationController()
+        let sut = AuthCoordinator(
+            navigationController,
+            authService: MockAuthService(),
+            socketService: SocketIODataSource(url: URL(string: "http://www.google.com")))
+        
+        return (sut, navigationController)
+    }
+}
+
+private class MockAuthService: AuthService {
+    func getUser(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
+    
+    func signUp(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
+    
+    func login(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
+    
+    func logout(_ callback: @escaping (MacroChallengeTeam2.AuthUser?) -> Void) {}
 }
