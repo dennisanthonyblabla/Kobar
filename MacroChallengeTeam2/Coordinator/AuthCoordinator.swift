@@ -15,51 +15,30 @@ final class AuthCoordinator: BaseCoordinator {
     var goToJoinFriendCoordinator: ((User) -> Coordinator)?
     
     let navigationController: UINavigationController
-    
-    private let authViewModel: AuthViewModel
-    private let userViewModel: UserViewModel
-    
+    private let viewModel: AuthViewModel
     private let disposeBag = DisposeBag()
     
-    init(
-        _ navigationController: UINavigationController,
-        authService: AuthService,
-        socketService: SocketIODataSource
-    ) {
+    init(_ navigationController: UINavigationController, viewModel: AuthViewModel) {
         self.navigationController = navigationController
-        
-        self.authViewModel = AuthViewModel(authService)
-        self.userViewModel = UserViewModel(socketHandler: socketService)
+        self.viewModel = viewModel
     }
     
     override func start() {
-        show(makeLoadingPageViewController())
-        
         // Bind auth coordinator with auth state from view model
-        authViewModel.authState()
-            .observe(on: MainScheduler.instance)
-            .distinctUntilChanged { $0?.id == $1?.id }
-            .subscribe { [weak self] in
-                self?.onAuthStateChanged($0)
-            }
+        viewModel.state
+            .subscribe { [weak self] in self?.onAuthStateChanged($0) }
             .disposed(by: disposeBag)
     }
     
-    func onAuthStateChanged(_ authUser: AuthUser?) {
-        guard let authUser = authUser else {
-            show(makeSignInPageViewController())
-            return
+    func onAuthStateChanged(_ state: AuthViewModel.State) {
+        switch state {
+        case .loading:
+            setRootViewController(makeLoadingPageViewController())
+        case .unauthenticated:
+            setRootViewController(makeSignInPageViewController())
+        case let .authenticated(user):
+            setRootViewController(makeMainPageViewController(with: user))
         }
-        
-        // Bind to userId exchange state from view model
-        userViewModel.connect(for: authUser)
-            .andThen(userViewModel.exchangeId(from: authUser))
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] user in
-                guard let viewController = self?.makeMainPageViewController(with: user) else { return }
-                self?.show(viewController)
-            }
-            .disposed(by: disposeBag)
     }
     
     func makeLoadingPageViewController() -> LoadingPageViewController {
@@ -70,11 +49,11 @@ final class AuthCoordinator: BaseCoordinator {
         let signInVC = SignInPageViewController()
         
         signInVC.onSignIn = { [weak self] in
-            self?.authViewModel.login()
+//            self?.authService.login()
         }
         
         signInVC.onSignUp = { [weak self] in
-            self?.authViewModel.signUp()
+//            self?.authService.signUp()
         }
         
         return signInVC
@@ -96,14 +75,14 @@ final class AuthCoordinator: BaseCoordinator {
         }
         
         mainVC.onLogout = { [weak self] in
-            self?.authViewModel.logout()
-            self?.userViewModel.disconnect()
+//            self?.authService.logout()
+//            self?.userViewModel.disconnect()
         }
         
         return mainVC
     }
 
-    private func show(_ viewController: UIViewController) {
-        navigationController.pushViewController(viewController, animated: true)
+    private func setRootViewController(_ viewController: UIViewController) {
+        navigationController.setViewControllers([viewController], animated: true)
     }
 }

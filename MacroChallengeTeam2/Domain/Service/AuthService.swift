@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol AuthService {
-    func getUser(_ callback: @escaping (AuthUser?) -> Void)
-    func signUp(_ callback: @escaping (AuthUser?) -> Void)
-    func login(_ callback: @escaping (AuthUser?) -> Void)
-    func logout(_ callback: @escaping (AuthUser?) -> Void)
+    var user: Observable<User?> { get }
+
+    func signUp()
+    func login()
+    func logout()
 }

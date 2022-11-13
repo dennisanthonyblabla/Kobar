@@ -8,7 +8,7 @@
 import Foundation
 import Auth0
 
-class Auth0DataSource: AuthService {
+class Auth0DataSource {
     static let shared = Auth0DataSource()
     private let credentialsManager = CredentialsManager(authentication: Auth0.authentication())
 
@@ -51,7 +51,7 @@ class Auth0DataSource: AuthService {
         startWebAuth(callback: callback)
     }
 
-    func logout(_ callback: @escaping (AuthUser?) -> Void) {
+    func logout(_ callback: @escaping () -> Void) {
         guard let redirectURL = URL(
             string: "com.namanya-apa.MacroChallengeTeam2://kobar.au.auth0.com/ios/com.namanya-apa.MacroChallengeTeam2/logout")
         else { return }
@@ -60,7 +60,7 @@ class Auth0DataSource: AuthService {
             .webAuth()
             .redirectURL(redirectURL)
             .clearSession { _ in
-                callback(nil)
+                callback()
             }
 
         clearCredentials()
@@ -68,7 +68,10 @@ class Auth0DataSource: AuthService {
         return
     }
 
-    private func startWebAuth(parameters: [String: String] = [:], callback: @escaping (AuthUser?) -> Void) {
+    private func startWebAuth(
+        parameters: [String: String] = [:],
+        callback: @escaping (AuthUser?) -> Void)
+    {
         Auth0
             .webAuth()
             .parameters(parameters)

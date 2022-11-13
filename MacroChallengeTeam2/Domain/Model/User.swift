@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User: Identifiable, Codable {
+struct User: Equatable {
     let id: String
     let nickname: String
     let picture: String
@@ -17,3 +17,5 @@ struct User: Identifiable, Codable {
         User(id: "", nickname: "", picture: "", rating: 0)
     }
 }
+
+extension User: Decodable {}
