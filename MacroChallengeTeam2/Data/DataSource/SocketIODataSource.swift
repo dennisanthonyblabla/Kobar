@@ -11,8 +11,8 @@ import SocketIO
 // TODO: @salman implement abstraction for socket handler
 // TODO: @salman ini socket handler cuma bisa observe dari 1 client (UI / ViewModel / etc.)
 class SocketIODataSource: WebSocketService {
-    var socketManager: SocketManager
-    var socketClient: SocketIOClient
+    let socketManager: SocketManager
+    let socketClient: SocketIOClient
     
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
