@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthUser: Identifiable, Codable {
+struct AuthUser {
     let id: String
     let bearerToken: String
 }

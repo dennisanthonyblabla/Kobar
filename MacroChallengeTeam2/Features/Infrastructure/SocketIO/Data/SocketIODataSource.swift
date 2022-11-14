@@ -11,8 +11,8 @@ import SocketIO
 // TODO: @salman implement abstraction for socket handler
 // TODO: @salman ini socket handler cuma bisa observe dari 1 client (UI / ViewModel / etc.)
 class SocketIODataSource: WebSocketService {
-    let socketManager: SocketManager
-    let socketClient: SocketIOClient
+    private let socketManager: SocketManager
+    private let socketClient: SocketIOClient
     
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
@@ -22,7 +22,7 @@ class SocketIODataSource: WebSocketService {
     // TODO: @salman ini harusnya jadi battle :(
     var onBattleStarted: ((NoUserBattle) -> Void) = { _ in }
     var onBattleCanceled: (() -> Void) = {}
-
+    
     init(url: URL?) {
         guard let url = url else {
             fatalError("Invalid socket URL!")
@@ -31,12 +31,12 @@ class SocketIODataSource: WebSocketService {
         socketManager = SocketManager(socketURL: url, config: [.log(true), .compress])
         socketClient = socketManager.socket(forNamespace: "/battle")
     }
-
+    
     func connect(token: String) {
         socketClient.on(clientEvent: .connect) { [weak self] _, _ in
             self?.onConnect()
         }
-
+        
         socketClient.on("idExchanged") { [weak self] data, _ in
             do {
                 let user: User = try SocketParser.convert(data: data[0])
@@ -45,7 +45,7 @@ class SocketIODataSource: WebSocketService {
                 print("Failed to parse")
             }
         }
-
+        
         socketClient.on("battleInvitationCreated") { [weak self] data, _ in
             do {
                 let battleInvitation: BattleInvitation = try SocketParser.convert(data: data[0])
@@ -117,11 +117,11 @@ class SocketIODataSource: WebSocketService {
     func emitCancelBattleEvent(data: CancelBattleDto) {
         socketClient.emit("cancelBattle", data)
     }
-
+    
     func emitReadyBattleEvent(data: ReadyBattleDto) {
         socketClient.emit("readyBattle", data)
     }
-
+    
     func disconnect() {
         socketClient.disconnect()
     }

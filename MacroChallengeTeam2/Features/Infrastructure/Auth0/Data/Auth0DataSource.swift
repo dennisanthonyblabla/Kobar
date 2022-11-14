@@ -10,9 +10,11 @@ import Auth0
 
 class Auth0DataSource {
     static let shared = Auth0DataSource()
-    private let credentialsManager = CredentialsManager(authentication: Auth0.authentication())
+    private let credentialsManager: CredentialsManager
 
-    private init() {}
+    private init() {
+        credentialsManager = CredentialsManager(authentication: Auth0.authentication())
+    }
 
     // TODO: @salman make thread-safe
     private func storeCredentials(_ credentials: Credentials) {
