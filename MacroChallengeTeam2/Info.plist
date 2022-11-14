@@ -48,6 +48,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>kobarBlueActive</string>
+	</dict>
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIStatusBarHidden</key>
@@ -56,10 +61,5 @@
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>kobarBlueActive</string>
-	</dict>
 </dict>
 </plist>
