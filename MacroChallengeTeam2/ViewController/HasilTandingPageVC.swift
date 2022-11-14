@@ -312,6 +312,7 @@ class HasilTandingPageViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         confettiGif.stop()
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 }
 

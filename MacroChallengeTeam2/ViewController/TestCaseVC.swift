@@ -267,6 +267,11 @@ class TestCaseViewController: UIPageViewController {
             btn.style = .transparent
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 }
 
 struct TestCaseViewControllerPreviews: PreviewProvider {

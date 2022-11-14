@@ -166,7 +166,7 @@ class PembahasanViewController: UIViewController {
 
     private func setupComponents() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-40)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15)
             make.leading.equalToSuperview().offset(40)
         }
         kodingan.snp.makeConstraints { make in
@@ -214,6 +214,11 @@ class PembahasanViewController: UIViewController {
             },
             for: .touchUpInside
         )
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 }
 

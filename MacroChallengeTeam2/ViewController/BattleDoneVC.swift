@@ -119,6 +119,11 @@ class BattleDoneVC: UIViewController {
             make.bottom.equalToSuperview().offset(-100)
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 }
 
 struct BattleDoneVCPreviews: PreviewProvider {

@@ -461,11 +461,6 @@ extension BattlefieldPageViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
     /// Adds animation for layouting changes
     private func animationLayout() {
         UIViewPropertyAnimator.runningPropertyAnimator(

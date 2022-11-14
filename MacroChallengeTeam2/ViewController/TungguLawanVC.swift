@@ -146,6 +146,11 @@ class TungguLawanViewController: UIViewController {
             make.width.equalTo(200)
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 }
 
 struct TungguLawanViewControllerPreviews: PreviewProvider {
