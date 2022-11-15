@@ -93,19 +93,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                     }
                                     return rfbvc
                                 },
-                                makeBattle: { battle in
+                                makeBattle: { battlec, battle in
                                     let bvc = BattlefieldPageViewController()
                                     bvc.userName = user.nickname
+                                    bvc.battleEndDate = battle.endTime
                                     if let opp = battle.users.first(where: { $0.id != user.id }) {
                                         bvc.opponentName = opp.nickname
                                     }
                                     if let prob = battle.problem {
                                         bvc.problem = prob
+                                        bvc.onRunCode = { submission in
+                                            battleService.runCode(
+                                                userId: user.id,
+                                                battleId: battle.id,
+                                                problemId: prob.id,
+                                                submission: submission)
+                                        }
+                                        bvc.onSubmitCode = { submission in
+                                            battleService.submitCode(
+                                                userId: user.id,
+                                                battleId: battle.id,
+                                                problemId: prob.id,
+                                                submission: submission)
+                                        }
                                     }
-                                    bvc.battleEndDate = battle.endTime
-                                    bvc.onRunCode = { submission in }
-                                    bvc.onSubmitCode = { submission in }
-                                    bvc.onShowDocumentation = {}
+                                    // TODO: implement onShowDocumentation
+                                    bvc.onShowDocumentation = {
+                                    }
                                     return bvc
                                 }
                             )

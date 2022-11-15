@@ -44,4 +44,23 @@ class BattleDataSource: BattleService {
         socketService.emitCancelBattleEvent(
             data: CancelBattleDto(battleId: battleId))
     }
+    
+    func runCode(userId: String, battleId: String, problemId: String, submission: RunCodeSubmission) {
+        socketService.emitRunCodeEvent(
+            data: RunCodeDto(
+                userId: userId,
+                battleId: battleId,
+                problemId: problemId,
+                code: submission.code,
+                input: submission.input))
+    }
+    
+    func submitCode(userId: String, battleId: String, problemId: String, submission: SubmitCodeSubmission) {
+        socketService.emitSubmitCodeEvent(
+            data: SubmitCodeDto(
+                userId: userId,
+                battleId: battleId,
+                problemId: problemId,
+                code: submission.code))
+    }
 }
