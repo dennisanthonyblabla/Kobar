@@ -1,7 +1,7 @@
 name: MacroChallengeTeam2
 options:
   bundleIdPrefix: com.namanya-apa
-packages:
+packages:  
   RxSwift:
     url: https://github.com/ReactiveX/RxSwift
     from: 6.5.0
@@ -18,7 +18,7 @@ packages:
     url: https://github.com/auth0/Auth0.swift
     from: 2.3.2
 targets:
-  Macro Challenge Team2:
+  Kobar:
     type: application
     platform: iOS
     deploymentTarget: 15.0
