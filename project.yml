@@ -24,6 +24,7 @@ targets:
     deploymentTarget: 15.0
     settings:
       INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
+      TARGETED_DEVICE_FAMILY: 2
     postCompileScripts:
       - path: swiftlint.sh
         name: SwiftLint
