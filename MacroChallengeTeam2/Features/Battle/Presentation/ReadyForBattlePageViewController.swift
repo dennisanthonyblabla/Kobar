@@ -8,22 +8,27 @@
 import UIKit
 import SnapKit
 
-// TODO: @salman update opponent profile when they left
 class ReadyForBattlePageViewController: UIViewController {
     var onBack: (() -> Void)?
     var onReady: (() -> Void)?
     var onCountdownFinished: (() -> Void)?
     
-    var user: User = .empty()
-    var opponent: User = .empty()
+    var userName: String = ""
+    var userPicture: String = ""
+    var userRating: Int = 0
+    
+    var opponentName: String = ""
+    var opponentPicture: String = ""
+    var opponentRating: Int = 0
+
     var startDate: Date?
     
     private lazy var userProfileTandingView: ProfileTandingView = {
         let view = ProfileTandingView(
             role: .user,
-            name: user.nickname,
-            rating: user.rating,
-            imageURL: URL(string: user.picture))
+            name: userName,
+            rating: userRating,
+            imageURL: URL(string: userPicture))
         
         return view
     }()
@@ -31,9 +36,9 @@ class ReadyForBattlePageViewController: UIViewController {
     private lazy var opponentProfileTandingView: ProfileTandingView = {
         let view = ProfileTandingView(
             role: .opponent,
-            name: opponent.nickname,
-            rating: opponent.rating,
-            imageURL: URL(string: opponent.picture))
+            name: opponentName,
+            rating: opponentRating,
+            imageURL: URL(string: opponentPicture))
         
         return view
     }()

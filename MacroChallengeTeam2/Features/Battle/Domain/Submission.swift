@@ -11,6 +11,7 @@ struct Submission: Identifiable, Codable {
     let id: UUID
     let code: String
     let input: String
+    
     enum SubmissionType {
         case run
         case submit

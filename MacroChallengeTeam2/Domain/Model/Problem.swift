@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Problem: Identifiable, Codable {
+struct Problem: Equatable {
     let id: String
     let prompt: String
     let inputFormat: String
@@ -17,3 +17,5 @@ struct Problem: Identifiable, Codable {
     let reviewVideoURL: String
     let reviewText: String
 }
+
+extension Problem: Decodable {}

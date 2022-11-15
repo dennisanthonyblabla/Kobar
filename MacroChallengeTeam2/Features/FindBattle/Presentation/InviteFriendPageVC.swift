@@ -12,15 +12,17 @@ import SwiftUI
 class InviteFriendPageViewController: UIViewController {
     var onBack: (() -> Void)?
     
-    var user: User = .empty()
+    var name: String = ""
+    var picture: String = ""
+    var rating: Int = 0
     var inviteCode: String = ""
     
     private lazy var profileUser: ProfileTandingView = {
         let view = ProfileTandingView(
             role: .user,
-            name: user.nickname,
-            rating: user.rating,
-            imageURL: URL(string: user.picture))
+            name: name,
+            rating: rating,
+            imageURL: URL(string: picture))
         
         return view
     }()

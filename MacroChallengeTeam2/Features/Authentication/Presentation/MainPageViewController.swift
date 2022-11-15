@@ -16,12 +16,13 @@ class MainPageViewController: UIViewController {
     var onJoinRandom: (() -> Void)?
     var onLogout: (() -> Void)?
     
-    var user: User = .empty()
+    var picture: String = ""
+    var rating: Int = 0
     
     private lazy var profileView: ShortProfileView = {
         let view = ShortProfileView(
-            rating: user.rating,
-            imageURL: URL(string: user.picture))
+            rating: rating,
+            imageURL: URL(string: picture))
         return view
     }()
     

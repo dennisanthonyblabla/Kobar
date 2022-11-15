@@ -6,9 +6,12 @@
 //
 
 import Foundation
-struct TestCase: Identifiable, Codable {
+
+struct TestCase: Equatable {
     let id: String
     let input: String
     let output: String
     let order: Int
 }
+
+extension TestCase: Decodable {}

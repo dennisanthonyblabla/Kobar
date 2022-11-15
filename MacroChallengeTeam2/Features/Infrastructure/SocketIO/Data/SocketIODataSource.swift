@@ -8,9 +8,7 @@
 import Foundation
 import SocketIO
 
-// TODO: @salman implement abstraction for socket handler
-// TODO: @salman ini socket handler cuma bisa observe dari 1 client (UI / ViewModel / etc.)
-class SocketIODataSource: WebSocketService {
+class SocketIODataSource {
     private let socketManager: SocketManager
     private let socketClient: SocketIOClient
     

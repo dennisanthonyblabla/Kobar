@@ -49,29 +49,13 @@ final class AuthCoordinatorTests: XCTestCase {
     private func makeSUT(authService: AuthService = MockAuthService()) -> (AuthCoordinator, NavigationSpy) {
         let viewModel = AuthViewModel(service: authService)
         let spy = NavigationSpy()
-        let sut = AuthCoordinator(spy, viewModel: viewModel)
+        let sut = AuthCoordinator(
+            spy,
+            viewModel: viewModel,
+            makeLoading: { LoadingPageViewController() },
+            makeSignIn: { SignInPageViewController() },
+            makeMain: { _, _ in MainPageViewController() })
+        
         return (sut, spy)
-    }
-}
-
-class NavigationSpy: UINavigationController {
-    var pages: [UIViewController] = []
-    
-    override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
-        pages = viewControllers
-    }
-    
-    func page(at index: Int) -> UIViewController {
-        pages[index]
-    }
-}
-
-private extension AuthCoordinator {
-    var pages: [UIViewController] {
-        navigationController.viewControllers
-    }
-    
-    func page(at index: Int) -> UIViewController {
-        pages[index]
     }
 }

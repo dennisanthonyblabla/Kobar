@@ -7,8 +7,10 @@
 
 import Foundation
 
-struct BattleInvitation: Identifiable, Codable {
+struct BattleInvitation: Equatable {
     let id: String
     let userId: String
     let inviteCode: String
 }
+
+extension BattleInvitation: Decodable {}

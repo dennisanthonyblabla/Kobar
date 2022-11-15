@@ -73,7 +73,7 @@ final class ShortProfileView: UIView {
         super.init(frame: frame)
     }
 
-    init(rating: Int, imageURL: URL? = nil) {
+    init(rating: Int?, imageURL: URL? = nil) {
         super.init(frame: .zero)
         self.rating = rating
         self.imageURL = imageURL
