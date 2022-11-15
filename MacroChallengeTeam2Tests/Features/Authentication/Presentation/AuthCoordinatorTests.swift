@@ -7,7 +7,7 @@
 
 import XCTest
 import RxSwift
-@testable import MacroChallengeTeam2
+@testable import Kobar
 
 final class AuthCoordinatorTests: XCTestCase {
     func test_InitialState() {

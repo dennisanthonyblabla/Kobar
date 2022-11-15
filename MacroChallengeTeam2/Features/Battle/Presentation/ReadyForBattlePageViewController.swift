@@ -21,7 +21,7 @@ class ReadyForBattlePageViewController: UIViewController {
     var opponentPicture: String = ""
     var opponentRating: Int = 0
 
-    var startDate: Date?
+    var battleStartDate: Date?
     
     private lazy var userProfileTandingView: ProfileTandingView = {
         let view = ProfileTandingView(
@@ -89,8 +89,9 @@ class ReadyForBattlePageViewController: UIViewController {
         return label
     }()
     
-    private lazy var countdownLabel: UILabel = {
-        let label = UILabel()
+    private lazy var countdownLabel: CountdownLabelView = {
+        let label = CountdownLabelView(endDate: battleStartDate)
+        label.onCountdownFinished = onCountdownFinished
         label.numberOfLines = 1
         label.font = .bold38
         label.textColor = .white
@@ -134,32 +135,9 @@ class ReadyForBattlePageViewController: UIViewController {
         view.addSubview(bottomTextLabel)
         view.addSubview(countdownLabel)
         
-        if let date = startDate {
-            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self, date] timer in
-                if Date.now >= date {
-                    timer.invalidate()
-                    self?.onCountdownFinished?()
-                }
-                
-                DispatchQueue.main.async {
-                    self?.updateCountdown(date: date)
-                }
-            }
-        }
-        
         setupBackgroundConstraints()
         setupDisplaysConstraint()
         setupComponentsConstraint()
-    }
-    
-    private func updateCountdown(date: Date) {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.zeroFormattingBehavior = .pad
-        
-        let string = formatter.string(from: .now, to: date)
-        
-        countdownLabel.text = string
     }
     
     private func updateButton() {

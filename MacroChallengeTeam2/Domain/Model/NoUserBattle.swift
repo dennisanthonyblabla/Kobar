@@ -18,7 +18,7 @@ struct NoUserBattle {
         Battle(
             id: id,
             inviteCode: inviteCode,
-            problem: problem,
+            problem: problem?.sorted(),
             users: battle.users,
             startTime: startTime,
             endTime: endTime)

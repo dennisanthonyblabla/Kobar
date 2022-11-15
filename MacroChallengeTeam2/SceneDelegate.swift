@@ -96,7 +96,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                     return rfbvc
                                 },
                                 makeBattle: { battle in
-                                    let bvc = BattlefieldViewController()
+                                    let bvc = BattlefieldPageViewController()
                                     return bvc
                                 }
                             )

@@ -22,8 +22,8 @@ struct AuthViewModel {
     
     var state: Observable<State> {
         Observable.merge(
-            mapUserToState(),
-            .just(.loading)
+            .just(.loading),
+            mapUserToState()
         )
     }
     

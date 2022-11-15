@@ -20,7 +20,10 @@ class SocketIODataSource {
     // TODO: @salman ini harusnya jadi battle :(
     var onBattleStarted: ((NoUserBattle) -> Void) = { _ in }
     var onBattleCanceled: (() -> Void) = {}
-    
+    var onCodeRan: ((RunCodeResult) -> Void) = { _ in }
+    var onCodeSubmit: ((SubmitCodeResult) -> Void) = { _ in }
+    var onBattleFinished: ((BattleResult) -> Void) = { _ in }
+
     init(url: URL?) {
         guard let url = url else {
             fatalError("Invalid socket URL!")
@@ -91,12 +94,43 @@ class SocketIODataSource {
         
         socketClient.on("opponentRejoined") { _, _ in }
         
+        socketClient.on("opponentRunCode") { _, _ in }
+        
+        socketClient.on("opponentSubmittedCode") { _, _ in }
+        
         socketClient.on("waitingForOpponent") { _, _ in }
         
         socketClient.on("battleCanceled") { [weak self] _, _ in
             self?.onBattleCanceled()
         }
         
+        socketClient.on("codeRan") { [weak self] data, _ in
+            do {
+                let result: RunCodeResult = try SocketParser.convert(data: data[0])
+                self?.onCodeRan(result)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+        
+        socketClient.on("codeSubmitted") { [weak self] data, _ in
+            do {
+                let result: SubmitCodeResult = try SocketParser.convert(data: data[0])
+                self?.onCodeSubmit(result)
+            } catch {
+                print("Failed to parse")
+            }
+        }
+        
+        socketClient.on("battleFinished") { [weak self] data, _ in
+            do {
+                let wrapper: BattleResultWrapper = try SocketParser.convert(data: data[0])
+                self?.onBattleFinished(wrapper.toBattleResult())
+            } catch {
+                print("Failed to parse")
+            }
+        }
+    
         socketClient.connect(withPayload: ["token": "Bearer \(token)"])
     }
     
@@ -120,6 +154,14 @@ class SocketIODataSource {
         socketClient.emit("readyBattle", data)
     }
     
+    func emitRunCodeEvent(data: RunCodeDto) {
+        socketClient.emit("runCode", data)
+    }
+    
+    func emitSubmitCodeEvent(data: SubmitCodeDto) {
+        socketClient.emit("submitCode", data)
+    }
+
     func disconnect() {
         socketClient.disconnect()
     }

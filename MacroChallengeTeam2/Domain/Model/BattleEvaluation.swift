@@ -8,9 +8,18 @@
 import Foundation
 
 struct BattleEvaluation: Identifiable, Codable {
-    let id: UUID
-    let userId: UUID
+    let id: String
+    let userId: String
     let correctness: Int
-    let performance: Int
-    let time: Int
+    let performance: Double
+    let time: Double
+    
+    static func empty() -> BattleEvaluation {
+        BattleEvaluation(
+            id: "",
+            userId: "",
+            correctness: 0,
+            performance: 0.0,
+            time: 0.0)
+    }
 }

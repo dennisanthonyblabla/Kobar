@@ -7,7 +7,7 @@
 
 import XCTest
 import RxSwift
-@testable import MacroChallengeTeam2
+@testable import Kobar
 
 final class AuthViewModelTests: XCTestCase {
     func test_initialState_ShouldBeLoading() {
@@ -37,18 +37,5 @@ final class AuthViewModelTests: XCTestCase {
         XCTAssertEqual(
             spy.values,
             [.loading, .authenticated(user)])
-    }
-    
-    private class StateSpy {
-        private(set) var values: [AuthViewModel.State] = []
-        private let disposeBag = DisposeBag()
-        
-        init(_ observable: Observable<AuthViewModel.State>) {
-            observable
-                .subscribe { [weak self] state in
-                    self?.values.append(state)
-                }
-                .disposed(by: disposeBag)
-        }
     }
 }

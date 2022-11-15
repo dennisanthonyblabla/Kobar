@@ -8,9 +8,20 @@
 import Foundation
 
 struct BattleResult: Identifiable, Codable {
-    let id: UUID
-    let battleId: UUID
-    let winnerId: UUID
+    let id: String
+    let battleId: String
+    let winnerId: String
+    let isDraw: Bool
     let score: Int
-    let evaluation: BattleEvaluation
+    let evaluations: [BattleEvaluation]
+    
+    static func empty() -> BattleResult {
+        BattleResult(
+            id: "",
+            battleId: "",
+            winnerId: "",
+            isDraw: false,
+            score: 0,
+            evaluations: [])
+    }
 }

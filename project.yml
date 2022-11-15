@@ -21,10 +21,13 @@ packages:
     from: 2.3.2
 
 targets:
-  MacroChallengeTeam2:
+  Kobar:
     type: application
     platform: iOS
     deploymentTarget: 15.0
+    settings:
+      INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
+      TARGETED_DEVICE_FAMILY: 2
     preBuildScripts:
       - path: swiftlint.sh
         name: SwiftLint
@@ -38,7 +41,7 @@ targets:
       - package: Lottie
       - package: Auth0
 
-  MacroChallengeTeam2Tests:
+  KobarTests:
     type: bundle.unit-test
     platform: iOS
     info:
@@ -46,16 +49,17 @@ targets:
     sources:
       - MacroChallengeTeam2Tests
     dependencies:
-      - target: MacroChallengeTeam2
+      - target: Kobar
+      - package: RxSwift
     
 schemes:
   MacroChallengeTeam2:
     build:
       targets:
-        MacroChallengeTeam2: all
-        MacroChallengeTeam2Tests: [test]
+        Kobar: all
+        KobarTests: [test]
     test:
       gatherCoverageData: true
       debugEnabled: false
       targets:
-        -  MacroChallengeTeam2Tests
+        -  KobarTests

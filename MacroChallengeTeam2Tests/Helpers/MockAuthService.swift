@@ -6,7 +6,7 @@
 //
 
 import RxSwift
-@testable import MacroChallengeTeam2
+@testable import Kobar
 
 class MockAuthService: AuthService {
     let mockUser: Observable<User?>

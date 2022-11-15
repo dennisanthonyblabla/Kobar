@@ -10,7 +10,17 @@ import SwiftUI
 import SnapKit
 
 class TestCaseViewController: UIPageViewController {
-    private lazy var lanjutBtn = MedButtonView(variant: .variant2, title: "lanjut")
+    var onNext: (() -> Void)?
+    
+    var submitCodeResult: SubmitCodeResult = .empty()
+    
+    var selectedIndex = 0
+    
+    private lazy var lanjutBtn: MedButtonView = {
+        let button = MedButtonView(variant: .variant2, title: "Lanjut")
+        button.addVoidAction(onNext, for: .touchDown)
+        return button
+    }()
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -44,7 +54,7 @@ class TestCaseViewController: UIPageViewController {
 
     private lazy var outputHarapLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ouptut Yang Diharapkan"
+        label.text = "Output Yang Diharapkan"
         label.font = .semi17
         label.textColor = .kobarBlack
         return label
@@ -96,7 +106,7 @@ class TestCaseViewController: UIPageViewController {
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
-        textView.text = "Ini Ouptut Lo"
+        textView.text = "Ini Output Lo"
         return textView
     }()
 
@@ -113,22 +123,35 @@ class TestCaseViewController: UIPageViewController {
         return textView
     }()
 
-    private lazy var testCases: [TestCaseButton] = {
-        var testCases: [TestCaseButton] = [
-            TestCaseButton(status: .correct, order: 1),
-            TestCaseButton(status: .correct, order: 2),
-            TestCaseButton(status: .wrong, order: 3),
-            TestCaseButton(status: .correct, order: 4),
-            TestCaseButton(status: .wrong, order: 5)
-        ]
-        testCases[0].isSelected = true
-        isTestCaseSelected(btn: testCases[0])
+    private lazy var testCases: [TestCaseButtonView] = {
+        let tests = submitCodeResult.tests
+        let testCases = zip(tests.indices, tests).map { index, testCase in
+            TestCaseButtonView(
+                status: testCase.outputType == .correct ? .correct : .wrong,
+                order: index + 1)
+        }
+        
+        // Just in case there are no test cases
+        if !testCases.isEmpty {
+            testCases[0].isSelected = true
+            isTestCaseSelected(btn: testCases[0])
+            
+            textInput.text = tests[0].testCase.input
+            textOutputHarap.text = tests[0].testCase.output
+            textOutputLo.text = tests[0].output
+        }
+        
         for (index, i) in testCases.enumerated() {
             i.addAction(
                 UIAction { [self]_ in
+                    self.textInput.text = tests[index].testCase.input
+                    self.textOutputHarap.text = tests[index].testCase.output
+                    self.textOutputLo.text = tests[index].output
+                    
                     for each in testCases {
                         each.isSelected = false
                     }
+                    
                     i.isSelected = true
                     for each in testCases {
                         isTestCaseSelected(btn: each)
@@ -237,7 +260,7 @@ class TestCaseViewController: UIPageViewController {
         }
     }
 
-    private func isTestCaseSelected(btn: TestCaseButton) {
+    private func isTestCaseSelected(btn: TestCaseButtonView) {
         if btn.isSelected == true {
             btn.style = .fill
         } else {
