@@ -7,14 +7,15 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 final class AuthDataSource: AuthService {
-    private let authUserSubject = PublishSubject<AuthUser?>()
+    private let authUserSubject = PublishRelay<AuthUser?>()
     private let dataSource: Auth0DataSource
     private let socketService: SocketIODataSource
     
     var user: Observable<User?> {
-        authUserSubject.flatMap(exchangeId)
+        authUserSubject.flatMap(exchangeId).debug()
     }
     
     init(_ dataSource: Auth0DataSource, _ socketService: SocketIODataSource) {
@@ -41,27 +42,27 @@ final class AuthDataSource: AuthService {
         }
     }
     
-    func getUser() {
+    func fetchUser() {
         dataSource.getUser { [weak self] user in
-            self?.authUserSubject.onNext(user)
+            self?.authUserSubject.accept(user)
         }
     }
     
     func login() {
         dataSource.login { [weak self] user in
-            self?.authUserSubject.onNext(user)
+            self?.authUserSubject.accept(user)
         }
     }
     
     func signUp() {
         dataSource.signUp { [weak self] user in
-            self?.authUserSubject.onNext(user)
+            self?.authUserSubject.accept(user)
         }
     }
     
     func logout() {
         dataSource.logout { [weak self] in
-            self?.authUserSubject.onNext(nil)
+            self?.authUserSubject.accept(nil)
         }
     }
 }

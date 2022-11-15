@@ -14,19 +14,22 @@ final class BattleCoordinator: BaseCoordinator {
     
     private let navigationController: UINavigationController
     private let makeCountdown: (Battle) -> UIViewController
-    private let makeBattle: (BaseCoordinator, Battle) -> UIViewController
+    private let makeBattle: (BattleCoordinator, Battle) -> UIViewController
+    private let makeDocumentation: () -> UIViewController
     private let previousStack: [UIViewController]
     
     init(
         _ navigationController: UINavigationController,
         viewModel: BattleViewModel,
         makeCountdown: @escaping (Battle) -> UIViewController,
-        makeBattle: @escaping (BaseCoordinator, Battle) -> UIViewController
+        makeBattle: @escaping (BattleCoordinator, Battle) -> UIViewController,
+        makeDocumentation: @escaping () -> UIViewController
     ) {
         self.navigationController = navigationController
         self.viewModel = viewModel
         self.makeCountdown = makeCountdown
         self.makeBattle = makeBattle
+        self.makeDocumentation = makeDocumentation
         
         self.previousStack = navigationController.viewControllers
     }
@@ -46,10 +49,14 @@ final class BattleCoordinator: BaseCoordinator {
         case let .countdown(battle):
             show(makeCountdown(battle))
         case let .battle(battle):
-            show(makeBattle(battle))
+            show(makeBattle(self, battle))
         case .finished:
             break
         }
+    }
+    
+    func showDocumentation() {
+        present(makeDocumentation())
     }
     
     private func pop() {
@@ -60,7 +67,7 @@ final class BattleCoordinator: BaseCoordinator {
         navigationController.setViewControllers(previousStack + [viewController], animated: true)
     }
     
-    func present(_ viewController: UIViewController) {
+    private func present(_ viewController: UIViewController) {
         navigationController.present(viewController, animated: true)
     }
 }

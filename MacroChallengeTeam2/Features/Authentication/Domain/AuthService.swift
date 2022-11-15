@@ -11,6 +11,7 @@ import RxSwift
 protocol AuthService {
     var user: Observable<User?> { get }
 
+    func fetchUser()
     func signUp()
     func login()
     func logout()

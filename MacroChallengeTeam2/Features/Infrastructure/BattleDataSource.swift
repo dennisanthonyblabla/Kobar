@@ -6,8 +6,8 @@
 //
 
 import RxSwift
+import RxRelay
 
-// TODO: @salman ini harusnya gapake pre start battle
 class BattleDataSource: BattleService {
     private let battleSubject = PublishSubject<Battle?>()
     private let socketService: SocketIODataSource
@@ -16,18 +16,15 @@ class BattleDataSource: BattleService {
         battleSubject.asObservable()
     }
     
-    init(
-        socketService: SocketIODataSource,
-        preStartBattle: Battle
-    ) {
+    init(socketService: SocketIODataSource) {
         self.socketService = socketService
         
         self.socketService.onBattleCanceled = { [weak self] in
             self?.battleSubject.onNext(nil)
         }
         
-        self.socketService.onBattleStarted = { [weak self, preStartBattle] battle in
-            self?.battleSubject.onNext(battle.join(with: preStartBattle))
+        self.socketService.onBattleStarted = { [weak self] battle in
+            self?.battleSubject.onNext(battle)
         }
         
         self.socketService.onBattleRejoined = { [weak self] battle in

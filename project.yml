@@ -36,6 +36,7 @@ targets:
       - MacroChallengeTeam2
     dependencies:
       - package: RxSwift
+        product: RxRelay
       - package: SnapKit
       - package: SocketIO
       - package: Lottie

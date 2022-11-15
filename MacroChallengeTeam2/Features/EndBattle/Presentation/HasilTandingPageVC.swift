@@ -80,14 +80,18 @@ class HasilTandingPageViewController: UIViewController {
         role: .user,
         name: user.nickname,
         rating: result.score,
-        state: winner == .user ? "+" : "-"
+        state: winner == .draw
+        ? ""
+        : winner == .user ? "+" : "-"
     )
 
     private lazy var opponentProfile = ProfileTandingView(
         role: .opponent,
         name: opponent.nickname,
         rating: result.score,
-        state: winner == .opponent ? "+" : "-"
+        state: winner == .draw
+        ? ""
+        : winner == .opponent ? "+" : "-"
     )
 
     private lazy var background: UIImageView = {

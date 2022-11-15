@@ -15,27 +15,24 @@ class InviteFriendViewModel {
     }
     
     private let service: FindBattleService
+    private let userId: String
     
-    init(service: FindBattleService) {
+    init(service: FindBattleService, userId: String) {
         self.service = service
+        self.userId = userId
     }
     
-    var state: Observable<State> {
+    func inviteFriend() -> Observable<State> {
         Observable.merge(
-            mapBattleToState(),
-            mapBattleInvitationToState(),
-            .just(.loading)
+            .just(.loading),
+            service
+                .createBattleInvitation(userId: userId)
+                .asObservable()
+                .map { State.battleInvitationCreated($0) },
+            service
+                .waitForBattle()
+                .asObservable()
+                .map { State.battleFound($0) }
         )
-    }
-    
-    private func mapBattleInvitationToState() -> Observable<State> {
-        service.battleInvitation
-            .map { .battleInvitationCreated($0) }
-            .asObservable()
-    }
-    
-    private func mapBattleToState() -> Observable<State> {
-        service.battle
-            .map { .battleFound($0) }
     }
 }

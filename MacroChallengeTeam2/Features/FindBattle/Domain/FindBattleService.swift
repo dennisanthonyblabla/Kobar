@@ -9,8 +9,7 @@ import Foundation
 import RxSwift
 
 protocol FindBattleService {
-    var battleInvitation: Single<BattleInvitation> { get }
-    var battle: Observable<Battle> { get }
-    func getBattleInvitation(userId: String)
-    func joinBattle(userId: String, inviteCode: String)
+    func waitForBattle() -> Single<Battle>
+    func createBattleInvitation(userId: String) -> Single<BattleInvitation>
+    func joinFriend(userId: String, inviteCode: String) -> Single<Battle>
 }

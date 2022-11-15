@@ -20,18 +20,18 @@ struct AuthViewModel {
         self.service = service
     }
     
-    var state: Observable<State> {
-        Observable.merge(
+    func getUserState() -> Observable<State> {
+        let observable: Observable<State> = Observable.merge(
             .just(.loading),
-            mapUserToState()
+            service.user
+                .map { user in
+                    guard let user = user else { return .unauthenticated }
+                    return .authenticated(user)
+                }
         )
-    }
-    
-    private func mapUserToState() -> Observable<State> {
-        service.user
-            .map { user in
-                guard let user = user else { return .unauthenticated }
-                return .authenticated(user)
-            }
+        
+        service.fetchUser()
+        
+        return observable
     }
 }
