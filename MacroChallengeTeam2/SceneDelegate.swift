@@ -32,8 +32,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         lazy var findBattleService = FindBattleDataSource(socketService: socketDataSource)
         lazy var authService = AuthDataSource(authDataSource, socketDataSource)
         
-        authService.getUser()
-        
         let authViewModel = AuthViewModel(service: authService)
         let authCoordinator = AuthCoordinator(
             navigationController,
@@ -64,7 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             ifvc.onBack = ifc.completion
                             return ifvc
                         },
-                        makeBattle: { ifc, preStartBattle in
+                        makeBattle: { preStartBattle in
                             let battleService = BattleDataSource(
                                 socketService: socketDataSource,
                                 preStartBattle: preStartBattle)
@@ -97,6 +95,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                 },
                                 makeBattle: { battle in
                                     let bvc = BattlefieldPageViewController()
+                                    bvc.userName = user.nickname
+                                    if let opp = battle.users.first(where: { $0.id != user.id }) {
+                                        bvc.opponentName = opp.nickname
+                                    }
+                                    if let prob = battle.problem {
+                                        bvc.problem = prob
+                                    }
+                                    bvc.battleEndDate = battle.endTime
+                                    bvc.onRunCode = { submission in }
+                                    bvc.onSubmitCode = { submission in }
+                                    bvc.onShowDocumentation = {}
                                     return bvc
                                 }
                             )
@@ -115,5 +124,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         coordinator = authCoordinator
         coordinator?.start()
+        
+        authService.getUser()
     }
 }

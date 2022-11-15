@@ -14,14 +14,14 @@ final class InviteFriendCoordinator: BaseCoordinator {
     
     private let navigationController: UINavigationController
     private let makeBattleInvitation: (BaseCoordinator, BattleInvitation) -> UIViewController
-    private let makeBattle: (BaseCoordinator, Battle) -> Coordinator
+    private let makeBattle: (Battle) -> Coordinator
     private let previousStack: [UIViewController]
     
     init(
         _ navigationController: UINavigationController,
         viewModel: InviteFriendViewModel,
         makeBattleInvitation: @escaping (BaseCoordinator, BattleInvitation) -> UIViewController,
-        makeBattle: @escaping (BaseCoordinator, Battle) -> Coordinator
+        makeBattle: @escaping (Battle) -> Coordinator
     ) {
         self.navigationController = navigationController
         self.viewModel = viewModel
@@ -43,7 +43,7 @@ final class InviteFriendCoordinator: BaseCoordinator {
         case let .battleInvitationCreated(battleInvitation):
             show(makeBattleInvitation(self, battleInvitation))
         case let .battleFound(battle):
-            startNextCoordinator(makeBattle(self, battle))
+            startNextCoordinator(makeBattle(battle))
         }
     }
 
