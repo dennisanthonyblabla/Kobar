@@ -52,8 +52,7 @@ class Auth0DataSource: AuthService {
     }
 
     func logout(_ callback: @escaping (AuthUser?) -> Void) {
-        guard let redirectURL = URL(
-            string: "com.namanya-apa.MacroChallengeTeam2://kobar.au.auth0.com/ios/com.namanya-apa.MacroChallengeTeam2/logout")
+        guard let redirectURL = URL(string: "com.namanya-apa.Kobar://kobar.au.auth0.com/ios/com.namanya-apa.Kobar/logout")
         else { return }
 
         Auth0
