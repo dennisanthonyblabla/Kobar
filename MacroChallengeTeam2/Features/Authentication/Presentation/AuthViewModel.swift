@@ -21,7 +21,7 @@ struct AuthViewModel {
     }
     
     func getUserState() -> Observable<State> {
-        let observable: Observable<State> = Observable.merge(
+        Observable.merge(
             .just(.loading),
             service.user
                 .map { user in
@@ -29,9 +29,9 @@ struct AuthViewModel {
                     return .authenticated(user)
                 }
         )
-        
+    }
+    
+    func fetchUser() {
         service.fetchUser()
-        
-        return observable
     }
 }

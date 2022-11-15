@@ -38,6 +38,8 @@ final class AuthCoordinator: BaseCoordinator {
             .distinctUntilChanged()
             .subscribe { [weak self] in self?.onStateChanged($0) }
             .disposed(by: disposeBag)
+        
+        viewModel.fetchUser()
     }
     
     func onStateChanged(_ state: AuthViewModel.State) {

@@ -15,7 +15,7 @@ final class AuthDataSource: AuthService {
     private let socketService: SocketIODataSource
     
     var user: Observable<User?> {
-        authUserSubject.flatMap(exchangeId).debug()
+        authUserSubject.flatMap(exchangeId)
     }
     
     init(_ dataSource: Auth0DataSource, _ socketService: SocketIODataSource) {

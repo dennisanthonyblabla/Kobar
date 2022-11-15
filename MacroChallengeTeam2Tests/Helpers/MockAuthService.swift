@@ -19,6 +19,8 @@ class MockAuthService: AuthService {
         mockUser
     }
     
+    func fetchUser() {}
+    
     func signUp() {}
     
     func login() {}

@@ -11,7 +11,6 @@ import RxSwift
 import SwiftUI
 
 // TODO: implement update statusLabel
-// TODO: implement test case examples
 // TODO: implement run code popup
 // TODO: @dennis refactor BattleContohStackView to new file
 final class BattlefieldPageViewController: UIViewController {

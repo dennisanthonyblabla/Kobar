@@ -13,7 +13,8 @@ final class AuthViewModelTests: XCTestCase {
     func test_initialState_ShouldBeLoading() {
         let service = MockAuthService()
         let sut = AuthViewModel(service: service)
-        let spy = StateSpy(sut.state)
+        
+        let spy = StateSpy(sut.getUserState())
         
         XCTAssertEqual(spy.values, [.loading])
     }
@@ -21,7 +22,8 @@ final class AuthViewModelTests: XCTestCase {
     func test_state_ShouldBeUnauthenticated_WhenServiceUserIsNil() {
         let service = MockAuthService(mockUser: .just(nil))
         let sut = AuthViewModel(service: service)
-        let spy = StateSpy(sut.state)
+        
+        let spy = StateSpy(sut.getUserState())
         
         XCTAssertEqual(
             spy.values,
@@ -32,7 +34,8 @@ final class AuthViewModelTests: XCTestCase {
         let user = User(id: "id 0", nickname: "nickname 0", picture: "picture 0", rating: 1000)
         let service = MockAuthService(mockUser: .just(user))
         let sut = AuthViewModel(service: service)
-        let spy = StateSpy(sut.state)
+        
+        let spy = StateSpy(sut.getUserState())
         
         XCTAssertEqual(
             spy.values,
