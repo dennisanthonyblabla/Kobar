@@ -43,7 +43,7 @@ final class SmallIconButtonView: UIButton {
 
     init(
         variant: Variants,
-        buttonImage: UIImage? = UIImage(systemName: "arrowshape.backward.fill")
+        buttonImage: UIImage? = UIImage(systemName: "chevron.left")
     ) {
         super.init(frame: .zero)
         self.variant = variant
