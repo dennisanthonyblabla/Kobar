@@ -110,7 +110,7 @@ class MainPageViewController: UIViewController {
         view.addArrangedSubview(gabungBtn)
         view.addArrangedSubview(siapaAjaBtn)
         
-        view.spacing = 80
+        view.spacing = 80   
         
         return view
     }()
