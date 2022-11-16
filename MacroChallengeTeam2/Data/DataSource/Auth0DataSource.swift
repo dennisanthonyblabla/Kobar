@@ -58,13 +58,15 @@ class Auth0DataSource: AuthService {
         Auth0
             .webAuth()
             .redirectURL(redirectURL)
-            .clearSession { _ in
-                callback(nil)
+            .clearSession { [weak self] result in
+                switch result {
+                case .success:
+                    self?.clearCredentials()
+                    callback(nil)
+                case .failure:
+                    break
+                }
             }
-
-        clearCredentials()
-
-        return
     }
 
     private func startWebAuth(parameters: [String: String] = [:], callback: @escaping (AuthUser?) -> Void) {
@@ -78,7 +80,7 @@ class Auth0DataSource: AuthService {
                     self?.storeCredentials(credentials)
                     callback(AuthUser(from: credentials))
                 case .failure:
-                    callback(nil)
+                    break
                 }
             }
     }
