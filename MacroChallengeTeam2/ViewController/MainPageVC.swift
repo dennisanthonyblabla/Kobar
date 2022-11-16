@@ -212,7 +212,12 @@ class MainPageViewController: UIViewController {
     private func documentationFunc() {
         documentationBtn.addAction(
             UIAction { [self] _ in
-                navigationController?.present(DokumentasiViewController(), animated: true)
+                let controller = UIViewController()
+                let view = DokumentasiView()
+
+                controller.view = DokumentasiView()
+
+                navigationController?.present(controller, animated: true)
             }
             ,for: .touchDown)
     }
