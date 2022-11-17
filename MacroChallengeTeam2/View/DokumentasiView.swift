@@ -133,7 +133,7 @@ final class DokumentasiView: UIView {
             make.centerX.equalTo(background)
         }
         closeBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(background).offset(-20)
+            make.trailing.equalTo(background).offset(-30)
             make.top.equalTo(background).offset(12)
         }
         leftBtnSV.snp.makeConstraints { make in
