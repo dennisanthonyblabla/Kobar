@@ -42,13 +42,15 @@ class InviteFriendViewModel {
     var state: Observable<State> {
         events
             .startWith(.start)
-            .scan(State.loading) { [memento] prevState, event in
+            .scan(State.loading) { [unowned self] prevState, event in
                 switch (prevState, event) {
                 case (.loading, .start):
                     return .loading
                     
                 case let (.loading, .battleInvitationCreated(battleInvitation)):
-                    return .waitingForOpponent(battleInvitation)
+                    let state: State = .waitingForOpponent(battleInvitation)
+                    self.memento = state
+                    return state
                     
                 case let (.waitingForOpponent, .opponentFound(battle)):
                     return .waitingForStart(battle)
