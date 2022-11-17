@@ -125,8 +125,8 @@ class InviteFriendPageViewController: UIViewController {
             make.center.equalToSuperview()
         }
         backgroundMotives.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
+            make.width.equalToSuperview().offset(15)
+            make.height.equalToSuperview().offset(15)
             make.center.equalToSuperview()
         }
     }
