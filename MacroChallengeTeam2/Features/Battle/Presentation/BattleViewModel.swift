@@ -10,32 +10,20 @@ import RxSwift
 
 struct BattleViewModel {
     enum State: Equatable {
-        case loading
-        case canceled
-        case countdown(Battle)
         case battle(Battle)
-        case finished
     }
     
     private let service: BattleService
+    private let battle: Battle
     
-    init(service: BattleService) {
+    init(service: BattleService, battle: Battle) {
         self.service = service
+        self.battle = battle
     }
     
     var state: Observable<State> {
         Observable.merge(
-            mapBattleToState(),
-            .just(.loading)
+            .just(.battle(battle))
         )
-    }
-    
-    private func mapBattleToState() -> Observable<State> {
-        service.battle
-            .map { battle in
-                guard let battle = battle else { return .canceled }
-                guard battle.problem != nil else { return .countdown(battle) }
-                return .battle(battle)
-            }
     }
 }

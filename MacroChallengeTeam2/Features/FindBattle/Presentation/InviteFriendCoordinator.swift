@@ -13,25 +13,28 @@ final class InviteFriendCoordinator: BaseCoordinator {
     private let disposeBag = DisposeBag()
     
     private let navigationController: UINavigationController
-    private let makeBattleInvitation: (InviteFriendCoordinator, BattleInvitation) -> UIViewController
-    private let makeBattle: () -> Coordinator
+    private let makeBattleInvitation: (BattleInvitation) -> UIViewController
+    private let makeReadyForBattle: (Battle) -> UIViewController
+    private let makeBattle: (Battle) -> Coordinator
     private let previousStack: [UIViewController]
     
     init(
         _ navigationController: UINavigationController,
         viewModel: InviteFriendViewModel,
-        makeBattleInvitation: @escaping (InviteFriendCoordinator, BattleInvitation) -> UIViewController,
-        makeBattle: @escaping () -> Coordinator
+        makeBattleInvitation: @escaping (BattleInvitation) -> UIViewController,
+        makeReadyForBattle: @escaping (Battle) -> UIViewController,
+        makeBattle: @escaping (Battle) -> Coordinator
     ) {
         self.navigationController = navigationController
         self.viewModel = viewModel
         self.makeBattleInvitation = makeBattleInvitation
+        self.makeReadyForBattle = makeReadyForBattle
         self.makeBattle = makeBattle
         self.previousStack = navigationController.viewControllers
     }
     
     override func start() {
-        viewModel.inviteFriend()
+        viewModel.state
             .subscribe { [weak self] state in self?.onStateChanged(state) }
             .disposed(by: disposeBag)
     }
@@ -40,19 +43,23 @@ final class InviteFriendCoordinator: BaseCoordinator {
         switch state {
         case .loading:
             break
-        case let .battleInvitationCreated(battleInvitation):
-            show(makeBattleInvitation(self, battleInvitation))
-        case .battleFound:
-            startNextCoordinator(makeBattle())
+        case let .waitingForOpponent(battleInvitation):
+            show(makeBattleInvitation(battleInvitation))
+        case let .waitingForStart(battle):
+            show(makeReadyForBattle(battle))
+        case let .battleStarted(battle):
+            startAndReplaceNextCoordinator(makeBattle(battle))
+        case .canceled:
+            pop()
         }
     }
 
-    private func show(_ viewController: UIViewController) {
-        navigationController.setViewControllers(previousStack + [viewController], animated: true)
+    private func pop() {
+        navigationController.popToRootViewController(animated: true)
+        finishCoordinator()
     }
     
-    func pop() {
-        navigationController.popViewController(animated: true)
-        completion?()
+    private func show(_ viewController: UIViewController) {
+        navigationController.setViewControllers(previousStack + [viewController], animated: true)
     }
 }

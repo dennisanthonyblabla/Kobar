@@ -18,28 +18,11 @@ class BattleDataSource: BattleService {
     
     init(socketService: SocketIODataSource) {
         self.socketService = socketService
-        
-        self.socketService.onBattleCanceled = { [weak self] in
-            self?.battleSubject.onNext(nil)
-        }
-        
-        self.socketService.onBattleStarted = { [weak self] battle in
-            self?.battleSubject.onNext(battle)
-        }
-        
-        self.socketService.onBattleRejoined = { [weak self] battle in
-            self?.battleSubject.onNext(battle)
-        }
     }
     
     func startBattle(userId: String, battleId: String) {
         socketService.emitReadyBattleEvent(
             data: ReadyBattleDto(userId: userId, battleId: battleId))
-    }
-    
-    func cancelBattle(battleId: String) {
-        socketService.emitCancelBattleEvent(
-            data: CancelBattleDto(battleId: battleId))
     }
     
     func runCode(userId: String, battleId: String, problemId: String, submission: RunCodeSubmission) {

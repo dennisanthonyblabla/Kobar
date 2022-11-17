@@ -11,7 +11,7 @@ import SwiftUI
 
 class InviteFriendPageViewController: UIViewController {
     var onBack: (() -> Void)?
-    var onShowDiscussion: (() -> Void)?
+    var onShare: (() -> Void)?
     
     var name: String = ""
     var picture: String = ""

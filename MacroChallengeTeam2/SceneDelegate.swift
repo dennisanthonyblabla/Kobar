@@ -10,6 +10,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
+    private var factory: CoordinatorFactory?
     private var coordinator: Coordinator?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -26,9 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
-        let factory = CoordinatorFactory()
+        factory = CoordinatorFactory()
         
-        coordinator = factory.makeAuthCoordinator(navigationController)
+        coordinator = factory?.makeAuthCoordinator(navigationController)
         coordinator?.start()
     }
 }

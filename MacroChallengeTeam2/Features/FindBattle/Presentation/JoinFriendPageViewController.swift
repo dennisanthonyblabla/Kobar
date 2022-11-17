@@ -50,7 +50,6 @@ class JoinFriendPageViewController: UIViewController {
     }()
 
     
-    // TODO: maybe add shake when code is invalid
     private lazy var buttonsStackView: UIStackView = {
         let stack = UIStackView()
         

@@ -14,22 +14,28 @@ final class JoinFriendCoordinator: BaseCoordinator {
     private let disposeBag = DisposeBag()
     
     private let navigationController: UINavigationController
-    private let makeBattle: () -> Coordinator
+    private let makeJoinFriend: () -> UIViewController
+    private let makeReadyForBattle: (Battle) -> UIViewController
+    private let makeBattle: (Battle) -> Coordinator
     private let previousStack: [UIViewController]
     
     init(
         _ navigationController: UINavigationController,
         viewModel: JoinFriendViewModel,
-        makeBattle: @escaping () -> Coordinator
+        makeJoinFriend: @escaping () -> UIViewController,
+        makeReadyForBattle: @escaping (Battle) -> UIViewController,
+        makeBattle: @escaping (Battle) -> Coordinator
     ) {
         self.navigationController = navigationController
         self.viewModel = viewModel
+        self.makeJoinFriend = makeJoinFriend
+        self.makeReadyForBattle = makeReadyForBattle
         self.makeBattle = makeBattle
         self.previousStack = navigationController.viewControllers
     }
     
     override func start() {
-        viewModel.joinFriend()
+        viewModel.state
             .subscribe { [weak self] state in self?.onStateChanged(state) }
             .disposed(by: disposeBag)
     }
@@ -37,10 +43,29 @@ final class JoinFriendCoordinator: BaseCoordinator {
     private func onStateChanged(_ state: JoinFriendViewModel.State) {
         switch state {
         case .loading:
-            break
-        case .battleFound:
-            startNextCoordinator(makeBattle())
+            present(makeJoinFriend())
+        case .canceled:
+            dismiss()
+            pop()
+            finishCoordinator()
+        case let .waitingForStart(battle):
+            dismiss()
+            show(makeReadyForBattle(battle))
+        case let .battleStarted(battle):
+            startAndReplaceNextCoordinator(makeBattle(battle))
         }
+    }
+    
+    func dismiss() {
+        navigationController.dismiss(animated: true)
+    }
+    
+    func pop() {
+        navigationController.popViewController(animated: true)
+    }
+    
+    private func present(_ viewController: UIViewController) {
+        navigationController.present(viewController, animated: true)
     }
 
     private func show(_ viewController: UIViewController) {

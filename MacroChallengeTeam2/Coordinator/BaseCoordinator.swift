@@ -8,28 +8,40 @@
 import Foundation
 
 class BaseCoordinator: Coordinator {
+    weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
     
-    func start() {
-        fatalError("Children should implement `start`.")
+    init() {
+        print("Init Coordinator: \(type(of: self))")
     }
     
-    func store(_ coorindator: Coordinator) {
-        childCoordinators.append(coorindator)
+    deinit {
+        print("Deinit Coordinator: \(type(of: self))")
     }
     
-    func free(_ coordinator: Coordinator) {
-        childCoordinators = childCoordinators.filter { $0 !== coordinator }
-    }
+    func start() {}
     
     func startNextCoordinator(_ coordinator: Coordinator) {
         store(coordinator)
-        
-        coordinator.completion = { [weak self] in
-            self?.free(coordinator)
-        }
-        
+        coordinator.parentCoordinator = self
         coordinator.start()
+    }
+    
+    func startAndReplaceNextCoordinator(_ coordinator: Coordinator) {
+        finishCoordinator()
+        
+        guard let parentCoordinator = parentCoordinator else { return }
+        
+        parentCoordinator.store(coordinator)
+        coordinator.parentCoordinator = coordinator
+        coordinator.start()
+        
+        print(parentCoordinator.childCoordinators)
+    }
+    
+    func finishCoordinator() {
+        parentCoordinator?.free(self)
+        completion?()
     }
 }

@@ -15,7 +15,7 @@ class SocketIODataSource {
     var onConnect: (() -> Void) = {}
     var onIdExchanged: ((User) -> Void) = { _ in }
     var onBattleInvitation: ((BattleInvitation) -> Void) = { _ in }
-    var onBattleFound: ((Battle) -> Void) = { _ in }
+    var onOpponentFound: ((Battle) -> Void) = { _ in }
     var onBattleRejoined: ((Battle) -> Void) = { _ in }
     var onBattleStarted: ((Battle) -> Void) = { _ in }
     var onBattleCanceled: (() -> Void) = {}
@@ -28,7 +28,7 @@ class SocketIODataSource {
             fatalError("Invalid socket URL!")
         }
         
-        socketManager = SocketManager(socketURL: url, config: [.log(false), .compress])
+        socketManager = SocketManager(socketURL: url, config: [.log(true), .compress])
         socketClient = socketManager.socket(forNamespace: "/battle")
     }
     
@@ -58,7 +58,7 @@ class SocketIODataSource {
         socketClient.on("opponentFound") { [weak self] data, _ in
             do {
                 let wrapper: BattleWrapper = try SocketParser.convert(data: data[0])
-                self?.onBattleFound(wrapper.toBattle())
+                self?.onOpponentFound(wrapper.toBattle())
             } catch {
                 print("Failed to parse")
             }
@@ -67,7 +67,7 @@ class SocketIODataSource {
         socketClient.on("battleJoined") { [weak self] data, _ in
             do {
                 let wrapper: BattleWrapper = try SocketParser.convert(data: data[0])
-                self?.onBattleFound(wrapper.toBattle())
+                self?.onOpponentFound(wrapper.toBattle())
             } catch {
                 print("Failed to parse")
             }
@@ -99,7 +99,7 @@ class SocketIODataSource {
         
         socketClient.on("waitingForOpponent") { _, _ in }
         
-        socketClient.on("battleCanceled") { [weak self] _, _ in
+        socketClient.on("battleCancelled") { [weak self] _, _ in
             self?.onBattleCanceled()
         }
         
