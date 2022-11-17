@@ -39,27 +39,9 @@ final class CoordinatorFactory {
                     authc.startNextCoordinator(ifc)
                 }
                 mvc.onJoinFriend = {
-//                    let jfc = self.makeJoinFriendCoordinator(
-//                        navigationController,
-//                        user: user)
-                    let jfc = self.makeBattleCoordinator(
+                    let jfc = self.makeJoinFriendCoordinator(
                         navigationController,
-                        user: User(id: "", nickname: "", picture: "", rating: 0),
-                        battle: Battle(
-                            id: "",
-                            inviteCode: "XCZVZ",
-                            problem: Problem(
-                                id: "",
-                                prompt: "Ini problem",
-                                inputFormat: "Ini input",
-                                outputFormat: "Ini output",
-                                testCases: [],
-                                exampleCount: 0,
-                                reviewVideoURL: "",
-                                reviewText: ""),
-                            users: [],
-                            startTime: Date.now + 5,
-                            endTime: Date.now + 10))
+                        user: user)
                     authc.startNextCoordinator(jfc)
                 }
                 mvc.onLogout = {
@@ -133,11 +115,11 @@ final class CoordinatorFactory {
         user: User,
         battle: Battle
     ) -> BattleCoordinator {
-        let battlevm = BattleViewModel(service: battleService, battle: battle)
+        let battlevm = BattleViewModel(service: battleService, battle: battle, userId: user.id)
         let battlec = BattleCoordinator(
             navigationController,
             viewModel: battlevm,
-            makeBattle: { [unowned self] battle in
+            makeBattle: { battle in
                 let bvc = BattlefieldPageViewController()
                 bvc.userName = user.nickname
                 bvc.battleEndDate = battle.endTime
@@ -147,19 +129,11 @@ final class CoordinatorFactory {
                 }
                 if let prob = battle.problem {
                     bvc.problem = prob
-                    bvc.onRunCode = { submission in
-                        self.battleService.runCode(
-                            userId: user.id,
-                            battleId: battle.id,
-                            problemId: prob.id,
-                            submission: submission)
+                    bvc.onRunCode = { [weak battlevm] submission in
+                        battlevm?.runCode(submission: submission, problemId: prob.id)
                     }
-                    bvc.onSubmitCode = { submission in
-                        self.battleService.submitCode(
-                            userId: user.id,
-                            battleId: battle.id,
-                            problemId: prob.id,
-                            submission: submission)
+                    bvc.onSubmitCode = { [weak battlevm] submission in
+                        battlevm?.submitCode(submission: submission, problemId: prob.id)
                     }
                 }
                 return bvc
@@ -168,9 +142,17 @@ final class CoordinatorFactory {
                 let docvc = DokumentasiPageVC()
                 docvc.onClose = battlevm.hideDocumentation
                 return docvc
+            },
+            makeEndBattle: { [unowned self] result in
+                self.makeEndBattleCoordinator()
             })
         
         return battlec
+    }
+    
+    func makeEndBattleCoordinator() -> EndBattleCoordinator {
+        let endbc = EndBattleCoordinator()
+        return endbc
     }
     
     func makeReadyForBattlePageViewController(

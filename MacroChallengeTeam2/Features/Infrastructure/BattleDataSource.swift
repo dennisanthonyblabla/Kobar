@@ -25,22 +25,52 @@ class BattleDataSource: BattleService {
             data: ReadyBattleDto(userId: userId, battleId: battleId))
     }
     
-    func runCode(userId: String, battleId: String, problemId: String, submission: RunCodeSubmission) {
-        socketService.emitRunCodeEvent(
-            data: RunCodeDto(
-                userId: userId,
-                battleId: battleId,
-                problemId: problemId,
-                code: submission.code,
-                input: submission.input))
+    func runCode(
+        userId: String,
+        battleId: String,
+        problemId: String,
+        submission: RunCodeSubmission
+    ) -> Single<RunCodeResult> {
+        Single<RunCodeResult>.create { [weak self] single in
+            self?.socketService.onCodeRan = { result in
+                single(.success(result))
+            }
+            
+            self?.socketService.emitRunCodeEvent(
+                data: RunCodeDto(
+                    userId: userId,
+                    battleId: battleId,
+                    problemId: problemId,
+                    code: submission.code,
+                    input: submission.input))
+            
+            return Disposables.create {
+                self?.socketService.onCodeRan = { _ in }
+            }
+        }
     }
     
-    func submitCode(userId: String, battleId: String, problemId: String, submission: SubmitCodeSubmission) {
-        socketService.emitSubmitCodeEvent(
-            data: SubmitCodeDto(
-                userId: userId,
-                battleId: battleId,
-                problemId: problemId,
-                code: submission.code))
+    func submitCode(
+        userId: String,
+        battleId: String,
+        problemId: String,
+        submission: SubmitCodeSubmission
+    ) -> Single<SubmitCodeResult> {
+        Single<SubmitCodeResult>.create { [weak self] single in
+            self?.socketService.onCodeSubmit = { result in
+                single(.success(result))
+            }
+            
+            self?.socketService.emitSubmitCodeEvent(
+                data: SubmitCodeDto(
+                    userId: userId,
+                    battleId: battleId,
+                    problemId: problemId,
+                    code: submission.code))
+            
+            return Disposables.create {
+                self?.socketService.onCodeSubmit = { _ in }
+            }
+        }
     }
 }

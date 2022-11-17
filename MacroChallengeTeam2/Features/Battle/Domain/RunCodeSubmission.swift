@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RunCodeSubmission: Codable {
+struct RunCodeSubmission {
     let code: String
     let input: String
 }

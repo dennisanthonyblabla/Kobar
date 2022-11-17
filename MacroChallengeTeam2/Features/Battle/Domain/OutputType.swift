@@ -7,6 +7,6 @@
 
 import Foundation
     
-enum OutputType: String, Codable {
+enum OutputType: String, Decodable {
     case correct, incorrect, error
 }

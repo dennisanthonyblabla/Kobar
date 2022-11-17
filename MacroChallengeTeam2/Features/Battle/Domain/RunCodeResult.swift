@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RunCodeResult: Codable {
+struct RunCodeResult: Decodable {
     let output: String
     let type: OutputType
 }

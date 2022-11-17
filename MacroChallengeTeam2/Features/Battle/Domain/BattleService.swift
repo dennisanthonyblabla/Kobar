@@ -9,6 +9,16 @@ import RxSwift
 
 protocol BattleService {
     func startBattle(userId: String, battleId: String)
-    func runCode(userId: String, battleId: String, problemId: String, submission: RunCodeSubmission)
-    func submitCode(userId: String, battleId: String, problemId: String, submission: SubmitCodeSubmission)
+    func runCode(
+        userId: String,
+        battleId: String,
+        problemId: String,
+        submission: RunCodeSubmission
+    ) -> Single<RunCodeResult>
+    func submitCode(
+        userId: String,
+        battleId: String,
+        problemId: String,
+        submission: SubmitCodeSubmission
+    ) -> Single<SubmitCodeResult>
 }

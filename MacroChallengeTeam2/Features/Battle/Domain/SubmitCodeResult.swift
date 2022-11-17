@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SubmitCodeResult: Codable {
+struct SubmitCodeResult: Equatable, Decodable {
     let code: String
     let tests: [SubmitTestResult]
     
@@ -16,13 +16,13 @@ struct SubmitCodeResult: Codable {
     }
 }
 
-struct SubmitTestResult: Codable {
+struct SubmitTestResult: Equatable, Decodable {
     let output: String
     let outputType: OutputType
     let testCase: SubmitTestCase
 }
 
-struct SubmitTestCase: Codable {
+struct SubmitTestCase: Equatable, Decodable {
     let input: String
     let output: String
 }

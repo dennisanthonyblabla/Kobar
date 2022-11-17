@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SubmitCodeSubmission: Codable {
+struct SubmitCodeSubmission {
     let code: String
 }
