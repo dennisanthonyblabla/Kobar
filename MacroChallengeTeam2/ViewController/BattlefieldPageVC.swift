@@ -95,7 +95,7 @@ final class BattlefieldPageViewController: UIViewController {
         label.text = userName
         label.font = .bold22
         label.textColor = .kobarBlack
-        label.textAlignment = .right
+        label.textAlignment = .left
         return label
     }()
 
@@ -372,11 +372,13 @@ extension BattlefieldPageViewController {
         }
         userNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
-            make.trailing.equalTo(nameCard.snp.centerX).offset(-40)
+            make.leading.equalTo(nameCard).offset(50)
+            make.width.equalTo(125)
         }
         opponentNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
             make.leading.equalTo(nameCard.snp.centerX).offset(40)
+            make.width.equalTo(125)
         }
         contohTextInput.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
