@@ -13,6 +13,7 @@ class DokumentasiViewController: UIViewController {
         let view = DokumentasiView()
         return view
     }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .kobarBlueBG
