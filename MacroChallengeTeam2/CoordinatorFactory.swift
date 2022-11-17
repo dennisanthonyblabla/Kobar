@@ -168,6 +168,7 @@ final class CoordinatorFactory {
         rfbvc.battleStartDate = battle.startTime
         rfbvc.onBack = completion
         rfbvc.onCountdownFinished = completion
+        // TODO: @salman move to vm?
         rfbvc.onReady = { [unowned self] in
             self.battleService.startBattle(
                 userId: user.id,
