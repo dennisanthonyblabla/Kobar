@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 
+// TODO: tanya design ini kira2 problem atau ngga
 final class InviteFriendCoordinator: BaseCoordinator {
     private let viewModel: InviteFriendViewModel
     private let disposeBag = DisposeBag()
