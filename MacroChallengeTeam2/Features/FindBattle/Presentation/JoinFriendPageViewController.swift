@@ -96,6 +96,13 @@ class JoinFriendPageViewController: UIViewController {
         setupAutoLayout()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        if isBeingDismissed {
+            onCancel?()
+        }
+        super.viewDidDisappear(animated)
+    }
+    
     private func setupAutoLayout() {
         backgroundView.snp.makeConstraints { make in
             make.height.equalToSuperview().multipliedBy(0.5)

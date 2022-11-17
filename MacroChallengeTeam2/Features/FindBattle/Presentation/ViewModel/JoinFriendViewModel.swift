@@ -13,13 +13,15 @@ class JoinFriendViewModel {
         case loading
         case waitingForStart(Battle)
         case battleStarted(Battle)
-        case canceled(String?)
+        case canceledJoin
+        case canceled(String)
     }
     
     enum Event: Equatable {
         case start
         case opponentFound(Battle)
         case startBattle(Battle)
+        case cancelJoinBattle
         case cancelBattle
     }
     
@@ -45,8 +47,8 @@ class JoinFriendViewModel {
                 case let (.loading, .opponentFound(battle)):
                     return .waitingForStart(battle)
                     
-                case (.loading, .cancelBattle):
-                    return .canceled(nil)
+                case (.loading, .cancelJoinBattle):
+                    return .canceledJoin
                     
                 case let (.waitingForStart, .startBattle(battle)):
                     return .battleStarted(battle)
@@ -55,7 +57,7 @@ class JoinFriendViewModel {
                     return .canceled(battle.id)
                     
                 default:
-                    print("InviteFriendViewModel: Invalid event \"\(event)\" for state \"\(prevState)\"")
+                    print("JoinFriendViewModel: Invalid event \"\(event)\" for state \"\(prevState)\"")
                     return prevState
                 }
             }
@@ -64,7 +66,6 @@ class JoinFriendViewModel {
                 case .waitingForStart:
                     self?.waitForStart()
                 case let .canceled(battleId):
-                    guard let battleId = battleId else { break }
                     self?.service.cancelBattle(battleId: battleId)
                 default:
                     break
@@ -93,6 +94,10 @@ class JoinFriendViewModel {
                 self.events.accept(.startBattle(battle))
             }
             .disposed(by: disposeBag)
+    }
+    
+    func cancelJoinBattle() {
+        events.accept(.cancelJoinBattle)
     }
     
     func cancelBattle() {

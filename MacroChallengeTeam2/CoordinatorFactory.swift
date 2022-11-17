@@ -94,7 +94,7 @@ final class CoordinatorFactory {
                     jfvm?.joinFriend(inviteCode: inviteCode)
                 }
                 jfvc.onCancel = { [weak jfvm] in
-                    jfvm?.cancelBattle()
+                    jfvm?.cancelJoinBattle()
                 }
                 return jfvc
             },
@@ -123,7 +123,7 @@ final class CoordinatorFactory {
                 let bvc = BattlefieldPageViewController()
                 bvc.userName = user.nickname
                 bvc.battleEndDate = battle.endTime
-//                bvc.onShowDocumentation = battlec.showDocumentation
+                bvc.onShowDocumentation = battlevm.showDocumentation
                 if let opp = battle.users.first(where: { $0.id != user.id }) {
                     bvc.opponentName = opp.nickname
                 }
@@ -146,7 +146,13 @@ final class CoordinatorFactory {
                 }
                 return bvc
             },
-            makeDocumentation: { DokumentasiViewController() })
+            makeDocumentation: {
+                let docvc = DokumentasiPageVC()
+                docvc.onClose = {
+                    battlevm.hideDocumentation()
+                }
+                return docvc
+            })
         
         return battlec
     }

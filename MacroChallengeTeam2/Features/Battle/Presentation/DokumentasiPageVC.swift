@@ -9,12 +9,14 @@ import UIKit
 import SnapKit
 import WebKit
 
-final class DokumentasiView: UIView {
+final class DokumentasiViewController: UIViewController {
     var onClose: (() -> Void)?
     
     private lazy var closeBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
-        btn.addVoidAction(onClose, for: .touchDown)
+        btn.addVoidAction({ print("foo") }, for: .touchUpInside)
+        btn.addAction(UIAction { _ in print("foo") }, for: .touchDown)
+        btn.backgroundColor = .red
         return btn
     }()
 
@@ -99,18 +101,14 @@ final class DokumentasiView: UIView {
         return stackView
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(background)
-        addSubview(showHTML)
-        addSubview(titleLabel)
-        addSubview(closeBtn)
-        addSubview(leftBtnSV)
+    override func viewDidLoad() {
+        view.addSubview(background)
+        view.addSubview(showHTML)
+        view.addSubview(titleLabel)
+        view.addSubview(closeBtn)
+        view.addSubview(leftBtnSV)
 
         setupAutoLayout()
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupAutoLayout() {
