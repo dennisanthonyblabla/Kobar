@@ -33,7 +33,11 @@ final class BattleCoordinator: BaseCoordinator {
     
     override func start() {
         viewModel.state
-            .subscribe { [weak self] state in self?.onStateChanged(state) }
+            .subscribe { [weak self] in self?.onStateChanged($0) }
+            .disposed(by: disposeBag)
+        
+        viewModel.documentationState
+            .subscribe { [weak self] in self?.onDocumentationStateChanged($0) }
             .disposed(by: disposeBag)
     }
     
@@ -41,11 +45,26 @@ final class BattleCoordinator: BaseCoordinator {
         switch state {
         case let .battle(battle):
             show(makeBattle(battle))
+        case .finished:
+            break
         }
     }
     
-    func showDocumentation() {
+    private func onDocumentationStateChanged(_ state: BattleViewModel.DocumentationState) {
+        switch state {
+        case .opened:
+            present(makeDocumentation())
+        case .closed:
+            dismiss()
+        }
+    }
+    
+    private func showDocumentation() {
         present(makeDocumentation())
+    }
+    
+    private func dismiss() {
+        navigationController.dismiss(animated: true)
     }
     
     private func pop() {

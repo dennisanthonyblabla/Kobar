@@ -39,9 +39,27 @@ final class CoordinatorFactory {
                     authc.startNextCoordinator(ifc)
                 }
                 mvc.onJoinFriend = {
-                    let jfc = self.makeJoinFriendCoordinator(
+//                    let jfc = self.makeJoinFriendCoordinator(
+//                        navigationController,
+//                        user: user)
+                    let jfc = self.makeBattleCoordinator(
                         navigationController,
-                        user: user)
+                        user: User(id: "", nickname: "", picture: "", rating: 0),
+                        battle: Battle(
+                            id: "",
+                            inviteCode: "XCZVZ",
+                            problem: Problem(
+                                id: "",
+                                prompt: "Ini problem",
+                                inputFormat: "Ini input",
+                                outputFormat: "Ini output",
+                                testCases: [],
+                                exampleCount: 0,
+                                reviewVideoURL: "",
+                                reviewText: ""),
+                            users: [],
+                            startTime: Date.now + 5,
+                            endTime: Date.now + 10))
                     authc.startNextCoordinator(jfc)
                 }
                 mvc.onLogout = {
@@ -148,9 +166,7 @@ final class CoordinatorFactory {
             },
             makeDocumentation: {
                 let docvc = DokumentasiPageVC()
-                docvc.onClose = {
-                    battlevm.hideDocumentation()
-                }
+                docvc.onClose = battlevm.hideDocumentation
                 return docvc
             })
         

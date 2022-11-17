@@ -1,5 +1,5 @@
 //
-//  DokumentasiView.swift
+//  DokumentasiPageVC.swift
 //  Macro Challenge Team2
 //
 //  Created by Dennis Anthony on 10/11/22.
@@ -9,14 +9,12 @@ import UIKit
 import SnapKit
 import WebKit
 
-final class DokumentasiViewController: UIViewController {
+final class DokumentasiPageVC: UIViewController {
     var onClose: (() -> Void)?
     
     private lazy var closeBtn: SmallIconButtonView = {
         let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
-        btn.addVoidAction({ print("foo") }, for: .touchUpInside)
-        btn.addAction(UIAction { _ in print("foo") }, for: .touchDown)
-        btn.backgroundColor = .red
+        btn.addVoidAction(onClose, for: .touchUpInside)
         return btn
     }()
 
@@ -102,6 +100,7 @@ final class DokumentasiViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         view.addSubview(background)
         view.addSubview(showHTML)
         view.addSubview(titleLabel)
@@ -109,6 +108,13 @@ final class DokumentasiViewController: UIViewController {
         view.addSubview(leftBtnSV)
 
         setupAutoLayout()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if isBeingDismissed {
+            onClose?()
+        }
+        super.viewDidDisappear(animated)
     }
 
     private func setupAutoLayout() {
