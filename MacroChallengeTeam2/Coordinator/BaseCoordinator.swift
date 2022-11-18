@@ -34,10 +34,8 @@ class BaseCoordinator: Coordinator {
         guard let parentCoordinator = parentCoordinator else { return }
         
         parentCoordinator.store(coordinator)
-        coordinator.parentCoordinator = coordinator
+        coordinator.parentCoordinator = parentCoordinator
         coordinator.start()
-        
-        print(parentCoordinator.childCoordinators)
     }
     
     func finishCoordinator() {

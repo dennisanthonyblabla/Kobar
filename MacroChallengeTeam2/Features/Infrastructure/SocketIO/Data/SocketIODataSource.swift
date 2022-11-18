@@ -28,7 +28,7 @@ class SocketIODataSource {
             fatalError("Invalid socket URL!")
         }
         
-        socketManager = SocketManager(socketURL: url, config: [.log(true), .compress])
+        socketManager = SocketManager(socketURL: url, config: [.log(false), .compress])
         socketClient = socketManager.socket(forNamespace: "/battle")
     }
     

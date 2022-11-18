@@ -71,9 +71,9 @@ final class CoordinatorFactory {
                 ifvc.onShare = {}
                 return ifvc
             },
-            makeReadyForBattle: { [unowned self] battle in
+            makeReadyForBattle: { [unowned self, weak ifvm] battle in
                 self.makeReadyForBattlePageViewController(user: user, battle: battle) {
-                    ifvm.cancelBattle()
+                    ifvm?.cancelBattle()
                 }
             },
             makeBattle: { [unowned self] battle in
@@ -98,9 +98,9 @@ final class CoordinatorFactory {
                 }
                 return jfvc
             },
-            makeReadyForBattle: { [unowned self] battle in
+            makeReadyForBattle: { [unowned self, weak jfvm] battle in
                 self.makeReadyForBattlePageViewController(user: user, battle: battle) {
-                    jfvm.cancelBattle()
+                    jfvm?.cancelBattle()
                 }
             },
             makeBattle: { [unowned self] battle in
@@ -119,39 +119,39 @@ final class CoordinatorFactory {
         let battlec = BattleCoordinator(
             navigationController,
             viewModel: battlevm,
-            makeBattle: { battle in
+            makeBattle: { [weak battlevm] battle in
                 let bvc = BattlefieldPageViewController()
                 bvc.userName = user.nickname
                 bvc.battleEndDate = battle.endTime
-                bvc.onShowDocumentation = battlevm.showDocumentation
+                bvc.onShowDocumentation = { battlevm?.showDocumentation() }
                 if let opp = battle.users.first(where: { $0.id != user.id }) {
                     bvc.opponentName = opp.nickname
                 }
                 if let prob = battle.problem {
                     bvc.problem = prob
-                    bvc.onRunCode = { [weak battlevm] submission in
+                    bvc.onRunCode = { submission in
                         battlevm?.runCode(submission: submission, problemId: prob.id)
                     }
-                    bvc.onSubmitCode = { [weak battlevm] submission in
+                    bvc.onSubmitCode = { submission in
                         battlevm?.submitCode(submission: submission, problemId: prob.id)
                     }
                 }
                 return bvc
             },
-            makeDocumentation: {
+            makeDocumentation: { [weak battlevm] in
                 let docvc = DokumentasiPageVC()
-                docvc.onClose = battlevm.hideDocumentation
+                docvc.onClose = { battlevm?.hideDocumentation() }
                 return docvc
             },
-            makeEndBattle: { [unowned self] result in
-                self.makeEndBattleCoordinator()
+            makeEndBattle: { [unowned self] _ in
+                self.makeEndBattleCoordinator(navigationController)
             })
         
         return battlec
     }
     
-    func makeEndBattleCoordinator() -> EndBattleCoordinator {
-        let endbc = EndBattleCoordinator()
+    func makeEndBattleCoordinator(_ navigationController: UINavigationController) -> EndBattleCoordinator {
+        let endbc = EndBattleCoordinator(navigationController)
         return endbc
     }
     

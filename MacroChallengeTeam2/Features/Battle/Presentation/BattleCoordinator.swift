@@ -62,16 +62,8 @@ final class BattleCoordinator: BaseCoordinator {
         }
     }
     
-    private func showDocumentation() {
-        present(makeDocumentation())
-    }
-    
     private func dismiss() {
         navigationController.dismiss(animated: true)
-    }
-    
-    private func pop() {
-        navigationController.popViewController(animated: true)
     }
     
     private func show(_ viewController: UIViewController) {

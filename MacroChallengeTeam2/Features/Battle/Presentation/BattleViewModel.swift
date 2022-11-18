@@ -16,6 +16,7 @@ final class BattleViewModel {
     }
     
     enum Event: Equatable {
+        case start
         case finishBattle(SubmitCodeResult)
     }
     
@@ -41,16 +42,28 @@ final class BattleViewModel {
     }
     
     var state: Observable<State> {
-        Observable.merge(
-            .just(.battle(battle))
-        )
+        events
+            .startWith(.start)
+            .scan(State.battle(battle)) { prevState, event in
+                switch (prevState, event) {
+                case let (.battle(battle), .start):
+                    return .battle(battle)
+                    
+                case let (.battle, .finishBattle(result)):
+                    return .finished(result)
+                    
+                default:
+                    print("InviteFriendViewModel: Invalid event \"\(event)\" for state \"\(prevState)\"")
+                    return prevState
+                }
+            }
+            .distinctUntilChanged()
     }
     
     var documentationState: Observable<DocumentationState> {
         documentationSubject
             .asObservable()
             .distinctUntilChanged()
-            .debug()
     }
     
     func showDocumentation() {
