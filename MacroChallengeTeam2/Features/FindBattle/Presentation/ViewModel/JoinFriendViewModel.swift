@@ -23,6 +23,7 @@ class JoinFriendViewModel {
         case startBattle(Battle)
         case cancelJoinBattle
         case cancelBattle
+        case rejoinBattle(Battle)
     }
     
     private let service: FindBattleService
@@ -46,6 +47,9 @@ class JoinFriendViewModel {
                 
                 case let (.loading, .opponentFound(battle)):
                     return .waitingForStart(battle)
+                    
+                case let (.loading, .rejoinBattle(battle)):
+                    return .battleStarted(battle)
                     
                 case (.loading, .cancelJoinBattle):
                     return .canceledJoin
@@ -78,6 +82,10 @@ class JoinFriendViewModel {
         service.joinFriend(userId: userId, inviteCode: inviteCode)
             .asObservable()
             .subscribe { battle in
+                if battle.problem != nil {
+                    self.events.accept(.rejoinBattle(battle))
+                    return
+                }
                 self.events.accept(.opponentFound(battle))
             }
             .disposed(by: disposeBag)

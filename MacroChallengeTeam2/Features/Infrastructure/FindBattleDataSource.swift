@@ -70,10 +70,17 @@ class FindBattleDataSource: FindBattleService {
                 single(.success(battle))
             }
             
+            self?.socketService.onBattleRejoined = { battle in
+                single(.success(battle))
+            }
+            
             self?.socketService.emitJoinBattleEvent(
                 data: JoinBattleDto(userId: userId, inviteCode: inviteCode))
             
-            return Disposables.create {}
+            return Disposables.create {
+                self?.socketService.onOpponentFound = { _ in }
+                self?.socketService.onBattleRejoined = { _ in }
+            }
         }
     }
 }
