@@ -249,7 +249,7 @@ final class BattlefieldPageViewController: UIViewController {
         var previousBtn: Int?
         var currentBtn: Int?
         for i in 0..<problem.exampleCount {
-            contoh.append(BattleContohView(title: "contoh " + "(\(i + 1))", image: "chevron.down", selected: .notSelected))
+            contoh.append(BattleContohView(title: "Contoh " + "(\(i + 1))", image: "chevron.down", selected: .notSelected))
         }
         
         for (index, i) in contoh.enumerated() {
