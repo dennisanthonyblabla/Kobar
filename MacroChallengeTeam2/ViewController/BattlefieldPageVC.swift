@@ -249,7 +249,7 @@ final class BattlefieldPageViewController: UIViewController {
         var previousBtn: Int?
         var currentBtn: Int?
         for i in 0..<problem.exampleCount {
-            contoh.append(BattleContohView(title: "contoh " + "(\(i + 1))"))
+            contoh.append(BattleContohView(title: "contoh " + "(\(i + 1))", image: "chevron.down", selected: .notSelected))
         }
         
         for (index, i) in contoh.enumerated() {
@@ -257,13 +257,17 @@ final class BattlefieldPageViewController: UIViewController {
             i.addAction(
                 UIAction { [self]_ in
                 currentBtn = index
+                    for each in contoh {
+                        each.isItSelected = .notSelected
+                    }
                 if previousBtn == currentBtn {
                     contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(0)
                     }
-                    animationLayout()
                     animationTransparency(view: contohTextInput, alpha: 0)
                     animationTransparency(view: contohTextOutput, alpha: 0)
+                    i.isItSelected = .notSelected
+                    animationLayout()
                     currentBtn = nil
                 } else {
                     contohBGStackView.snp.updateConstraints { make in
@@ -271,9 +275,10 @@ final class BattlefieldPageViewController: UIViewController {
                     }
                     contohTextInput.text = testCase.input
                     contohTextOutput.text = testCase.output
-                    animationLayout()
                     animationTransparency(view: contohTextInput, alpha: 1)
                     animationTransparency(view: contohTextOutput, alpha: 1)
+                    i.isItSelected = .selected
+                    animationLayout()
                 }
                 previousBtn = currentBtn
                 }, for: .touchUpInside)
@@ -287,6 +292,7 @@ final class BattlefieldPageViewController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.spacing = CGFloat(problem.exampleCount)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .bottom
         return stackView
     }()
 
@@ -418,7 +424,7 @@ extension BattlefieldPageViewController {
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
-            make.bottom.equalTo(contohBGStackView.snp.top)
+            make.bottom.equalTo(contohBGStackView.snp.top).offset(-10)
             make.trailing.equalTo(pertanyaanCard).offset(-5)
         }
         contohBGStackView.snp.makeConstraints { make in
