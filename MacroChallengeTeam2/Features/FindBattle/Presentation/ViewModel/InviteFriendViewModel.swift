@@ -23,11 +23,11 @@ class InviteFriendViewModel {
         case opponentLeft
         case opponentFound(Battle)
         case startBattle(Battle)
+        case cancelBattleInvitation
         case cancelBattle
     }
     
     private let service: FindBattleService
-    private var memento: State
     private let userId: String
     
     private let events = PublishRelay<Event>()
@@ -36,33 +36,30 @@ class InviteFriendViewModel {
     init(service: FindBattleService, userId: String) {
         self.service = service
         self.userId = userId
-        memento = .loading
     }
     
     var state: Observable<State> {
         events
             .startWith(.start)
-            .scan(State.loading) { [unowned self] prevState, event in
+            .scan(State.loading) { prevState, event in
                 switch (prevState, event) {
                 case (.loading, .start):
                     return .loading
                     
                 case let (.loading, .battleInvitationCreated(battleInvitation)):
-                    let state: State = .waitingForOpponent(battleInvitation)
-                    self.memento = state
-                    return state
+                    return .waitingForOpponent(battleInvitation)
                     
                 case let (.waitingForOpponent, .opponentFound(battle)):
                     return .waitingForStart(battle)
                     
-                case (.waitingForOpponent, .cancelBattle):
+                case (.waitingForOpponent, .cancelBattleInvitation):
                     return .canceled(nil)
                     
                 case let (.waitingForStart, .startBattle(battle)):
                     return .battleStarted(battle)
                 
                 case (.waitingForStart, .opponentLeft):
-                    return memento
+                    return .loading
                     
                 case let (.waitingForStart(battle), .cancelBattle):
                     return .canceled(battle.id)
@@ -128,6 +125,6 @@ class InviteFriendViewModel {
     }
     
     func cancelBattleInvitation() {
-        events.accept(.cancelBattle)
+        events.accept(.cancelBattleInvitation)
     }
 }
