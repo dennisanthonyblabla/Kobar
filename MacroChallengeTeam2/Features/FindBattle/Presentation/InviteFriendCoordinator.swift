@@ -52,12 +52,12 @@ final class InviteFriendCoordinator: BaseCoordinator {
             startAndReplaceNextCoordinator(makeBattle(battle))
         case .canceled:
             pop()
+            finishCoordinator()
         }
     }
 
     private func pop() {
         navigationController.popToRootViewController(animated: true)
-        finishCoordinator()
     }
     
     private func show(_ viewController: UIViewController) {

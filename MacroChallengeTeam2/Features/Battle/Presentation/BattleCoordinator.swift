@@ -66,11 +66,11 @@ final class BattleCoordinator: BaseCoordinator {
         navigationController.dismiss(animated: true)
     }
     
-    private func show(_ viewController: UIViewController) {
-        navigationController.setViewControllers(previousStack + [viewController], animated: true)
-    }
-    
     private func present(_ viewController: UIViewController) {
         navigationController.present(viewController, animated: true)
+    }
+    
+    private func show(_ viewController: UIViewController) {
+        navigationController.setViewControllers(previousStack + [viewController], animated: true)
     }
 }

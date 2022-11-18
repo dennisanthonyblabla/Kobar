@@ -46,9 +46,12 @@ final class JoinFriendCoordinator: BaseCoordinator {
             present(makeJoinFriend())
         case .canceledJoin:
             dismiss()
+            finishCoordinator()
         case .canceled:
             pop()
+            finishCoordinator()
         case let .waitingForStart(battle):
+            dismiss()
             show(makeReadyForBattle(battle))
         case let .battleStarted(battle):
             startAndReplaceNextCoordinator(makeBattle(battle))
@@ -57,12 +60,10 @@ final class JoinFriendCoordinator: BaseCoordinator {
     
     private func dismiss() {
         navigationController.dismiss(animated: true)
-        finishCoordinator()
     }
     
     private func pop() {
-        navigationController.popViewController(animated: true)
-        finishCoordinator()
+        navigationController.popToRootViewController(animated: true)
     }
     
     private func present(_ viewController: UIViewController) {
@@ -70,7 +71,6 @@ final class JoinFriendCoordinator: BaseCoordinator {
     }
 
     private func show(_ viewController: UIViewController) {
-        navigationController.dismiss(animated: true)
         navigationController.setViewControllers(previousStack + [viewController], animated: true)
     }
 }
