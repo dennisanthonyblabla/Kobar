@@ -11,7 +11,7 @@ import SwiftUI
 import Lottie
 
 class TungguLawanViewController: UIViewController {
-    var onShowDiscussion: (() -> Void)?
+    var onShowReview: (() -> Void)?
     var onNewBattle: (() -> Void)?
     
     var endDate: Date = .now
@@ -28,7 +28,7 @@ class TungguLawanViewController: UIViewController {
         let button = MedButtonView(
         variant: .variant2,
         title: "Pembahasan")
-        button.addVoidAction(onShowDiscussion, for: .touchDown)
+        button.addVoidAction(onShowReview, for: .touchDown)
         return button
     }()
 

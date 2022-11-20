@@ -55,10 +55,16 @@ class BattleDataSource: BattleService {
         battleId: String,
         problemId: String,
         submission: SubmitCodeSubmission
-    ) -> Single<SubmitCodeResult> {
-        Single<SubmitCodeResult>.create { [weak self] single in
+    ) -> Single<(SubmitCodeResult, BattleResult?)> {
+        Single<(SubmitCodeResult, BattleResult?)>.create { [weak self] single in
+            var battleResult: BattleResult?
+            
+            self?.socketService.onBattleFinished = { result in
+                battleResult = result
+            }
+            
             self?.socketService.onCodeSubmit = { result in
-                single(.success(result))
+                single(.success((result, battleResult)))
             }
             
             self?.socketService.emitSubmitCodeEvent(
@@ -70,6 +76,7 @@ class BattleDataSource: BattleService {
             
             return Disposables.create {
                 self?.socketService.onCodeSubmit = { _ in }
+                self?.socketService.onBattleFinished = { _ in }
             }
         }
     }

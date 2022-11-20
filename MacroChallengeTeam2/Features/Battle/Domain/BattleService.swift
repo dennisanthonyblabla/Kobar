@@ -20,5 +20,5 @@ protocol BattleService {
         battleId: String,
         problemId: String,
         submission: SubmitCodeSubmission
-    ) -> Single<SubmitCodeResult>
+    ) -> Single<(SubmitCodeResult, BattleResult?)>
 }

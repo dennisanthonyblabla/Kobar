@@ -15,6 +15,7 @@ final class CoordinatorFactory {
     lazy var authService = AuthDataSource(authDataSource, socketDataSource)
     lazy var findBattleService = FindBattleDataSource(socketService: socketDataSource)
     lazy var battleService = BattleDataSource(socketService: socketDataSource)
+    lazy var endBattleService = EndBattleDataSource(socketService: socketDataSource)
     
     func makeAuthCoordinator(_ navigationController: UINavigationController) -> AuthCoordinator {
         let authvm = AuthViewModel(service: authService)
@@ -33,12 +34,14 @@ final class CoordinatorFactory {
                 mvc.rating = user.rating
                 mvc.picture = user.picture
                 mvc.onInviteFriend = {
+                    guard authc.childCoordinators.isEmpty else { return }
                     let ifc = self.makeInviteFriendCoordinator(
                         navigationController,
                         user: user)
                     authc.startNextCoordinator(ifc)
                 }
                 mvc.onJoinFriend = {
+                    guard authc.childCoordinators.isEmpty else { return }
                     let jfc = self.makeJoinFriendCoordinator(
                         navigationController,
                         user: user)
@@ -116,6 +119,7 @@ final class CoordinatorFactory {
         battle: Battle
     ) -> BattleCoordinator {
         let battlevm = BattleViewModel(service: battleService, battle: battle, userId: user.id)
+        let rcvm = RunCodeViewModel(service: battleService, userId: user.id, battleId: battle.id)
         let battlec = BattleCoordinator(
             navigationController,
             viewModel: battlevm,
@@ -123,15 +127,13 @@ final class CoordinatorFactory {
                 let bvc = BattlefieldPageViewController()
                 bvc.userName = user.nickname
                 bvc.battleEndDate = battle.endTime
-                bvc.onShowDocumentation = { battlevm?.showDocumentation() }
-                if let opp = battle.users.first(where: { $0.id != user.id }) {
-                    bvc.opponentName = opp.nickname
+                bvc.onShowDocumentation = {
+                    battlevm?.showDocumentation()
                 }
+                bvc.opponentName = battlevm?.opponentName ?? ""
                 if let prob = battle.problem {
                     bvc.problem = prob
-                    bvc.onRunCode = { submission in
-                        battlevm?.runCode(submission: submission, problemId: prob.id)
-                    }
+                    bvc.runCodeViewModel = rcvm
                     bvc.onSubmitCode = { submission in
                         battlevm?.submitCode(submission: submission, problemId: prob.id)
                     }
@@ -140,18 +142,85 @@ final class CoordinatorFactory {
             },
             makeDocumentation: { [weak battlevm] in
                 let docvc = DokumentasiPageVC()
-                docvc.onClose = { battlevm?.hideDocumentation() }
+                docvc.onClose = {
+                    battlevm?.hideDocumentation()
+                }
                 return docvc
             },
-            makeEndBattle: { [unowned self] _ in
-                self.makeEndBattleCoordinator(navigationController)
+            makeEndBattle: { [unowned self] submitCodeResult, battleResult in
+                self.makeEndBattleCoordinator(
+                    navigationController,
+                    user: user,
+                    battle: battle,
+                    submitCodeResult: submitCodeResult,
+                    battleResult: battleResult)
             })
         
         return battlec
     }
     
-    func makeEndBattleCoordinator(_ navigationController: UINavigationController) -> EndBattleCoordinator {
-        let endbc = EndBattleCoordinator(navigationController)
+    func makeEndBattleCoordinator(
+        _ navigationController: UINavigationController,
+        user: User,
+        battle: Battle,
+        submitCodeResult: SubmitCodeResult,
+        battleResult: BattleResult?
+    ) -> EndBattleCoordinator {
+        let endvm = EndBattleViewModel(
+            service: endBattleService,
+            submitCodeResult: submitCodeResult,
+            battleResult: battleResult)
+        let endbc = EndBattleCoordinator(
+            navigationController,
+            viewModel: endvm,
+            makeBattleDone: { [weak endvm] in
+                let bdvc = BattleDoneVC()
+                bdvc.onComplete = {
+                    endvm?.toTestCase()
+                }
+                return bdvc
+            },
+            makeTestCase: { [weak endvm] submitCodeResult in
+                let tcvc = TestCaseViewController()
+                tcvc.onNext = {
+                    endvm?.toWaiting()
+                }
+                tcvc.tests = submitCodeResult.tests
+                return tcvc
+            },
+            makeWaitingForOpponentFinish: {
+                let tlvc = TungguLawanViewController()
+                tlvc.endDate = battle.endTime
+                tlvc.onShowReview = { [weak endvm] in
+                    endvm?.toReview()
+                }
+                tlvc.onNewBattle = { [weak endvm] in
+                    endvm?.toFinishBattle()
+                }
+                return tlvc
+            },
+            makeBattleReview: { battleReview in
+                let pvc = PembahasanViewController()
+                pvc.reviewVideoURL = battleReview.reviewVideoURL
+                pvc.reviewText = battleReview.reviewText
+                pvc.code = submitCodeResult.code
+                pvc.onBack = { [weak endvm] in
+                    endvm?.backFromReview()
+                }
+                return pvc
+            },
+            makeBattleResult: { battleResult in
+                let htvm = BattleResultViewModel(battle: battle, result: battleResult, user: user)
+                let htvc = HasilTandingPageViewController()
+                htvc.viewModel = htvm
+                htvc.onShowReview = { [weak endvm] in
+                    endvm?.toReview()
+                }
+                htvc.onFinish = { [weak endvm] in
+                    endvm?.toFinishBattle()
+                }
+                return htvc
+            })
         return endbc
     }
     

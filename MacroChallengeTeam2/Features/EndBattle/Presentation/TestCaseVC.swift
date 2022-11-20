@@ -12,7 +12,7 @@ import SnapKit
 class TestCaseViewController: UIPageViewController {
     var onNext: (() -> Void)?
     
-    var submitCodeResult: SubmitCodeResult = .empty()
+    var tests: [SubmitCodeResultTest] = []
     
     var selectedIndex = 0
     
@@ -124,7 +124,6 @@ class TestCaseViewController: UIPageViewController {
     }()
 
     private lazy var testCases: [TestCaseButtonView] = {
-        let tests = submitCodeResult.tests
         let testCases = zip(tests.indices, tests).map { index, testCase in
             TestCaseButtonView(
                 status: testCase.outputType == .correct ? .correct : .wrong,

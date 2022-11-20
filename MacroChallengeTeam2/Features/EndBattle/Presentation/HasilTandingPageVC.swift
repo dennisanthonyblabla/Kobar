@@ -13,11 +13,9 @@ import Lottie
 
 class HasilTandingPageViewController: UIViewController {
     var onFinish: (() -> Void)?
-    var onShowDiscussion: (() -> Void)?
+    var onShowReview: (() -> Void)?
     
-    enum Winner {
-        case user, opponent, draw
-    }
+    var viewModel: BattleResultViewModel!
     
     private lazy var udahanDehBtn: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Udahan Deh")
@@ -27,87 +25,38 @@ class HasilTandingPageViewController: UIViewController {
     
     private lazy var pembahasanBtn: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Pembahasan")
-        button.addVoidAction(onShowDiscussion, for: .touchDown)
+        button.addVoidAction(onShowReview, for: .touchDown)
         return button
     }()
     
-    var result: BattleResult = .empty()
-    var user: User = .empty()
-    var opponent: User = .empty()
-    var testCases: Int = 0
-    
-    lazy var winner: Winner = {
-        if result.isDraw {
-            return .draw
-        }
-        
-        if user.id == result.winnerId {
-            return .user
-        }
-        
-        return .opponent
-    }()
-    
-    lazy var userEvaluation: BattleEvaluation = {
-        result.evaluations.first { $0.userId == user.id } ?? .empty()
-    }()
-    
-    lazy var opponentEvaluation: BattleEvaluation = {
-        result.evaluations.first { $0.userId == opponent.id } ?? .empty()
-    }()
-    
-    func formatCorrectness(count: Int) -> String {
-        "\(count)/\(testCases)"
-    }
-    
-    func formatPerformance(performance: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        
-        return "\(formatter.string(for: performance) ?? "0") ms"
-    }
-    
-    func formatTime(time: Double) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.zeroFormattingBehavior = .pad
-        
-        return formatter.string(from: time) ?? ""
-    }
-
     private lazy var userProfile = ProfileTandingView(
         role: .user,
-        name: user.nickname,
-        rating: result.score,
-        state: winner == .draw
-        ? ""
-        : winner == .user ? "+" : "-"
-    )
-
+        name: viewModel.user.nickname,
+        rating: viewModel.score,
+        imageURL: URL(string: viewModel.user.picture),
+        state: viewModel.userScoreState)
+    
     private lazy var opponentProfile = ProfileTandingView(
         role: .opponent,
-        name: opponent.nickname,
-        rating: result.score,
-        state: winner == .draw
-        ? ""
-        : winner == .opponent ? "+" : "-"
-    )
-
+        name: viewModel.opponent.nickname,
+        rating: viewModel.score,
+        imageURL: URL(string: viewModel.opponent.picture),
+        state: viewModel.opponentScoreState)
+    
     private lazy var background: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleToFill
         view.image = UIImage(named: "background6")
         return view
     }()
-
+    
     private lazy var swordVS: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleToFill
         view.image = UIImage(named: "swordVSActive")
         return view
     }()
-
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Hasil Tanding"
@@ -116,16 +65,17 @@ class HasilTandingPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var descLabel: UILabel = {
         let label = UILabel()
+        label.text = viewModel.descState
         label.numberOfLines = 0
         label.textColor = .white
         label.font = .medium28
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var kebenaranKodeBG: UIView = {
         let view = UIView()
         view.backgroundColor = .kobarDarkBlueBG
@@ -133,7 +83,7 @@ class HasilTandingPageViewController: UIViewController {
         view.addSubview(kebenaranLabelSV)
         return view
     }()
-
+    
     private lazy var kinerjaKodeBG: UIView = {
         let view = UIView()
         view.backgroundColor = .kobarDarkBlueBG
@@ -141,7 +91,7 @@ class HasilTandingPageViewController: UIViewController {
         view.addSubview(kinerjaLabelSV)
         return view
     }()
-
+    
     private lazy var kecepatanWaktuBG: UIView = {
         let view = UIView()
         view.backgroundColor = .kobarDarkBlueBG
@@ -149,7 +99,7 @@ class HasilTandingPageViewController: UIViewController {
         view.addSubview(kecepatanLabelSV)
         return view
     }()
-
+    
     private lazy var summarySV: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [kebenaranKodeBG, kinerjaKodeBG, kecepatanWaktuBG])
         stackView.axis = .vertical
@@ -158,7 +108,7 @@ class HasilTandingPageViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
-
+    
     private lazy var kebenaranLabel: UILabel = {
         let label = UILabel()
         label.text = "Kebenaran Kode"
@@ -167,7 +117,7 @@ class HasilTandingPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var kinerjaLabel: UILabel = {
         let label = UILabel()
         label.text = "Kinerja Kode"
@@ -176,7 +126,7 @@ class HasilTandingPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var kecepatanLabel: UILabel = {
         let label = UILabel()
         label.text = "Kecepatan Waktu"
@@ -185,61 +135,61 @@ class HasilTandingPageViewController: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var userKebenaranRateLabel: UILabel = {
         let label = UILabel()
-        label.text = formatCorrectness(count: userEvaluation.correctness)
+        label.text = viewModel.userEvaluationViewModel.codeCorrectNess
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var opponentKebenaranRateLabel: UILabel = {
         let label = UILabel()
-        label.text = formatCorrectness(count: opponentEvaluation.correctness)
+        label.text = viewModel.opponentEvaluationViewModel.codeCorrectNess
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var userKinerjaLabel: UILabel = {
         let label = UILabel()
-        label.text = formatPerformance(performance: userEvaluation.performance)
+        label.text = viewModel.userEvaluationViewModel.codePerformance
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var opponentKinerjaLabel: UILabel = {
         let label = UILabel()
-        label.text = formatPerformance(performance: opponentEvaluation.performance)
+        label.text = viewModel.opponentEvaluationViewModel.codePerformance
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var userKecepatanLabel: UILabel = {
         let label = UILabel()
-        label.text = formatTime(time: userEvaluation.time)
+        label.text = viewModel.userEvaluationViewModel.time
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var opponentKecepatanLabel: UILabel = {
         let label = UILabel()
-        label.text = formatTime(time: opponentEvaluation.time)
+        label.text = viewModel.opponentEvaluationViewModel.time
         label.textColor = .white
         label.font = .medium17
         label.textAlignment = .center
         return label
     }()
-
+    
     private lazy var kebenaranLabelSV: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
@@ -253,7 +203,7 @@ class HasilTandingPageViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private lazy var kinerjaLabelSV: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [userKinerjaLabel, kinerjaLabel, opponentKinerjaLabel])
         stackView.axis = .horizontal
@@ -261,7 +211,7 @@ class HasilTandingPageViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private lazy var kecepatanLabelSV: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [userKecepatanLabel, kecepatanLabel, opponentKecepatanLabel])
         stackView.axis = .horizontal
@@ -269,7 +219,7 @@ class HasilTandingPageViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     private lazy var crown: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
@@ -277,22 +227,23 @@ class HasilTandingPageViewController: UIViewController {
         view.alpha = 0
         return view
     }()
-
+    
     private lazy var confettiGif: LottieAnimationView = {
         let jsonName = "Confetti"
         let animation = LottieAnimation.named(jsonName)
         let gif = LottieAnimationView(animation: animation)
         gif.contentMode = .scaleAspectFit
+        gif.isUserInteractionEnabled = false
         return gif
     }()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if winner == .user {
+        if viewModel.isUserWin {
             confettiGif.play()
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .kobarBlueBG
@@ -306,7 +257,7 @@ class HasilTandingPageViewController: UIViewController {
         view.addSubview(summarySV)
         view.addSubview(udahanDehBtn)
         view.addSubview(pembahasanBtn)
-
+        
         setupBackground()
         setupDisplays()
         setupComponents()
@@ -314,7 +265,9 @@ class HasilTandingPageViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        confettiGif.stop()
+        if viewModel.isUserWin {
+            confettiGif.stop()
+        }
         super.viewWillDisappear(animated)
     }
 }
@@ -339,7 +292,7 @@ extension HasilTandingPageViewController {
             make.height.equalTo(50)
         }
     }
-
+    
     private func setupDisplays() {
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -366,7 +319,7 @@ extension HasilTandingPageViewController {
             make.width.equalToSuperview()
         }
     }
-
+    
     private func setupComponents() {
         userProfile.snp.makeConstraints { make in
             make.top.equalTo(descLabel.snp.bottom).offset(150)
@@ -387,13 +340,12 @@ extension HasilTandingPageViewController {
             make.width.equalTo(200)
         }
     }
-
+    
     private func checkIfUserWin() {
-        if winner == .user {
+        if viewModel.isUserWin {
             self.view.addSubview(crown)
             self.view.addSubview(confettiGif)
-            self.descLabel.text = "Keren lo menang Coy!\nMantep banget!"
-
+            
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 1.2,
                 delay: 1.5,
@@ -403,7 +355,7 @@ extension HasilTandingPageViewController {
                 },
                 completion: nil
             )
-
+            
             crown.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.2)
                 make.height.equalTo(crown.snp.width)
@@ -417,12 +369,15 @@ extension HasilTandingPageViewController {
                 make.width.height.equalToSuperview()
                 make.center.equalToSuperview()
             }
-        } else {
+            
+            return
+        }
+        
+        if viewModel.isOpponentWin {
             self.view.addSubview(crown)
             let flippedCrown = UIImage(named: "crown")?.withHorizontallyFlippedOrientation()
             self.crown.image = flippedCrown
-            self.descLabel.text = "Kalah itu biasa! Yang penting ada hal\nbaru yang didapet. Semangat!!"
-
+            
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 1.2,
                 delay: 1.5,
@@ -432,11 +387,11 @@ extension HasilTandingPageViewController {
                 },
                 completion: nil
             )
-
+            
             ProfileTandingView.animate(withDuration: 0.7, delay: 1) {
                 self.opponentProfile.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
             }
-
+            
             crown.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.2)
                 make.height.equalTo(crown.snp.width)
@@ -445,7 +400,7 @@ extension HasilTandingPageViewController {
             }
         }
     }
-
+    
     private func animationLayout() {
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.3,

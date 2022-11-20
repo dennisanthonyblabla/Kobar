@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BattleEvaluation: Identifiable, Codable {
+struct BattleEvaluation: Equatable {
     let id: String
     let userId: String
     let correctness: Int
@@ -23,3 +23,5 @@ struct BattleEvaluation: Identifiable, Codable {
             time: 0.0)
     }
 }
+
+extension BattleEvaluation: Decodable {}

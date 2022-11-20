@@ -12,12 +12,12 @@ import RxRelay
 final class BattleViewModel {
     enum State: Equatable {
         case battle(Battle)
-        case finished(SubmitCodeResult)
+        case finished(SubmitCodeResult, BattleResult?)
     }
     
     enum Event: Equatable {
         case start
-        case finishBattle(SubmitCodeResult)
+        case finishBattle(SubmitCodeResult, BattleResult?)
     }
     
     enum DocumentationState: Equatable {
@@ -31,7 +31,6 @@ final class BattleViewModel {
     
     private let events = PublishRelay<Event>()
     private let documentationSubject = BehaviorRelay<DocumentationState>(value: .closed)
-    private let runCodeResultSubject = PublishRelay<RunCodeResult>()
     private let statusMessageSubject = PublishRelay<String>()
     private let disposeBag = DisposeBag()
     
@@ -39,6 +38,11 @@ final class BattleViewModel {
         self.service = service
         self.battle = battle
         self.userId = userId
+    }
+    
+    var opponentName: String {
+        let opponent = battle.users.first { $0.id != userId }
+        return opponent?.nickname ?? ""
     }
     
     var state: Observable<State> {
@@ -49,8 +53,8 @@ final class BattleViewModel {
                 case let (.battle(battle), .start):
                     return .battle(battle)
                     
-                case let (.battle, .finishBattle(result)):
-                    return .finished(result)
+                case let (.battle, .finishBattle(submitCodeResult, battleResult)):
+                    return .finished(submitCodeResult, battleResult)
                     
                 default:
                     print("InviteFriendViewModel: Invalid event \"\(event)\" for state \"\(prevState)\"")
@@ -74,26 +78,17 @@ final class BattleViewModel {
         documentationSubject.accept(.closed)
     }
     
-    func runCode(submission: RunCodeSubmission, problemId: String) {
-        service.runCode(
-            userId: userId,
-            battleId: battle.id,
-            problemId: problemId,
-            submission: submission)
-        .subscribe { [weak self] result in
-            self?.runCodeResultSubject.accept(result)
-        }
-        .disposed(by: disposeBag)
-    }
-    
     func submitCode(submission: SubmitCodeSubmission, problemId: String) {
         service.submitCode(
             userId: userId,
             battleId: battle.id,
             problemId: problemId,
             submission: submission)
-        .subscribe { [weak self] result in
-            self?.events.accept(.finishBattle(result))
+        .subscribe { [weak self] submitCodeResult, battleResult in
+            self?.events.accept(
+                .finishBattle(
+                    submitCodeResult,
+                    battleResult))
         }
         .disposed(by: disposeBag)
     }

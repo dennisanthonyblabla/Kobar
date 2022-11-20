@@ -16,8 +16,10 @@ import SwiftUI
 final class BattlefieldPageViewController: UIViewController {
     private var statusDesc: String?
     
+    weak var runCodeViewModel: RunCodeViewModel!
+    private let disposeBag = DisposeBag()
+    
     var onSubmitCode: ((SubmitCodeSubmission) -> Void)?
-    var onRunCode: ((RunCodeSubmission) -> Void)?
     var onShowDocumentation: (() -> Void)?
     
     var userName = ""
@@ -134,10 +136,17 @@ final class BattlefieldPageViewController: UIViewController {
     private lazy var ujiKodinganView: UjiKodinganView = {
         let view = UjiKodinganView()
         
-        view.onRunCode = { input in
+        view.onRunCode = { [weak self, problem] input in
+            guard let self = self else { return }
             let submission = RunCodeSubmission(code: self.code, input: input)
-            self.onRunCode?(submission)
+            self.runCodeViewModel.runCode(submission: submission, problemId: problem.id)
         }
+        
+        runCodeViewModel.runCodeResult
+            .subscribe { [weak view] result in
+                view?.updateCodeOutput(result: result)
+            }
+            .disposed(by: disposeBag)
         
         view.onSubmitCode = { _ in
             let submission = SubmitCodeSubmission(code: self.code)

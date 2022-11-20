@@ -15,7 +15,7 @@ final class BattleCoordinator: BaseCoordinator {
     private let navigationController: UINavigationController
     private let makeBattle: (Battle) -> UIViewController
     private let makeDocumentation: () -> UIViewController
-    private let makeEndBattle: (SubmitCodeResult) -> Coordinator
+    private let makeEndBattle: (SubmitCodeResult, BattleResult?) -> Coordinator
     private let previousStack: [UIViewController]
     
     init(
@@ -23,7 +23,7 @@ final class BattleCoordinator: BaseCoordinator {
         viewModel: BattleViewModel,
         makeBattle: @escaping (Battle) -> UIViewController,
         makeDocumentation: @escaping () -> UIViewController,
-        makeEndBattle: @escaping (SubmitCodeResult) -> Coordinator
+        makeEndBattle: @escaping (SubmitCodeResult, BattleResult?) -> Coordinator
     ) {
         self.navigationController = navigationController
         self.viewModel = viewModel
@@ -48,8 +48,8 @@ final class BattleCoordinator: BaseCoordinator {
         switch state {
         case let .battle(battle):
             show(makeBattle(battle))
-        case let .finished(submitCodeResult):
-            startAndReplaceNextCoordinator(makeEndBattle(submitCodeResult))
+        case let .finished(submitCodeResult, battleResult):
+            startAndReplaceNextCoordinator(makeEndBattle(submitCodeResult, battleResult))
         }
     }
     
