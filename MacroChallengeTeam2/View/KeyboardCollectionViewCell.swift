@@ -45,7 +45,7 @@ class KeyboardCollectionViewCell: UICollectionViewCell {
     private func setupAutoLayout() {
         backBG.snp.makeConstraints { make in
             make.height.equalTo(36)
-            make.width.equalTo(label.snp.width).offset(20)
+            make.width.equalTo(label.snp.width).offset(22)
             make.center.equalToSuperview()
         }
         label.snp.makeConstraints { make in

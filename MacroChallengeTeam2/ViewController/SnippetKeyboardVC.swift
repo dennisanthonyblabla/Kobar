@@ -25,7 +25,7 @@ class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollect
         snippets.append(SnippetModel(title: "dan", snippet: "dan"))
         snippets.append(SnippetModel(title: "atau", snippet: "atau"))
         snippets.append(SnippetModel(title: "selama", snippet: "selama _"))
-        
+        snippets.append(SnippetModel(title: "+", snippet: "ditambah"))
         return snippets
     }()
     
