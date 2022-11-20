@@ -69,7 +69,12 @@ final class EndBattleViewModel {
     }
     
     func backFromReview() {
-        eventsSubject.accept(.backFromReview)
+        guard let battleResult = battleResult else {
+            eventsSubject.accept(.backToWaiting)
+            return
+        }
+        
+        eventsSubject.accept(.backToResult(battleResult))
     }
     
     func toFinishBattle() {

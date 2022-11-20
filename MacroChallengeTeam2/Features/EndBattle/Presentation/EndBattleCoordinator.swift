@@ -66,8 +66,12 @@ final class EndBattleCoordinator: BaseCoordinator {
         case let .toReview(battleReview):
             push(makeBattleReview(battleReview))
                  
-        case .backFromReview:
+        case .backToWaiting:
             back()
+            
+        case let .backToResult(battleResult):
+            back()
+            show(makeBattleResult(battleResult))
                  
         case .toFinishBattle:
             pop()

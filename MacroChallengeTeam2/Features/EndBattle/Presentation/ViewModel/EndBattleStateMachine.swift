@@ -25,12 +25,12 @@ struct EndBattleStateMachine {
         case bothFinished(BattleResult)
         case opponentFinished(BattleResult)
         case toReview(BattleReview)
-        case backFromReview
+        case backToWaiting
+        case backToResult(BattleResult)
         case toFinishBattle
     }
     
     private var state: State = .start
-    private var memento: State = .start
     
     mutating func map(event: Event) -> Bool {
         switch (state, event) {
@@ -51,17 +51,18 @@ struct EndBattleStateMachine {
             
         case (.waitingForOpponent, .toReview):
             state = .battleReview
-            memento = .waitingForOpponent
             
         case (.waitingForOpponent, .toFinishBattle):
             state = .finish
             
         case (.battleResult, .toReview):
             state = .battleReview
-            memento = .battleResult
             
-        case (.battleReview, .backFromReview):
-            state = memento
+        case (.battleReview, .backToWaiting):
+            state = .waitingForOpponent
+            
+        case (.battleReview, .backToResult):
+            state = .battleResult
             
         case (.battleResult, .toFinishBattle):
             state = .finish

@@ -76,7 +76,6 @@ class BattleDataSource: BattleService {
             
             return Disposables.create {
                 self?.socketService.onCodeSubmit = { _ in }
-                self?.socketService.onBattleFinished = { _ in }
             }
         }
     }
