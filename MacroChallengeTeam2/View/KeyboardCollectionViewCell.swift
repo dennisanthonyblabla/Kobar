@@ -60,6 +60,6 @@ class KeyboardCollectionViewCell: UICollectionViewCell {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("error cok")
+        fatalError("error")
     }
 }
