@@ -32,24 +32,19 @@ class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollect
     private let keyboard: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 2, left: 20, bottom: 2, right: 20)
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//        layout.minimumLineSpacing = 30
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(
             KeyboardCollectionViewCell.self,
             forCellWithReuseIdentifier: KeyboardCollectionViewCell.identifier
         )
         collectionView.backgroundColor = .kobarGray
-//        collectionView.showsVerticalScrollIndicator = false
-//        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         view.addSubview(keyboard)
         keyboard.dataSource = self
         keyboard.delegate = self
@@ -77,9 +72,9 @@ class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollect
         }
         
         let snippet = snippets[indexPath.row]
-        
-        cell.setSnippetView(title: snippet.title, snippet: snippet.snippet)
-        
+        cell.snippet = snippet.snippet
+        cell.btnLabel = snippet.title
+
         return cell
     }
     
