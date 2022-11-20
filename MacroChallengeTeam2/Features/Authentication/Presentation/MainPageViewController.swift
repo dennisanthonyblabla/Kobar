@@ -18,6 +18,11 @@ class MainPageViewController: UIViewController {
     
     var picture: String = ""
     var rating: Int = 0
+
+    private lazy var documentationBtn: SmallIconButtonView = {
+        let btn = SmallIconButtonView(variant: .variant2, buttonImage: UIImage(systemName: "book.fill"))
+        return btn
+    }()
     
     private lazy var profileView: ShortProfileView = {
         let view = ShortProfileView(
@@ -106,7 +111,7 @@ class MainPageViewController: UIViewController {
         view.addArrangedSubview(gabungBtn)
         view.addArrangedSubview(siapaAjaBtn)
         
-        view.spacing = 40
+        view.spacing = 80
         
         return view
     }()
@@ -152,10 +157,12 @@ class MainPageViewController: UIViewController {
         view.addSubview(profileView)
         view.addSubview(buttonsStackView)
         view.addSubview(logOutBtn)
+        view.addSubview(documentationBtn)
         
         setupBackgroundConstraints()
         setupDisplayConstraint()
         setupComponentsConstraint()
+        documentationFunc()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -188,22 +195,35 @@ class MainPageViewController: UIViewController {
     private func setupComponentsConstraint() {
         profileView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
-            make.top.equalToSuperview().offset(100)
+            make.top.equalTo(logOutBtn).offset(30)
         }
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(tandingYukDesc).offset(50)
+            make.bottom.equalToSuperview().offset(-100)
         }
         logOutBtn.snp.makeConstraints { make in
             make.top.right.equalToSuperview().inset(96)
         }
+        documentationBtn.snp.makeConstraints { make in
+            make.trailing.equalTo(logOutBtn.snp.leading).offset(-20)
+            make.top.equalTo(logOutBtn)
+        }
+    }
+
+    private func documentationFunc() {
+        documentationBtn.addAction(
+            UIAction { [self] _ in
+                let controller = DokumentasiPageVC()
+                navigationController?.present(controller, animated: true)
+            }
+            ,for: .touchDown)
     }
 }
 
 struct MainPageViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return MainPageViewController()
+            return UINavigationController(rootViewController: MainPageViewController())
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)")
         .previewInterfaceOrientation(.landscapeLeft)

@@ -52,10 +52,9 @@ class Auth0DataSource {
     func login(_ callback: @escaping (AuthUser?) -> Void) {
         startWebAuth(callback: callback)
     }
-    
-    func logout(_ callback: @escaping () -> Void) {
-        guard let redirectURL = URL(
-            string: "com.namanya-apa.KobarDev://kobar.au.auth0.com/ios/com.namanya-apa.KobarDev/logout")
+
+    func logout(_ callback: @escaping (AuthUser?) -> Void) {
+        guard let redirectURL = URL(string: "com.namanya-apa.Kobar://kobar.au.auth0.com/ios/com.namanya-apa.Kobar/logout")
         else { return }
         
         Auth0
@@ -65,7 +64,7 @@ class Auth0DataSource {
                 switch result {
                 case .success:
                     self?.clearCredentials()
-                    callback()
+                    callback(nil)
                 case .failure:
                     break
                 }

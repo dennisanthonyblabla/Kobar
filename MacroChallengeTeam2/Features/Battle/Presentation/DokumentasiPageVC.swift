@@ -120,8 +120,8 @@ final class DokumentasiPageVC: UIViewController {
     private func setupAutoLayout() {
         background.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
+            make.width.equalTo(background.snp.width)
+            make.height.equalTo(background.snp.height)
         }
         showHTML.snp.makeConstraints { make in
             make.trailing.equalTo(background).offset(-18)

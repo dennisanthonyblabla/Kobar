@@ -61,7 +61,7 @@ final class AuthDataSource: AuthService {
     }
     
     func logout() {
-        dataSource.logout { [weak self] in
+        dataSource.logout { [weak self] _ in
             self?.authUserSubject.accept(nil)
         }
     }

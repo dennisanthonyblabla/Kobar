@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class ReadyForBattlePageViewController: UIViewController {
     var onBack: (() -> Void)?
@@ -116,7 +117,7 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         view.image = UIImage(named: "background2")
         return view
     }()
@@ -147,7 +148,8 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupBackgroundConstraints() {
         backgroundView.snp.makeConstraints { make in
-            make.height.width.equalToSuperview()
+            make.height.width.equalToSuperview().offset(20)
+            make.center.equalToSuperview()
         }
     }
 
@@ -197,5 +199,16 @@ class ReadyForBattlePageViewController: UIViewController {
         waitButtonView.snp.makeConstraints { make in
             make.height.centerX.centerY.equalTo(readyButtonView)
         }
+    }
+}
+
+struct ReadyForBattlePageViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        UIViewControllerPreview {
+            return UINavigationController(rootViewController: ReadyForBattlePageViewController())
+        }
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
     }
 }
