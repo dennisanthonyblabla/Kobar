@@ -285,7 +285,9 @@ class HasilTandingPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if winner == .user {
-            confettiGif.play()
+            confettiGif.play { _ in
+                self.confettiGif.isHidden = true
+            }
         }
     }
 
