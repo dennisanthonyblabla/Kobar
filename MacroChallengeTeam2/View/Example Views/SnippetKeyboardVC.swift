@@ -8,11 +8,6 @@
 import UIKit
 import SwiftUI
 
-struct SnippetModel {
-    let title: String
-    let snippet: String
-}
-
 class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private lazy var snippets: [SnippetModel] = {
         var snippets: [SnippetModel] = []

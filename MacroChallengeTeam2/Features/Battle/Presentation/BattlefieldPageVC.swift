@@ -14,6 +14,54 @@ import SwiftUI
 // TODO: implement run code popup
 // TODO: @dennis refactor BattleContohStackView to new file
 final class BattlefieldPageViewController: UIViewController {
+    private lazy var snippets: [SnippetModel] = {
+        var snippets: [SnippetModel] = []
+        snippets.append(SnippetModel(title: "baca", snippet: "baca _"))
+        snippets.append(SnippetModel(title: "tulis", snippet: "tulis _"))
+        snippets.append(SnippetModel(title: "ulangin", snippet: "ulangin _ dari _ sampe _\n\t_\nyaudah"))
+        snippets.append(
+            SnippetModel(
+                title: "ulangin longkap",
+                snippet: "ulangin _ dari _ sampe _ longkap _\n\t_\nyaudah"
+            )
+        )
+        snippets.append(SnippetModel(title: "selama", snippet: "selama _\n\t_\nyaudah"))
+        snippets.append(SnippetModel(title: "kalo", snippet: "kalo _\n\t_\nyaudah"))
+        snippets.append(SnippetModel(title: "kalogak", snippet: "kalogak _ \n\t_\n"))
+        snippets.append(SnippetModel(title: "lainnya", snippet: "lainnya\n\t_"))
+        snippets.append(SnippetModel(title: "yaudah", snippet: "yaudah"))
+        snippets.append(SnippetModel(title: "dan", snippet: "dan"))
+        snippets.append(SnippetModel(title: "atau", snippet: "atau"))
+        snippets.append(SnippetModel(title: "bukan", snippet: "bukan"))
+        snippets.append(SnippetModel(title: "itu", snippet: "itu"))
+        snippets.append(SnippetModel(title: "benar", snippet: "benar"))
+        snippets.append(SnippetModel(title: "salah", snippet: "salah"))
+        snippets.append(SnippetModel(title: "+", snippet: "+"))
+        snippets.append(SnippetModel(title: "-", snippet: "-"))
+        snippets.append(SnippetModel(title: "*", snippet: "*"))
+        snippets.append(SnippetModel(title: "/", snippet: "/"))
+        snippets.append(SnippetModel(title: "%", snippet: "%"))
+        snippets.append(SnippetModel(title: "==", snippet: "=="))
+        snippets.append(SnippetModel(title: "!=", snippet: "!="))
+        return snippets
+    }()
+    
+    private let keyboard: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(
+            KeyboardCollectionViewCell.self,
+            forCellWithReuseIdentifier: KeyboardCollectionViewCell.identifier
+        )
+        collectionView.backgroundColor = .kobarGrayKeyboard
+        
+        collectionView.showsHorizontalScrollIndicator = false
+        return collectionView
+    }()
+    
     private var statusDesc: String?
     
     weak var runCodeViewModel: RunCodeViewModel!
@@ -302,6 +350,10 @@ final class BattlefieldPageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        keyboard.dataSource = self
+        keyboard.delegate = self
+        
         view.addSubview(background)
         view.addSubview(backgroundFront)
         view.addSubview(backgroundStatus)
@@ -318,6 +370,7 @@ final class BattlefieldPageViewController: UIViewController {
         view.addSubview(contohStackView)
         view.addSubview(contohBGStackView)
         view.addSubview(ujiKodinganView)
+        view.addSubview(keyboard)
 
         setupBackground()
         setupDisplays()
@@ -344,9 +397,14 @@ final class BattlefieldPageViewController: UIViewController {
         )?.cgRectValue {
             ngodingYukCard.snp.remakeConstraints { make in
                 make.top.equalTo(pertanyaanCard)
-                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 15))
+                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 50 + 10))
                 make.trailing.equalTo(backgroundFront).offset(-16)
                 make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+            }
+            keyboard.snp.remakeConstraints { make in
+                make.height.equalTo(50)
+                make.width.equalToSuperview()
+                make.bottom.equalToSuperview().offset(-keyboardSize.height)
             }
             animationLayout()
         }
@@ -355,9 +413,14 @@ final class BattlefieldPageViewController: UIViewController {
     @objc func keyboardWillHide(notification: NSNotification) {
         ngodingYukCard.snp.remakeConstraints { make in
             make.top.equalTo(pertanyaanCard)
-            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.bottom.equalTo(keyboard.snp.top).offset(-10)
             make.trailing.equalTo(backgroundFront).offset(-16)
             make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+        }
+        keyboard.snp.remakeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         animationLayout()
     }
@@ -452,7 +515,7 @@ extension BattlefieldPageViewController {
         }
         ngodingYukCard.snp.makeConstraints { make in
             make.top.equalTo(pertanyaanCard)
-            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.bottom.equalTo(keyboard.snp.top).offset(-10)
             make.trailing.equalTo(backgroundFront).offset(-16)
             make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
         }
@@ -476,6 +539,11 @@ extension BattlefieldPageViewController {
             make.bottom.equalTo(backgroundFront).offset(-80)
             make.top.equalTo(contohBGStackView.snp.top)
             make.height.equalTo(0)
+        }
+        keyboard.snp.remakeConstraints { make in
+            make.height.equalTo(50)
+            make.width.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
 
@@ -518,6 +586,41 @@ extension BattlefieldPageViewController {
             view.alpha = alpha
         }.startAnimation()
     }
+}
+
+extension BattlefieldPageViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let snippet = snippets[indexPath.row]
+        if let textRange = ngodingYukCard.textInput.selectedTextRange {
+            ngodingYukCard.textInput.replace(textRange, withText: snippet.snippet)
+        }
+    }
+}
+
+extension BattlefieldPageViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return snippets.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = keyboard.dequeueReusableCell(
+            withReuseIdentifier: KeyboardCollectionViewCell.identifier,
+            for: indexPath
+        ) as? KeyboardCollectionViewCell else {
+            fatalError("error")
+        }
+        
+        let snippet = snippets[indexPath.row]
+        cell.snippet = snippet.snippet
+        cell.btnLabel = snippet.title
+
+        return cell
+    }
+}
+
+struct SnippetModel {
+    let title: String
+    let snippet: String
 }
 
 struct BattlefieldViewControllerPreviews: PreviewProvider {
