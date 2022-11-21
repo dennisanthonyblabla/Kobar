@@ -88,14 +88,14 @@ final class SmallButtonView: UIButton {
             frontBG.snp.makeConstraints { make in
                 make.height.equalTo(45)
                 make.width.equalTo(149)
-                make.trailing.equalToSuperview().offset(35)
+                make.trailing.equalToSuperview().offset(30)
                 make.centerY.equalToSuperview()
             }
             shareIcon.snp.makeConstraints { make in
                 make.width.equalTo(shareIcon)
                 make.height.equalTo(shareIcon)
                 make.centerY.equalToSuperview()
-                make.leading.equalTo(frontBG).offset(35)
+                make.leading.equalTo(frontBG).offset(30)
             }
         }
     }

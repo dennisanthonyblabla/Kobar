@@ -136,7 +136,7 @@ class InviteFriendPageViewController: UIViewController {
     private func setupDisplays() {
         pageTitle.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(25)
+            make.top.equalToSuperview().offset(45)
         }
         pageDesc.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -150,14 +150,14 @@ class InviteFriendPageViewController: UIViewController {
         eloDesc.snp.makeConstraints { make in
             make.width.height.equalTo(eloDesc)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-25)
+            make.centerY.equalToSuperview().multipliedBy(1.78)
         }
     }
 
     private func setupComponents() {
         backBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(86)
-            make.top.equalToSuperview().offset(70)
+            make.top.equalToSuperview().offset(80)
         }
         profileUser.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(300)
@@ -168,7 +168,7 @@ class InviteFriendPageViewController: UIViewController {
             make.centerY.equalToSuperview()
         }
         shareBtn.snp.makeConstraints { make in
-            make.centerX.equalTo(profileInvite).offset(10)
+            make.centerX.equalTo(profileInvite).offset(13)
             make.bottom.equalTo(profileInvite).offset(110)
         }
     }
@@ -193,8 +193,10 @@ class InviteFriendPageViewController: UIViewController {
 struct RuangTungguViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return InviteFriendPageViewController()
+            return UINavigationController(rootViewController: InviteFriendPageViewController())
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }
