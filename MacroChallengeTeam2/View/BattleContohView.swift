@@ -9,6 +9,15 @@ import UIKit
 import SnapKit
 
 class BattleContohView: UIButton {
+    enum Selection {
+        case selected
+        case notSelected
+    }
+    var isItSelected: Selection? {
+        didSet {
+            checkIfSelected()
+        }
+    }
     private var image: String?
     private lazy var titleBanner: UIView = {
         let view = UIView()
@@ -26,12 +35,14 @@ class BattleContohView: UIButton {
         super.init(frame: frame)
     }
 
-    init(title: String, image: String = "") {
+    init(title: String, image: String? = "", selected: Selection) {
         super.init(frame: .zero)
         self.image = image
+        self.isItSelected = selected
         addSubview(titleBanner)
-        setupAutoLayout()
         setupButton(title: title)
+        setupAutoLayout()
+        checkIfSelected()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -47,13 +58,58 @@ class BattleContohView: UIButton {
         setTitle(title, for: .normal)
         setTitleColor(.kobarBlack, for: .normal)
         titleLabel?.font = .regular17
+//        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     }
 
     private func setupAutoLayout() {
         titleBanner.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.width.equalToSuperview().offset(10)
-            make.height.equalTo(43)
+            make.bottom.equalTo(10)
+            make.height.equalTo(44)
+        }
+    }
+
+    private func checkIfSelected() {
+        switch isItSelected {
+        case .selected:
+            if image == "chevron.down"{
+                self.setImage(
+                    UIImage(systemName: "chevron.up")?
+                    .withTintColor(
+                        .kobarBlueActive,
+                        renderingMode: .alwaysOriginal
+                    ), for: .normal
+                )
+            } else {
+                self.setImage(
+                    UIImage(systemName: image ?? "")?
+                    .withTintColor(
+                        .kobarBlueActive,
+                        renderingMode: .alwaysOriginal
+                    ), for: .normal
+                )
+            }
+            self.setTitleColor(.kobarBlueActive, for: .normal)
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0)
+            titleBanner.snp.updateConstraints { make in
+                make.height.equalTo(54)
+            }
+        case .notSelected:
+            self.setImage(
+                UIImage(systemName: image ?? "")?
+                .withTintColor(
+                    .kobarBlack,
+                    renderingMode: .alwaysOriginal
+                ), for: .normal
+            )
+            self.setTitleColor(.kobarBlack, for: .normal)
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+            titleBanner.snp.updateConstraints { make in
+                make.height.equalTo(44)
+            }
+        case .none:
+            break
         }
     }
 }
