@@ -117,10 +117,12 @@ final class UjiKodinganView: UIView {
         switch result.type {
         case .correct:
             outputCard.textColor = .kobarGreen
-            outputCard.layer.borderWidth = 4
+            outputCard.layer.borderWidth = 2
             outputCard.layer.borderColor = UIColor.kobarGreen.cgColor
         case .incorrect:
-            outputCard.textColor = .kobarRed
+            outputCard.textColor = .kobarBlack
+            outputCard.layer.borderWidth = 0
+            outputCard.layer.borderColor = nil
         case .error:
             outputCard.textColor = .kobarRed
             outputCard.layer.borderWidth = 2

@@ -11,7 +11,7 @@ import UIKit
 
 final class ProfileInviteView: UIView {
     var inviteCode: String?
-
+    
     private lazy var profileBG: UIView = {
         let view = UIView()
         view.layer.borderColor = UIColor.kobarDarkGray.cgColor
@@ -24,7 +24,7 @@ final class ProfileInviteView: UIView {
         view.addSubview(inviteCodeLabel)
         return view
     }()
-
+    
     private lazy var profileView: UIImageView = {
         let imageView = UIImageView()
         let profile = UIImage(systemName: "person.fill")
@@ -32,7 +32,7 @@ final class ProfileInviteView: UIView {
         imageView.image = profile?.withTintColor(.kobarBlack, renderingMode: .alwaysOriginal)
         return imageView
     }()
-
+    
     private lazy var inviteInstruction: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -41,7 +41,7 @@ final class ProfileInviteView: UIView {
         label.text = "Kode buat ajak temen"
         return label
     }()
-
+    
     private lazy var inviteCodeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -50,22 +50,22 @@ final class ProfileInviteView: UIView {
         label.text = inviteCode ?? "Loading"
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-
+    
     init(inviteCode: String) {
         super.init(frame: .zero)
         self.inviteCodeLabel.text = inviteCode
         addSubview(profileBG)
         setupAutoLayout()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupAutoLayout() {
         profileBG.snp.makeConstraints { make in
             make.width.equalTo(233)
@@ -86,9 +86,7 @@ final class ProfileInviteView: UIView {
         }
         profileView.snp.makeConstraints { make in
             make.width.height.equalTo(profileView.snp.width).offset(80)
-//            make.height.equalTo(profileView.snp.height)
             make.top.equalToSuperview().offset(20)
-//            make.bottom.equalTo(inviteInstruction.snp.top).offset(-5)
             make.centerX.equalToSuperview()
         }
     }
