@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let winScene = (scene as? UIWindowScene) else { return }
 
-        let navigationController = UINavigationController(rootViewController: SnippetKeyboardVC())
+        let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: true)
 
         window = UIWindow(windowScene: winScene)
@@ -71,7 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         coordinator = authCoordinator
-//        coordinator?.start()
+        coordinator?.start()
     }
 
     // MARK: Composition Root
