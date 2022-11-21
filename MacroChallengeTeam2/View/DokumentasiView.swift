@@ -11,12 +11,7 @@ import WebKit
 
 final class DokumentasiView: UIView {
     var onClose: (() -> Void)?
-    
-    private lazy var closeBtn: SmallIconButtonView = {
-        let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
-        btn.addVoidAction(onClose, for: .touchDown)
-        return btn
-    }()
+
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -99,15 +94,23 @@ final class DokumentasiView: UIView {
         return stackView
     }()
 
+    lazy var closeBtn: SmallIconButtonView = {
+        let btn = SmallIconButtonView(variant: .variant1, buttonImage: UIImage(systemName: "xmark"))
+        return btn
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(background)
         addSubview(showHTML)
         addSubview(titleLabel)
-        addSubview(closeBtn)
         addSubview(leftBtnSV)
+        addSubview(closeBtn)
 
         setupAutoLayout()
+        variabelBtn.isSelected = true
+        isSelectedTrue(btn: variabelBtn)
+        loadHTML(name: "Variabel")
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -120,7 +123,7 @@ final class DokumentasiView: UIView {
             make.height.equalTo(background.snp.height)
         }
         showHTML.snp.makeConstraints { make in
-            make.trailing.equalTo(background).offset(-18)
+            make.trailing.equalTo(background).offset(-23)
             make.top.equalTo(background).offset(78)
             make.width.equalTo(background).multipliedBy(0.65)
             make.height.equalTo(background).multipliedBy(0.895)
@@ -130,11 +133,11 @@ final class DokumentasiView: UIView {
             make.centerX.equalTo(background)
         }
         closeBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(background).offset(-20)
+            make.trailing.equalTo(background).offset(-30)
             make.top.equalTo(background).offset(12)
         }
         leftBtnSV.snp.makeConstraints { make in
-            make.leading.equalTo(background).offset(12)
+            make.leading.equalTo(background).offset(19)
             make.top.equalTo(showHTML).offset(20)
             make.width.equalTo(195)
             make.height.equalTo(370)

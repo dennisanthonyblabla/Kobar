@@ -214,12 +214,14 @@ class MainPageViewController: UIViewController {
             UIAction { [self] _ in
                 let controller = UIViewController()
                 let view = DokumentasiView()
-
-                controller.view = DokumentasiView()
+                view.closeBtn.addAction(
+                    UIAction { [self] _ in
+                        dismiss(animated: true)
+                    }, for: .touchUpInside)
+                controller.view = view
 
                 navigationController?.present(controller, animated: true)
-            }
-            ,for: .touchDown)
+            }, for: .touchDown)
     }
 }
 
