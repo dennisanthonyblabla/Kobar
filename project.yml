@@ -1,7 +1,9 @@
 name: MacroChallengeTeam2
+
 options:
   bundleIdPrefix: com.namanya-apa
-packages:  
+
+packages:
   RxSwift:
     url: https://github.com/ReactiveX/RxSwift
     from: 6.5.0
@@ -17,6 +19,7 @@ packages:
   Auth0:
     url: https://github.com/auth0/Auth0.swift
     from: 2.3.2
+
 targets:
   Kobar:
     type: application
@@ -25,7 +28,7 @@ targets:
     settings:
       INFOPLIST_FILE: MacroChallengeTeam2/Info.plist
       TARGETED_DEVICE_FAMILY: 2
-    postCompileScripts:
+    preBuildScripts:
       - path: swiftlint.sh
         name: SwiftLint
         basedOnDependencyAnalysis: false
@@ -33,7 +36,31 @@ targets:
       - MacroChallengeTeam2
     dependencies:
       - package: RxSwift
+        product: RxRelay
       - package: SnapKit
       - package: SocketIO
       - package: Lottie
       - package: Auth0
+
+  KobarTests:
+    type: bundle.unit-test
+    platform: iOS
+    info:
+      path: MacroChallengeTeam2Tests/Info.plist
+    sources:
+      - MacroChallengeTeam2Tests
+    dependencies:
+      - target: Kobar
+      - package: RxSwift
+    
+schemes:
+  MacroChallengeTeam2:
+    build:
+      targets:
+        Kobar: all
+        KobarTests: [test]
+    test:
+      gatherCoverageData: true
+      debugEnabled: false
+      targets:
+        -  KobarTests

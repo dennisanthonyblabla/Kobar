@@ -43,10 +43,13 @@ final class ProfileTandingView: UIView {
     private lazy var profileView: UIImageView = {
         let imageView = UIImageView()
         let config = UIImage.SymbolConfiguration(pointSize: 128)
-        let profile = UIImage(systemName: "person.fill", withConfiguration: config)
+        let profile = UIImage(named: "profilePicture")
+        // UIImage(systemName: "person.fill", withConfiguration: config)
         
         imageView.load(from: imageURL, fallback: profile)
-        
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 17
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -144,8 +147,7 @@ final class ProfileTandingView: UIView {
             make.centerX.equalToSuperview()
         }
         profileView.snp.makeConstraints { make in
-            make.width.equalTo(profileView.snp.width)
-            make.height.equalTo(profileView.snp.height)
+            make.width.height.equalTo(profileBG).offset(-15)
             make.center.equalToSuperview()
         }
     }

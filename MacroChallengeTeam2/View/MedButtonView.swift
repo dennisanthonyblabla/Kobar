@@ -115,13 +115,12 @@ final class MedButtonView: UIButton {
             isPressed = true
             configuration?.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 32, bottom: 8, trailing: 32)
             layoutIfNeeded()
+            return
         }
-
-        if gestureRecognizer.state == .ended {
-            isPressed = false
-            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 32, bottom: 14, trailing: 32)
-            layoutIfNeeded()
-        }
+        
+        isPressed = false
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 32, bottom: 14, trailing: 32)
+        layoutIfNeeded()
     }
 
     override func updateConstraints() {

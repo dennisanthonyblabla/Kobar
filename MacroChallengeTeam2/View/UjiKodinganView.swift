@@ -44,7 +44,7 @@ final class UjiKodinganView: UIView {
         
         return button
     }()
-    
+
     lazy var submitBtn: SmallButtonView = {
         let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
         
@@ -83,7 +83,7 @@ final class UjiKodinganView: UIView {
 
     private func setupAutoLayout() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(35)
+            make.top.equalToSuperview().offset(38)
             make.leading.equalToSuperview().offset(20)
         }
         titleLabel.snp.makeConstraints { make in
@@ -102,8 +102,8 @@ final class UjiKodinganView: UIView {
             make.height.equalToSuperview().multipliedBy(0.4)
         }
         playBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().offset(-77)
+            make.leading.equalToSuperview().offset(40)
+            make.bottom.equalToSuperview().offset(-75)
         }
         submitBtn.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-88)
@@ -117,10 +117,12 @@ final class UjiKodinganView: UIView {
         switch result.type {
         case .correct:
             outputCard.textColor = .kobarGreen
-            outputCard.layer.borderWidth = 4
+            outputCard.layer.borderWidth = 2
             outputCard.layer.borderColor = UIColor.kobarGreen.cgColor
         case .incorrect:
-            outputCard.textColor = .kobarRed
+            outputCard.textColor = .kobarBlack
+            outputCard.layer.borderWidth = 0
+            outputCard.layer.borderColor = nil
         case .error:
             outputCard.textColor = .kobarRed
             outputCard.layer.borderWidth = 2
