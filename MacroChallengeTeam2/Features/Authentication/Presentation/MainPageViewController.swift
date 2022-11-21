@@ -48,7 +48,7 @@ class MainPageViewController: UIViewController {
     private lazy var gabungBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Gabung Sama Teman")
+            title: "Gabung Teman")
         
         button.addAction(
             UIAction { _ in
@@ -195,7 +195,7 @@ class MainPageViewController: UIViewController {
     private func setupComponentsConstraint() {
         profileView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
-            make.top.equalTo(logOutBtn).offset(30)
+            make.centerY.equalTo(logOutBtn)
         }
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -206,7 +206,7 @@ class MainPageViewController: UIViewController {
         }
         documentationBtn.snp.makeConstraints { make in
             make.trailing.equalTo(logOutBtn.snp.leading).offset(-20)
-            make.top.equalTo(logOutBtn)
+            make.centerY.equalTo(logOutBtn)
         }
     }
 
