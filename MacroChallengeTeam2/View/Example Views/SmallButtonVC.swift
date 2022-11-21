@@ -10,7 +10,9 @@ import SnapKit
 import SwiftUI
 
 class SmallButtonViewController: UIViewController {
-    private lazy var smallButton = SmallButtonView(variant: .variant1, title: "Button", btnType: .share)
+    private lazy var smallButton = SmallButtonView(
+        variant: .variant1,
+        title: "Button")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,7 @@ class SmallButtonViewController: UIViewController {
 
     private func setupAutoLayout() {
         smallButton.snp.makeConstraints { make in
+            make.width.equalTo(150)
             make.center.equalToSuperview()
         }
     }

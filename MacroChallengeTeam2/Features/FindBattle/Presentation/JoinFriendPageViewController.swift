@@ -60,15 +60,21 @@ class JoinFriendPageViewController: UIViewController {
     private lazy var buttonsStackView: UIStackView = {
         let stack = UIStackView()
         
-        let cancelButton = SmallButtonView(
+        let cancelButton = MedButtonView(
             variant: .variant3,
-            title: "Batal",
-            btnType: .normal)
+            title: "Batal")
         
-        let confirmButton = SmallButtonView(
+        let confirmButton = MedButtonView(
             variant: .variant1,
-            title: "Gabung",
-            btnType: .normal)
+            title: "Gabung")
+        
+        cancelButton.snp.makeConstraints { make in
+            make.width.equalTo(132)
+        }
+        
+        confirmButton.snp.makeConstraints { make in
+            make.width.equalTo(132)
+        }
         
         cancelButton.addVoidAction(onCancel, for: .touchDown)
         confirmButton.addVoidAction({
@@ -77,8 +83,8 @@ class JoinFriendPageViewController: UIViewController {
         
         stack.addArrangedSubview(cancelButton)
         stack.addArrangedSubview(confirmButton)
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
+        stack.alignment = .center
+        stack.distribution = .equalCentering
         
         return stack
     }()

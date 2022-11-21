@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class UjiKodinganView: UIView {
     var onRunCode: ((String) -> Void)?
@@ -46,7 +47,7 @@ final class UjiKodinganView: UIView {
     }()
 
     lazy var submitBtn: SmallButtonView = {
-        let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+        let button = SmallButtonView(variant: .variant2, title: "Submit")
         
         button.addVoidAction({
             self.onSubmitCode?(self.input)
@@ -106,7 +107,8 @@ final class UjiKodinganView: UIView {
             make.bottom.equalToSuperview().offset(-75)
         }
         submitBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-88)
+            make.width.equalTo(120)
+            make.centerY.equalTo(playBtn)
             make.leading.equalTo(playBtn.snp.trailing).offset(30)
         }
     }

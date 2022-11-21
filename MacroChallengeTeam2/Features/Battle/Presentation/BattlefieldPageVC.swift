@@ -217,28 +217,8 @@ final class BattlefieldPageViewController: UIViewController {
     private lazy var ujiKodinganBtn: SmallButtonView = {
         let btn = SmallButtonView(
             variant: .variant2,
-            title: "Uji Kodingan",
-            btnType: .normal
-        )
-        btn.addAction(
-            UIAction { [self] _ in
-                backgroundFront.snp.remakeConstraints { make in
-                    make.leading.bottom.equalToSuperview()
-                    make.width.equalToSuperview().multipliedBy(0.75)
-                    make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
-                }
-                btn.snp.updateConstraints { make in
-                    make.trailing.equalTo(ngodingYukCard).offset(135)
-                }
-                animationTransparency(view: btn, alpha: 0)
-                animationLayout()
-            },
-            for: .touchUpInside
-        )
+            title: "Uji Kodingan")
+        
         return btn
     }()
     
@@ -404,8 +384,6 @@ extension BattlefieldPageViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-10)
         }
         statusLabel.snp.makeConstraints { make in
-            make.width.equalTo(statusLabel)
-            make.height.equalTo(statusLabel)
             make.center.equalToSuperview()
         }
         hourglass.snp.makeConstraints { make in
@@ -457,12 +435,12 @@ extension BattlefieldPageViewController {
             make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
         }
         ujiKodinganBtn.snp.makeConstraints { make in
+            make.width.equalTo(135)
             make.trailing.equalTo(ngodingYukCard).offset(-30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(13)
-            make.bottom.equalTo(ngodingYukCard.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
         }
         tipsBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
+            make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-20)
             make.centerY.equalTo(ujiKodinganBtn).offset(2)
         }
         contohStackView.snp.makeConstraints { make in
@@ -480,6 +458,27 @@ extension BattlefieldPageViewController {
     }
 
     private func setupButtonFunction() {
+        ujiKodinganBtn.addAction(
+            UIAction { [self] _ in
+                backgroundFront.snp.remakeConstraints { make in
+                    make.leading.bottom.equalToSuperview()
+                    make.width.equalToSuperview().multipliedBy(0.75)
+                    make.top.equalTo(background).offset(8)
+                }
+                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
+                    make.width.equalTo(120)
+                    make.centerY.equalTo(ujiKodinganView.playBtn)
+                    make.leading.equalTo(ujiKodinganView.playBtn.snp.trailing).offset(30)
+                }
+                ujiKodinganBtn.snp.updateConstraints { make in
+                    make.trailing.equalTo(ngodingYukCard).offset(135)
+                }
+                animationTransparency(view: ujiKodinganBtn, alpha: 0)
+                animationLayout()
+            },
+            for: .touchUpInside
+        )
+        
         ujiKodinganView.backBtn.addAction(
             UIAction { [self] _ in
                 backgroundFront.snp.remakeConstraints { make in
@@ -488,7 +487,8 @@ extension BattlefieldPageViewController {
                     make.top.equalTo(background).offset(8)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-88)
+                    make.width.equalTo(120)
+                    make.centerY.equalTo(ujiKodinganView.playBtn)
                     make.leading.equalTo(ujiKodinganView.playBtn.snp.trailing).offset(30)
                 }
                 ujiKodinganBtn.snp.updateConstraints { make in
