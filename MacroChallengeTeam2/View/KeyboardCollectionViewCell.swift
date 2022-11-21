@@ -37,7 +37,7 @@ class KeyboardCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(backBG)
-        contentView.addSubview(label)
+        backBG.addSubview(label)
         self.clipsToBounds = true
         setupAutoLayout()
     }
@@ -46,7 +46,8 @@ class KeyboardCollectionViewCell: UICollectionViewCell {
         backBG.snp.makeConstraints { make in
             make.height.equalTo(36)
             make.width.equalTo(label.snp.width).offset(22)
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
         }
         label.snp.makeConstraints { make in
             make.height.equalTo(label.snp.height)
@@ -55,7 +56,7 @@ class KeyboardCollectionViewCell: UICollectionViewCell {
         }
         contentView.snp.makeConstraints { make in
             make.width.equalTo(backBG.snp.width)
-            make.height.equalTo(backBG.snp.height)
+            make.height.equalTo(backBG.snp.height).offset(10)
         }
     }
 

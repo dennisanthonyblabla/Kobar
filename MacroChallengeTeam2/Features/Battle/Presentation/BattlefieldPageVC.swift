@@ -397,12 +397,12 @@ final class BattlefieldPageViewController: UIViewController {
         )?.cgRectValue {
             ngodingYukCard.snp.remakeConstraints { make in
                 make.top.equalTo(pertanyaanCard)
-                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 50 + 10))
+                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 70 + 10))
                 make.trailing.equalTo(backgroundFront).offset(-16)
                 make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
             }
             keyboard.snp.remakeConstraints { make in
-                make.height.equalTo(50)
+                make.height.equalTo(70)
                 make.width.equalToSuperview()
                 make.bottom.equalToSuperview().offset(-keyboardSize.height)
             }
@@ -418,9 +418,9 @@ final class BattlefieldPageViewController: UIViewController {
             make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
         }
         keyboard.snp.remakeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(70)
             make.width.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalToSuperview()
         }
         animationLayout()
     }
@@ -530,7 +530,7 @@ extension BattlefieldPageViewController {
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
-            make.bottom.equalTo(contohBGStackView.snp.top).offset(-10)
+            make.bottom.equalTo(contohBGStackView.snp.top).offset(-13)
             make.trailing.equalTo(pertanyaanCard).offset(-5)
         }
         contohBGStackView.snp.makeConstraints { make in
@@ -541,9 +541,9 @@ extension BattlefieldPageViewController {
             make.height.equalTo(0)
         }
         keyboard.snp.remakeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(70)
             make.width.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 
