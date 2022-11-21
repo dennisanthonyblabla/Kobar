@@ -56,7 +56,8 @@ class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollect
             KeyboardCollectionViewCell.self,
             forCellWithReuseIdentifier: KeyboardCollectionViewCell.identifier
         )
-        collectionView.backgroundColor = UIColor.kobarGrayKeyboard
+        collectionView.backgroundColor = .kobarGrayKeyboard
+        
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
@@ -107,7 +108,7 @@ class SnippetKeyboardVC: UIViewController, UICollectionViewDataSource, UICollect
             textView.snp.remakeConstraints { make in
                 make.height.equalTo(600 - (keyboardSize.height - 67)) // ini itungannya dikira2, belom kepikiran gimana cara biar bisa rely sama value yg diketahui
                 make.width.equalTo(1000)
-                make.bottom.equalTo(keyboard.snp.top)
+                make.bottom.equalTo(keyboard.snp.top).offset(-5)
                 make.centerX.equalToSuperview()
             }
         }
