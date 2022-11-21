@@ -219,13 +219,9 @@ final class BattlefieldPageViewController: UIViewController {
                     make.width.equalToSuperview().multipliedBy(0.75)
                     make.top.equalTo(background).offset(8)
                 }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.bottom.equalTo(ujiKodinganView).offset(-77)
-                    make.trailing.equalTo(ujiKodinganView.snp.centerX).offset(-55)
-                }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(15)
+                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
                 }
                 btn.snp.updateConstraints { make in
                     make.trailing.equalTo(ngodingYukCard).offset(135)
@@ -319,6 +315,43 @@ final class BattlefieldPageViewController: UIViewController {
         setupDisplays()
         setupComponents()
         setupButtonFunction()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue {
+            ngodingYukCard.snp.remakeConstraints { make in
+                make.top.equalTo(pertanyaanCard)
+                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 15))
+                make.trailing.equalTo(backgroundFront).offset(-16)
+                make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+            }
+            animationLayout()
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        ngodingYukCard.snp.remakeConstraints { make in
+            make.top.equalTo(pertanyaanCard)
+            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.trailing.equalTo(backgroundFront).offset(-16)
+            make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+        }
+        animationLayout()
     }
     
     func updateRunCodeResult(result: RunCodeResult) {
@@ -422,7 +455,7 @@ extension BattlefieldPageViewController {
         }
         tipsBtn.snp.makeConstraints { make in
             make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
-            make.centerY.equalTo(ujiKodinganBtn)
+            make.centerY.equalTo(ujiKodinganBtn).offset(2)
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
@@ -445,10 +478,6 @@ extension BattlefieldPageViewController {
                     make.leading.bottom.equalToSuperview()
                     make.width.equalToSuperview()
                     make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.leading.equalTo(ujiKodinganView).offset(20)
-                    make.bottom.equalToSuperview().offset(-77)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)

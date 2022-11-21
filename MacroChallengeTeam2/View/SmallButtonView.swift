@@ -27,7 +27,7 @@ final class SmallButtonView: UIButton {
     private lazy var frontBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 22.5
+        view.layer.cornerRadius = 25
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -35,7 +35,7 @@ final class SmallButtonView: UIButton {
     private lazy var backBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 22.5
+        view.layer.cornerRadius = 25
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -75,7 +75,7 @@ final class SmallButtonView: UIButton {
                 make.centerY.equalTo(frontBG).offset(5)
             }
             frontBG.snp.makeConstraints { make in
-                make.height.equalTo(45)
+                make.height.equalTo(50)
                 make.width.equalTo(149)
                 make.center.equalToSuperview()
             }
@@ -103,7 +103,7 @@ final class SmallButtonView: UIButton {
     private func setupVariants() {
         self.configuration = .none
         setTitle(title, for: .normal)
-        titleLabel?.font = .regular17
+        titleLabel?.font = .bold17
         let config = UIImage.SymbolConfiguration(pointSize: 17)
         let profile = UIImage(systemName: "paperplane.fill", withConfiguration: config)
         switch variant {
