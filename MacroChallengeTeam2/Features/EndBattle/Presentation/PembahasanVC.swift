@@ -25,9 +25,10 @@ class PembahasanViewController: UIViewController {
     }()
     
     private lazy var kodingan: CardView = {
-        let view = CardView(type: .codingCard, isEditable: false)
+        let view = CardView(type: .codeReview, isEditable: false)
         
         view.text = code
+        view.textColor = .kobarBlack
         
         return view
     }()
@@ -220,12 +221,6 @@ class PembahasanViewController: UIViewController {
                     self.pembahasanTextView.isHidden = false
                     self.videoPlayerViewController.view.isHidden = true
                 }.startAnimation()
-            },
-            for: .touchUpInside
-        )
-        backBtn.addAction(
-            UIAction { _ in
-                print("Back Button Touched")
             },
             for: .touchUpInside
         )
