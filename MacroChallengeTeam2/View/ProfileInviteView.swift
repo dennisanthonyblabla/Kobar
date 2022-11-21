@@ -20,8 +20,8 @@ final class ProfileInviteView: UIView {
         view.layer.cornerRadius = 25
         view.layer.borderWidth = 7
         view.addSubview(profileView)
-        view.addSubview(inviteCodeLabel)
         view.addSubview(inviteInstruction)
+        view.addSubview(inviteCodeLabel)
         return view
     }()
 
@@ -35,16 +35,16 @@ final class ProfileInviteView: UIView {
 
     private lazy var inviteInstruction: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .center
         label.textColor = .kobarBlack
         label.font = .regular17
-        label.text = inviteCode
+        label.text = "Kode buat ajak temen"
         return label
     }()
 
     private lazy var inviteCodeLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .right
+        label.textAlignment = .center
         label.textColor = .kobarBlack
         label.font = .bold22
         label.text = inviteCode ?? "Loading"
@@ -72,23 +72,23 @@ final class ProfileInviteView: UIView {
             make.height.equalTo(205)
             make.center.equalToSuperview()
         }
-        inviteCodeLabel.snp.makeConstraints { make in
-            make.width.equalTo(inviteCodeLabel.snp.width)
-            make.height.equalTo(inviteCodeLabel.snp.height)
-            make.bottom.equalTo(profileBG.snp.bottom).offset(-35)
-            make.centerX.equalToSuperview()
-        }
         inviteInstruction.snp.makeConstraints { make in
             make.width.equalTo(inviteInstruction.snp.width)
             make.height.equalTo(inviteInstruction.snp.height)
-            make.bottom.equalTo(inviteCodeLabel.snp.top)
+            make.top.equalTo(profileView.snp.bottom)
+            make.centerX.equalToSuperview()
+        }
+        inviteCodeLabel.snp.makeConstraints { make in
+            make.width.equalTo(inviteCodeLabel.snp.width)
+            make.height.equalTo(inviteCodeLabel.snp.height)
+            make.top.equalTo(inviteInstruction.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
         profileView.snp.makeConstraints { make in
-            make.width.equalTo(profileView.snp.width)
-            make.height.equalTo(profileView.snp.height)
+            make.width.height.equalTo(profileView.snp.width).offset(80)
+//            make.height.equalTo(profileView.snp.height)
             make.top.equalToSuperview().offset(20)
-            make.bottom.equalTo(inviteInstruction.snp.top).offset(-5)
+//            make.bottom.equalTo(inviteInstruction.snp.top).offset(-5)
             make.centerX.equalToSuperview()
         }
     }
