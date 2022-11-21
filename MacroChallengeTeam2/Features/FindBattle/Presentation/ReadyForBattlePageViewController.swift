@@ -117,7 +117,7 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleToFill
         view.image = UIImage(named: "background2")
         return view
     }()
@@ -148,7 +148,7 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupBackgroundConstraints() {
         backgroundView.snp.makeConstraints { make in
-            make.height.width.equalToSuperview().offset(20)
+            make.height.width.equalToSuperview()
             make.center.equalToSuperview()
         }
     }
