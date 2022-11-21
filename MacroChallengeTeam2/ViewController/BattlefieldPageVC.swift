@@ -313,6 +313,43 @@ final class BattlefieldPageViewController: UIViewController {
         setupDisplays()
         setupComponents()
         setupButtonFunction()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue {
+            ngodingYukCard.snp.remakeConstraints { make in
+                make.top.equalTo(pertanyaanCard)
+                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 15))
+                make.trailing.equalTo(backgroundFront).offset(-16)
+                make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+            }
+            animationLayout()
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        ngodingYukCard.snp.remakeConstraints { make in
+            make.top.equalTo(pertanyaanCard)
+            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.trailing.equalTo(backgroundFront).offset(-16)
+            make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+        }
+        animationLayout()
     }
     
     func updateRunCodeResult(result: RunCodeResult) {
