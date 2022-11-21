@@ -32,7 +32,7 @@ class SignInPageViewController: UIViewController {
     }()
 
     private lazy var signInButton: MedButtonView = {
-        let button = MedButtonView(variant: .variant2, title: "􀣺 Masuk dengan Apple")
+        let button = MedButtonView(variant: .variant2, title: "Masuk")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(
             UIAction { _ in
@@ -43,7 +43,7 @@ class SignInPageViewController: UIViewController {
     }()
 
     private lazy var signUpButton: MedButtonView = {
-        let button = MedButtonView(variant: .variant2, title: "􀣺 Daftar dengan Apple")
+        let button = MedButtonView(variant: .variant2, title: "Daftar")
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(
             UIAction { _ in
@@ -64,13 +64,14 @@ class SignInPageViewController: UIViewController {
     private lazy var asikinAjaLabel: UILabel = {
         let label = UILabel()
         let text = NSAttributedString(
-            string: "Yuk masuk untuk\nlanjutin akun lo!"
+            string: "Ngoding?\nAsikin aja!"
         ).withLineSpacing(8)
 
         label.font = .bold34
         label.attributedText = text
         label.textColor = .white
         label.numberOfLines = 2
+        label.textAlignment = .center
         return label
     }()
 
@@ -150,6 +151,7 @@ class SignInPageViewController: UIViewController {
 
         signUpButton.snp.makeConstraints { make in
             make.bottom.equalTo(safeArea.bottom).offset(bottomPadding)
+            make.width.equalTo(300)
             make.centerX.equalToSuperview()
         }
 
@@ -166,6 +168,7 @@ class SignInPageViewController: UIViewController {
 
         signInButton.snp.makeConstraints { make in
             make.bottom.equalTo(atauView.snp.top).offset(-12)
+            make.width.equalTo(300)
             make.centerX.equalToSuperview()
         }
 
