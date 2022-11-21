@@ -219,13 +219,9 @@ final class BattlefieldPageViewController: UIViewController {
                     make.width.equalToSuperview().multipliedBy(0.75)
                     make.top.equalTo(background).offset(8)
                 }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.bottom.equalTo(ujiKodinganView).offset(-77)
-                    make.trailing.equalTo(ujiKodinganView.snp.centerX).offset(-55)
-                }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(15)
+                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
                 }
                 btn.snp.updateConstraints { make in
                     make.trailing.equalTo(ngodingYukCard).offset(135)
@@ -451,7 +447,7 @@ extension BattlefieldPageViewController {
         }
         tipsBtn.snp.makeConstraints { make in
             make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
-            make.centerY.equalTo(ujiKodinganBtn)
+            make.centerY.equalTo(ujiKodinganBtn).offset(2)
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
@@ -474,10 +470,6 @@ extension BattlefieldPageViewController {
                     make.leading.bottom.equalToSuperview()
                     make.width.equalToSuperview()
                     make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.leading.equalTo(ujiKodinganView).offset(20)
-                    make.bottom.equalToSuperview().offset(-77)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)
