@@ -96,7 +96,7 @@ final class BattlefieldPageViewController: UIViewController {
         label.text = userName
         label.font = .bold22
         label.textColor = .kobarBlack
-        label.textAlignment = .right
+        label.textAlignment = .left
         return label
     }()
 
@@ -227,13 +227,9 @@ final class BattlefieldPageViewController: UIViewController {
                     make.width.equalToSuperview().multipliedBy(0.75)
                     make.top.equalTo(background).offset(8)
                 }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.bottom.equalTo(ujiKodinganView).offset(-77)
-                    make.trailing.equalTo(ujiKodinganView.snp.centerX).offset(-55)
-                }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(15)
+                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
                 }
                 btn.snp.updateConstraints { make in
                     make.trailing.equalTo(ngodingYukCard).offset(135)
@@ -257,7 +253,7 @@ final class BattlefieldPageViewController: UIViewController {
         var previousBtn: Int?
         var currentBtn: Int?
         for i in 0..<problem.exampleCount {
-            contoh.append(BattleContohView(title: "contoh " + "(\(i + 1))"))
+            contoh.append(BattleContohView(title: "Contoh " + "(\(i + 1))", image: "chevron.down", selected: .notSelected))
         }
         
         for (index, i) in contoh.enumerated() {
@@ -265,13 +261,17 @@ final class BattlefieldPageViewController: UIViewController {
             i.addAction(
                 UIAction { [self]_ in
                 currentBtn = index
+                    for each in contoh {
+                        each.isItSelected = .notSelected
+                    }
                 if previousBtn == currentBtn {
                     contohBGStackView.snp.updateConstraints { make in
                         make.height.equalTo(0)
                     }
-                    animationLayout()
                     animationTransparency(view: contohTextInput, alpha: 0)
                     animationTransparency(view: contohTextOutput, alpha: 0)
+                    i.isItSelected = .notSelected
+                    animationLayout()
                     currentBtn = nil
                 } else {
                     contohBGStackView.snp.updateConstraints { make in
@@ -279,9 +279,10 @@ final class BattlefieldPageViewController: UIViewController {
                     }
                     contohTextInput.text = testCase.input
                     contohTextOutput.text = testCase.output
-                    animationLayout()
                     animationTransparency(view: contohTextInput, alpha: 1)
                     animationTransparency(view: contohTextOutput, alpha: 1)
+                    i.isItSelected = .selected
+                    animationLayout()
                 }
                 previousBtn = currentBtn
                 }, for: .touchUpInside)
@@ -295,6 +296,7 @@ final class BattlefieldPageViewController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.spacing = CGFloat(problem.exampleCount)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .bottom
         return stackView
     }()
 
@@ -321,6 +323,43 @@ final class BattlefieldPageViewController: UIViewController {
         setupDisplays()
         setupComponents()
         setupButtonFunction()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue {
+            ngodingYukCard.snp.remakeConstraints { make in
+                make.top.equalTo(pertanyaanCard)
+                make.bottom.equalToSuperview().offset(-(keyboardSize.height + 15))
+                make.trailing.equalTo(backgroundFront).offset(-16)
+                make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+            }
+            animationLayout()
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        ngodingYukCard.snp.remakeConstraints { make in
+            make.top.equalTo(pertanyaanCard)
+            make.bottom.equalTo(contohBGStackView).offset(5)
+            make.trailing.equalTo(backgroundFront).offset(-16)
+            make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
+        }
+        animationLayout()
     }
     
     func updateRunCodeResult(result: RunCodeResult) {
@@ -380,11 +419,13 @@ extension BattlefieldPageViewController {
         }
         userNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
-            make.trailing.equalTo(nameCard.snp.centerX).offset(-40)
+            make.leading.equalTo(nameCard).offset(50)
+            make.width.equalTo(125)
         }
         opponentNameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(nameCard).offset(-4)
             make.leading.equalTo(nameCard.snp.centerX).offset(40)
+            make.width.equalTo(125)
         }
         contohTextInput.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(15)
@@ -422,11 +463,11 @@ extension BattlefieldPageViewController {
         }
         tipsBtn.snp.makeConstraints { make in
             make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
-            make.centerY.equalTo(ujiKodinganBtn)
+            make.centerY.equalTo(ujiKodinganBtn).offset(2)
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
-            make.bottom.equalTo(contohBGStackView.snp.top)
+            make.bottom.equalTo(contohBGStackView.snp.top).offset(-10)
             make.trailing.equalTo(pertanyaanCard).offset(-5)
         }
         contohBGStackView.snp.makeConstraints { make in
@@ -445,10 +486,6 @@ extension BattlefieldPageViewController {
                     make.leading.bottom.equalToSuperview()
                     make.width.equalToSuperview()
                     make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.playBtn.snp.remakeConstraints { make in
-                    make.leading.equalTo(ujiKodinganView).offset(20)
-                    make.bottom.equalToSuperview().offset(-77)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
                     make.bottom.equalToSuperview().offset(-88)

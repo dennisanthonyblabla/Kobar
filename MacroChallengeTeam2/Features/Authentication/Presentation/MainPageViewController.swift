@@ -214,9 +214,13 @@ class MainPageViewController: UIViewController {
         documentationBtn.addAction(
             UIAction { [self] _ in
                 let controller = DokumentasiPageVC()
+                
+                controller.onClose = { [unowned self] in
+                    self.dismiss(animated: true)
+                }
+               
                 navigationController?.present(controller, animated: true)
-            }
-            ,for: .touchDown)
+            }, for: .touchDown)
     }
 }
 

@@ -127,8 +127,8 @@ class InviteFriendPageViewController: UIViewController {
             make.center.equalToSuperview()
         }
         backgroundMotives.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalToSuperview()
+            make.width.equalToSuperview().offset(15)
+            make.height.equalToSuperview().offset(15)
             make.center.equalToSuperview()
         }
     }
@@ -174,7 +174,19 @@ class InviteFriendPageViewController: UIViewController {
     }
 
     @objc func share() {
-        print("Clicked")
+        let shownItems: [Any] = [inviteCode]
+        let activityController = UIActivityViewController(activityItems: shownItems, applicationActivities: nil)
+        activityController.popoverPresentationController?.sourceView = shareBtn
+        activityController.activityItemsConfiguration = [
+            UIActivity.ActivityType.copyToPasteboard
+        ] as? UIActivityItemsConfigurationReading
+        activityController.excludedActivityTypes = [
+            UIActivity.ActivityType.print,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.addToReadingList
+        ]
+        self.present(activityController, animated: true, completion: nil)
     }
 }
 

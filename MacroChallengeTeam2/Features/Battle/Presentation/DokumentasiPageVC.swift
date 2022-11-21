@@ -108,6 +108,9 @@ final class DokumentasiPageVC: UIViewController {
         view.addSubview(leftBtnSV)
 
         setupAutoLayout()
+        variabelBtn.isSelected = true
+        isSelectedTrue(btn: variabelBtn)
+        loadHTML(name: "Variabel")
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -124,7 +127,7 @@ final class DokumentasiPageVC: UIViewController {
             make.height.equalTo(background.snp.height)
         }
         showHTML.snp.makeConstraints { make in
-            make.trailing.equalTo(background).offset(-18)
+            make.trailing.equalTo(background).offset(-23)
             make.top.equalTo(background).offset(78)
             make.width.equalTo(background).multipliedBy(0.65)
             make.height.equalTo(background).multipliedBy(0.895)
@@ -134,11 +137,11 @@ final class DokumentasiPageVC: UIViewController {
             make.centerX.equalTo(background)
         }
         closeBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(background).offset(-20)
+            make.trailing.equalTo(background).offset(-30)
             make.top.equalTo(background).offset(12)
         }
         leftBtnSV.snp.makeConstraints { make in
-            make.leading.equalTo(background).offset(12)
+            make.leading.equalTo(background).offset(19)
             make.top.equalTo(showHTML).offset(20)
             make.width.equalTo(195)
             make.height.equalTo(370)

@@ -60,8 +60,8 @@ final class SmallIconButtonView: UIButton {
 
     private func setupButtonVariant() {
         configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 12, trailing: 12)
-        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .semibold)
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         buttonIcon = buttonIcon?.withConfiguration(config)
         switch variant {
         case .variant1:

@@ -32,8 +32,16 @@ class PembahasanViewController: UIViewController {
         return view
     }()
     
-    private lazy var videoPembahasanBtn = BattleContohView(title: "Video Pembahasan")
-    private lazy var pembahasanSingkatBtn = BattleContohView(title: "Pembahasan Singkat")
+    private lazy var videoPembahasanBtn = BattleContohView(
+        title: "Video Pembahasan",
+        image: "",
+        selected: .notSelected
+    )
+    private lazy var pembahasanSingkatBtn = BattleContohView(
+        title: "Pembahasan Singkat",
+        image: "",
+        selected: .notSelected
+    )
 
     private lazy var background: UIImageView = {
         let imageView = UIImageView()
@@ -105,6 +113,7 @@ class PembahasanViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [videoPembahasanBtn, pembahasanSingkatBtn])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        stackView.alignment = .bottom
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -142,7 +151,7 @@ class PembahasanViewController: UIViewController {
             make.width.equalTo(pembahasanSV).offset(10)
             make.centerX.equalTo(pembahasanSV)
             make.bottom.equalTo(kodingan)
-            make.top.equalTo(pembahasanSV.snp.bottom).offset(4)
+            make.height.equalTo(535)
         }
     }
 
@@ -166,7 +175,7 @@ class PembahasanViewController: UIViewController {
 
     private func setupComponents() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-40)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15)
             make.leading.equalToSuperview().offset(40)
         }
         kodingan.snp.makeConstraints { make in
@@ -176,7 +185,7 @@ class PembahasanViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-40)
         }
         pembahasanSV.snp.makeConstraints { make in
-            make.top.equalTo(kodingan).offset(5)
+            make.bottom.equalTo(pembahasanBG.snp.top).offset(-10)
             make.leading.equalTo(kodingan.snp.trailing).offset(50)
             make.trailing.equalToSuperview().offset(-50)
         }
@@ -191,7 +200,10 @@ class PembahasanViewController: UIViewController {
 
     private func buttonFunction() {
         videoPembahasanBtn.addAction(
-            UIAction { _ in
+            UIAction { [self] _ in
+                videoPembahasanBtn.isItSelected = .selected
+                pembahasanSingkatBtn.isItSelected = .notSelected
+                animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
                     self.pembahasanTextView.isHidden = true
                     self.videoPlayerViewController.view.isHidden = false
@@ -201,6 +213,9 @@ class PembahasanViewController: UIViewController {
         )
         pembahasanSingkatBtn.addAction(
             UIAction { [self] _ in
+                videoPembahasanBtn.isItSelected = .notSelected
+                pembahasanSingkatBtn.isItSelected = .selected
+                animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
                     self.pembahasanTextView.isHidden = false
                     self.videoPlayerViewController.view.isHidden = true
@@ -213,6 +228,18 @@ class PembahasanViewController: UIViewController {
                 print("Back Button Touched")
             },
             for: .touchUpInside
+        )
+    }
+
+    private func animationLayout() {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
         )
     }
 }
