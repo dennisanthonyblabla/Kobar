@@ -40,6 +40,8 @@ class JoinFriendPageViewController: UIViewController {
         textField.font = .regular24
         textField.backgroundColor = .kobarGray
         textField.layer.cornerRadius = 20
+        textField.autocapitalizationType = .allCharacters
+        textField.autocorrectionType = .no
         
         textField.addAction(
             UIAction { _ in
