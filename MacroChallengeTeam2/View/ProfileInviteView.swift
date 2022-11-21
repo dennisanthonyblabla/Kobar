@@ -58,7 +58,9 @@ final class ProfileInviteView: UIView {
     init(inviteCode: String) {
         super.init(frame: .zero)
         self.inviteCodeLabel.text = inviteCode
+        
         addSubview(profileBG)
+        
         setupAutoLayout()
     }
     
@@ -67,26 +69,25 @@ final class ProfileInviteView: UIView {
     }
     
     private func setupAutoLayout() {
-        profileBG.snp.makeConstraints { make in
+        self.snp.makeConstraints { make in
             make.width.equalTo(233)
             make.height.equalTo(205)
+        }
+        profileBG.snp.makeConstraints { make in
+            make.height.width.equalToSuperview()
             make.center.equalToSuperview()
         }
+        profileView.snp.makeConstraints { make in
+            make.height.width.equalTo(100)
+            make.top.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+        }
         inviteInstruction.snp.makeConstraints { make in
-            make.width.equalTo(inviteInstruction.snp.width)
-            make.height.equalTo(inviteInstruction.snp.height)
             make.top.equalTo(profileView.snp.bottom)
             make.centerX.equalToSuperview()
         }
         inviteCodeLabel.snp.makeConstraints { make in
-            make.width.equalTo(inviteCodeLabel.snp.width)
-            make.height.equalTo(inviteCodeLabel.snp.height)
             make.top.equalTo(inviteInstruction.snp.bottom).offset(4)
-            make.centerX.equalToSuperview()
-        }
-        profileView.snp.makeConstraints { make in
-            make.width.height.equalTo(profileView.snp.width).offset(80)
-            make.top.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
         }
     }

@@ -306,7 +306,7 @@ extension HasilTandingPageViewController {
         }
         swordVS.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(descLabel.snp.bottom).offset(30)
+            make.centerY.equalTo(userProfile)
         }
         kebenaranLabelSV.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -324,12 +324,12 @@ extension HasilTandingPageViewController {
     
     private func setupComponents() {
         userProfile.snp.makeConstraints { make in
-            make.top.equalTo(descLabel.snp.bottom).offset(150)
-            make.leading.equalToSuperview().offset(300)
+            make.top.equalTo(descLabel.snp.bottom).offset(18)
+            make.leading.equalToSuperview().offset(200)
         }
         opponentProfile.snp.makeConstraints { make in
-            make.top.equalTo(descLabel.snp.bottom).offset(150)
-            make.trailing.equalToSuperview().offset(-300)
+            make.centerY.equalTo(userProfile)
+            make.trailing.equalToSuperview().offset(-200)
         }
         udahanDehBtn.snp.makeConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)

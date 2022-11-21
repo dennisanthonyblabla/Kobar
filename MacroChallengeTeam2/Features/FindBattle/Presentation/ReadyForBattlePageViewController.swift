@@ -184,11 +184,11 @@ class ReadyForBattlePageViewController: UIViewController {
             make.top.equalToSuperview().offset(70)
         }
         userProfileTandingView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(300)
+            make.leading.equalToSuperview().offset(200)
             make.centerY.equalToSuperview()
         }
         opponentProfileTandingView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-300)
+            make.trailing.equalToSuperview().offset(-200)
             make.centerY.equalToSuperview()
         }
         readyButtonView.snp.makeConstraints { make in

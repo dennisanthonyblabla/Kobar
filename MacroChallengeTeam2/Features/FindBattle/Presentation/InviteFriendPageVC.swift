@@ -32,7 +32,14 @@ class InviteFriendPageViewController: UIViewController {
         ProfileInviteView(inviteCode: inviteCode)
     }()
     
-    private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)
+    private lazy var shareBtn: SmallButtonView = {
+        let button = SmallButtonView(
+            variant: .variant2,
+            title: "Bagikan",
+            icon: UIImage(systemName: "paperplane.fill"))
+        
+        return button
+    }()
     
     private lazy var backBtn: SmallIconButtonView = {
         let button = SmallIconButtonView(variant: .variant2)
@@ -160,22 +167,24 @@ class InviteFriendPageViewController: UIViewController {
             make.top.equalToSuperview().offset(70)
         }
         profileUser.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(300)
+            make.leading.equalToSuperview().offset(200)
             make.centerY.equalToSuperview()
         }
         profileInvite.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-300)
+            make.trailing.equalToSuperview().offset(-200)
             make.centerY.equalToSuperview()
         }
         shareBtn.snp.makeConstraints { make in
-            make.centerX.equalTo(profileInvite).offset(10)
-            make.bottom.equalTo(profileInvite).offset(110)
+            make.width.equalTo(150)
+            make.centerX.equalTo(profileInvite)
+            make.centerY.equalTo(profileInvite.snp.bottom)
         }
     }
 
     @objc func share() {
         let shownItems: [Any] = [inviteCode]
         let activityController = UIActivityViewController(activityItems: shownItems, applicationActivities: nil)
+        activityController.modalPresentationStyle = .popover
         activityController.popoverPresentationController?.sourceView = shareBtn
         activityController.activityItemsConfiguration = [
             UIActivity.ActivityType.copyToPasteboard
