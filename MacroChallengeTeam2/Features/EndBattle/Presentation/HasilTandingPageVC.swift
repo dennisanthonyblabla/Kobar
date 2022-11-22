@@ -357,11 +357,10 @@ extension HasilTandingPageViewController {
                 },
                 completion: nil
             )
-            
             crown.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.2)
                 make.height.equalTo(crown.snp.width)
-                make.bottom.equalTo(userProfile.snp.top).offset(-5)
+                make.centerY.equalTo(userProfile.snp.top).offset(-25)
                 make.trailing.equalTo(userProfile.snp.centerX).offset(10)
             }
             ProfileTandingView.animate(withDuration: 0.7, delay: 1) {
@@ -371,8 +370,6 @@ extension HasilTandingPageViewController {
                 make.width.height.equalToSuperview()
                 make.center.equalToSuperview()
             }
-            
-            return
         }
         
         if viewModel.isOpponentWin {
@@ -397,7 +394,7 @@ extension HasilTandingPageViewController {
             crown.snp.makeConstraints { make in
                 make.width.equalToSuperview().multipliedBy(0.2)
                 make.height.equalTo(crown.snp.width)
-                make.bottom.equalTo(opponentProfile.snp.top).offset(-5)
+                make.centerY.equalTo(opponentProfile.snp.top).offset(-25)
                 make.leading.equalTo(opponentProfile.snp.centerX).offset(-5)
             }
         }

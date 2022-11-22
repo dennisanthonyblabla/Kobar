@@ -68,7 +68,7 @@ final class BattleResultViewModel {
     }
     
     var isOpponentWin: Bool {
-        winner == .user
+        winner == .opponent
     }
     
     var descState: String {
