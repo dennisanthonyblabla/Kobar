@@ -45,7 +45,7 @@ final class UjiKodinganView: UIView {
         
         return button
     }()
-
+    
     lazy var submitBtn: SmallButtonView = {
         let button = SmallButtonView(variant: .variant2, title: "Submit")
         
@@ -55,7 +55,7 @@ final class UjiKodinganView: UIView {
         
         return button
     }()
-
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Uji Kodingan"
@@ -64,7 +64,7 @@ final class UjiKodinganView: UIView {
         label.textAlignment = .center
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .kobarBlueUjiKodingan
@@ -74,14 +74,14 @@ final class UjiKodinganView: UIView {
         addSubview(outputCard)
         addSubview(playBtn)
         addSubview(submitBtn)
-
+        
         setupAutoLayout()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupAutoLayout() {
         backBtn.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(33)
@@ -103,13 +103,13 @@ final class UjiKodinganView: UIView {
             make.height.equalToSuperview().multipliedBy(0.4)
         }
         playBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(48)
-            make.bottom.equalToSuperview().offset(-75)
-        }
-        submitBtn.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.centerY.equalTo(playBtn)
-            make.leading.equalTo(playBtn.snp.trailing).offset(30)
+            make.leading.equalToSuperview().offset(40)
+            make.bottom.equalToSuperview().offset(-95)
+            submitBtn.snp.makeConstraints { make in
+                make.width.equalTo(120)
+                make.centerY.equalTo(playBtn)
+                make.leading.equalTo(playBtn.snp.trailing).offset(30)
+            }
         }
     }
     

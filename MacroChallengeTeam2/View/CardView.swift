@@ -38,7 +38,7 @@ final class CardView: UIView, UITextViewDelegate {
         }
     }
 
-    private lazy var textInput: UITextView = {
+    lazy var textInput: UITextView = {
         let textView = UITextView.init()
         textView.delegate = self
         textView.textColor = .lightGray
