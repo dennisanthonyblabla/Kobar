@@ -1,5 +1,5 @@
 //
-//  JoinFriendPageVC.swift
+//  PopupCardViewController.swift
 //  Kobar
 //
 //  Created by Dennis Anthony on 22/11/22.
@@ -9,11 +9,16 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-class JoinFriendViewController: UIViewController {
+class PopupCardViewController: UIViewController {
     private var isInputTrue: Bool?
 
-    private lazy var batalBtn = SmallButtonView(variant: .variant3, title: "Batal", btnType: .normal)
-    private lazy var gabungBtn = SmallButtonView(variant: .variant1, title: "Gabung", btnType: .normal)
+    private lazy var batalBtn = {
+        MedButtonView(variant: .variant3, title: "Batal")
+    }()
+    
+    private lazy var gabungBtn = {
+        MedButtonView(variant: .variant1, title: "Gabung")
+    }()
 
     private lazy var backgroundMotives: UIImageView = {
         let imageView = UIImageView()
@@ -53,7 +58,10 @@ class JoinFriendViewController: UIViewController {
     }()
 
     private lazy var buttonsSV: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [batalBtn, gabungBtn])
+        let stackView = UIStackView(arrangedSubviews: [
+            batalBtn, gabungBtn
+        ])
+        
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         return stackView
@@ -134,7 +142,7 @@ class JoinFriendViewController: UIViewController {
 struct JoinFriendPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return UINavigationController(rootViewController: JoinFriendViewController())
+            return UINavigationController(rootViewController: PopupCardViewController())
         }
         .previewDevice("iPad Pro (11-inch) (3rd generation)")
         .previewInterfaceOrientation(.landscapeLeft)
