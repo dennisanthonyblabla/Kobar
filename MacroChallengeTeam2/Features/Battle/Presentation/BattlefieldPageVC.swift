@@ -584,6 +584,7 @@ extension BattlefieldPageViewController {
 extension BattlefieldPageViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let snippet = snippets[indexPath.row]
+        ngodingYukCard.textViewDidBeginEditing(ngodingYukCard.textInput)
         if let textRange = ngodingYukCard.textInput.selectedTextRange {
             ngodingYukCard.textInput.replace(textRange, withText: snippet.snippet)
         }
