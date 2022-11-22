@@ -33,6 +33,6 @@ class BattleEvaluationViewModel {
         formatter.allowedUnits = [.minute, .second]
         formatter.zeroFormattingBehavior = .pad
         
-        return formatter.string(from: battleEvaluation.time / 100) ?? ""
+        return formatter.string(from: battleEvaluation.time / 1000) ?? ""
     }
 }
