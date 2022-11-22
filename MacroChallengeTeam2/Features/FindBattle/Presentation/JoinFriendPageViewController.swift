@@ -110,8 +110,6 @@ class JoinFriendPageViewController: UIViewController {
         
         setupAutoLayout()
         setupKeyboardObservers()
-        
-        view.backgroundColor = .red
     }
     
     override func viewDidDisappear(_ animated: Bool) {

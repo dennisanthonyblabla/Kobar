@@ -92,7 +92,6 @@ class PopupCardViewController: UIViewController {
     private func buttonSetup() {
         batalBtn.addAction(
             UIAction { _ in
-
             }, for: .touchUpInside)
 
         gabungBtn.addAction(

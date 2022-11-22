@@ -201,7 +201,7 @@ final class BattlefieldPageViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.alpha = 0
-        return textView 
+        return textView
     }()
 
     private lazy var contohBGStackView: UIStackView = {
@@ -233,7 +233,11 @@ final class BattlefieldPageViewController: UIViewController {
         var previousBtn: Int?
         var currentBtn: Int?
         for i in 0..<problem.exampleCount {
-            contoh.append(BattleContohView(title: "Contoh " + "(\(i + 1))", image: "chevron.down", selected: .notSelected))
+            contoh.append(
+                BattleContohView(
+                    title: "Contoh " + "(\(i + 1))",
+                    image: "chevron.down",
+                    selected: .notSelected))
         }
         
         for (index, i) in contoh.enumerated() {
