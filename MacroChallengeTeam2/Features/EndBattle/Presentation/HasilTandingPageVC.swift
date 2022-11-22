@@ -324,7 +324,7 @@ extension HasilTandingPageViewController {
     
     private func setupComponents() {
         userProfile.snp.makeConstraints { make in
-            make.top.equalTo(descLabel.snp.bottom).offset(18)
+            make.top.equalTo(descLabel.snp.bottom).offset(60)
             make.leading.equalToSuperview().offset(200)
         }
         opponentProfile.snp.makeConstraints { make in
