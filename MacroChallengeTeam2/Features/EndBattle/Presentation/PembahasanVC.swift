@@ -50,22 +50,14 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
         return imageView
     }()
 
-    private lazy var pembahasanTextView: UITextView = {
-        let textView = UITextView()
-        textView.text = reviewText
-        textView.textColor = .kobarBlack
-        textView.font = UIFont.regular17
-        textView.textAlignment = .left
-        textView.isEditable = false
-        textView.isScrollEnabled = true
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .clear
-        textView.isHidden = true
-            
-        return textView
+    private lazy var pembahasanTextWebView: WKWebView = {
+        let webConfiguration = WKWebViewConfiguration()
+        let view = WKWebView(frame: .zero, configuration: webConfiguration)
+        view.isHidden = true
+        return view
     }()
     
-    private lazy var videoPlayerView: WKWebView = {
+    private lazy var videoPlayerWebView: WKWebView = {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true
         
@@ -85,8 +77,8 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
         view.layer.borderColor = UIColor.kobarBorderGray.cgColor
         view.layer.cornerRadius = 15
         view.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        view.addSubview(pembahasanTextView)
-        view.addSubview(videoPlayerView)
+        view.addSubview(pembahasanTextWebView)
+        view.addSubview(videoPlayerWebView)
         return view
     }()
 
@@ -136,8 +128,10 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
         
         if let url = URL(string: reviewVideoURL) {
             let request = URLRequest(url: url)
-            self.videoPlayerView.load(request)
+            videoPlayerWebView.load(request)
         }
+        
+        pembahasanTextWebView.loadHTMLString(reviewText, baseURL: nil)
     }
     
     private func setupBackground() {
@@ -162,7 +156,7 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
             make.centerX.equalTo(titleLabel)
             make.width.equalToSuperview().multipliedBy(0.4)
         }
-        pembahasanTextView.snp.makeConstraints { make in
+        pembahasanTextWebView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
             make.bottom.equalToSuperview().offset(-15)
             make.leading.equalToSuperview().offset(20)
@@ -186,7 +180,7 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
             make.leading.equalTo(kodingan.snp.trailing).offset(50)
             make.trailing.equalToSuperview().offset(-50)
         }
-        videoPlayerView.snp.makeConstraints { make in
+        videoPlayerWebView.snp.makeConstraints { make in
             make.height.width.equalToSuperview()
             make.center.equalToSuperview()
         }
@@ -199,8 +193,8 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
                 pembahasanSingkatBtn.isItSelected = .notSelected
                 animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-                    self.pembahasanTextView.isHidden = true
-                    self.videoPlayerView.isHidden = false
+                    self.pembahasanTextWebView.isHidden = true
+                    self.videoPlayerWebView.isHidden = false
                 }.startAnimation()
             },
             for: .touchUpInside
@@ -211,8 +205,8 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
                 pembahasanSingkatBtn.isItSelected = .selected
                 animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-                    self.pembahasanTextView.isHidden = false
-                    self.videoPlayerView.isHidden = true
+                    self.pembahasanTextWebView.isHidden = false
+                    self.videoPlayerWebView.isHidden = true
                 }.startAnimation()
             },
             for: .touchUpInside
