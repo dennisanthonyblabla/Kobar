@@ -53,6 +53,10 @@ class PembahasanViewController: UIViewController, WKUIDelegate {
     private lazy var pembahasanTextWebView: WKWebView = {
         let webConfiguration = WKWebViewConfiguration()
         let view = WKWebView(frame: .zero, configuration: webConfiguration)
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.uiDelegate = self
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 15
         view.isHidden = true
         return view
     }()
