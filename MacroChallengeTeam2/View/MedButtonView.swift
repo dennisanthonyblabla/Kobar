@@ -18,7 +18,11 @@ final class MedButtonView: UIButton {
 
     private var variant: Variants?
     private var title: String?
-    private var isPressed = false
+    private var isPressed = false {
+        didSet {
+            updateTextPadding()
+        }
+    }
 
     private lazy var frontBG: UIView = {
         let view = UIView()
@@ -40,10 +44,11 @@ final class MedButtonView: UIButton {
         super.init(frame: frame)
     }
 
-    init(variant: Variants, title: String) {
+    init(variant: Variants, title: String, isPressed: Bool = false) {
         super.init(frame: .zero)
         self.title = title
         self.variant = variant
+        self.isPressed = isPressed
 
         addSubview(backBG)
         addSubview(frontBG)
@@ -98,7 +103,6 @@ final class MedButtonView: UIButton {
 
     private func setupButtonConfiguration(_ titleColor: UIColor) {
         configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 32, bottom: 14, trailing: 32)
         configuration?.titleTextAttributesTransformer =
             UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
@@ -106,18 +110,26 @@ final class MedButtonView: UIButton {
                 outgoing.foregroundColor = titleColor
                 return outgoing
             }
+        
+        updateTextPadding()
+    }
+    
+    private func updateTextPadding() {
+        if isPressed {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 0, bottom: 8, trailing: 0)
+        } else {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 14, trailing: 0)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         isPressed = true
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 12, trailing: 0)
         layoutIfNeeded()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isPressed = false
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0)
         layoutIfNeeded()
         super.touchesEnded(touches, with: event)
     }

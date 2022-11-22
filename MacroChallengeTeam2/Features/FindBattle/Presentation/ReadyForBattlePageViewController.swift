@@ -61,7 +61,8 @@ class ReadyForBattlePageViewController: UIViewController {
     }()
     
     private lazy var waitButtonView: MedButtonView = {
-        let button = MedButtonView(variant: .variant3, title: "Tunggu Lawan")
+        let button = MedButtonView(variant: .variant3, title: "Tunggu Lawan", isPressed: true)
+        button.isEnabled = false
         button.isHidden = true
         return button
     }()
@@ -197,7 +198,9 @@ class ReadyForBattlePageViewController: UIViewController {
             make.width.equalTo(160)
         }
         waitButtonView.snp.makeConstraints { make in
-            make.height.centerX.centerY.equalTo(readyButtonView)
+            make.height.equalTo(readyButtonView)
+            make.width.equalTo(160)
+            make.center.equalTo(readyButtonView)
         }
     }
 }

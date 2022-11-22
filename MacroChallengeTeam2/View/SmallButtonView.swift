@@ -15,7 +15,11 @@ final class SmallButtonView: UIButton {
         case variant3
     }
     
-    private var isPressed = false
+    private var isPressed = false {
+        didSet {
+            updateTextPadding()
+        }
+    }
     
     private var title: String?
     private var icon: UIImage?
@@ -37,16 +41,6 @@ final class SmallButtonView: UIButton {
         return view
     }()
     
-    private lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.isUserInteractionEnabled = false
-        let config = UIImage.SymbolConfiguration(pointSize: 17)
-        let profile = icon?.withConfiguration(config)
-        imageView.image = profile?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        return imageView
-    }()
-    
     init(variant: Variants, title: String, icon: UIImage? = nil) {
         super.init(frame: .zero)
         self.title = title
@@ -55,7 +49,6 @@ final class SmallButtonView: UIButton {
         
         addSubview(backBG)
         addSubview(frontBG)
-        addSubview(iconImageView)
         
         setupVariants()
         setupAutoLayout()
@@ -79,47 +72,35 @@ final class SmallButtonView: UIButton {
             make.top.width.equalToSuperview()
             make.bottom.equalToSuperview().offset(-5)
         }
-        
-        iconImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(frontBG)
-            make.leading.equalTo(frontBG).offset(30)
-        }
     }
 
     private func setupVariants() {
         setTitle(title, for: .normal)
-        let config = UIImage.SymbolConfiguration(pointSize: 17)
-        let icon = self.icon?.withConfiguration(config)
         switch variant {
         case .variant1:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
             setupButtonConfiguration(.white)
-            self.iconImageView.image = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
         case .variant2:
             self.frontBG.backgroundColor = .white
             self.backBG.backgroundColor = .white
             self.backBG.alpha = 0.7
             setupButtonConfiguration(.kobarBlueActive)
-            self.iconImageView.image = icon?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal)
         case .variant3:
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
             setupButtonConfiguration(.kobarDarkGrayText)
-            self.iconImageView.image = icon?.withTintColor(.kobarDarkGrayText, renderingMode: .alwaysOriginal)
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
             setupButtonConfiguration(.white)
-            self.iconImageView.image = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
         }
     }
     
     private func setupButtonConfiguration(_ titleColor: UIColor) {
-        let leading: CGFloat = icon == nil ? 0 : 25
+        let config = UIImage.SymbolConfiguration(pointSize: 14)
         
         configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: leading, bottom: 16, trailing: 0)
         configuration?.titleTextAttributesTransformer =
             UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
@@ -127,21 +108,30 @@ final class SmallButtonView: UIButton {
                 outgoing.foregroundColor = titleColor
                 return outgoing
             }
+        configuration?.imagePadding = 10
+        configuration?.image = icon?
+            .withConfiguration(config)
+            .withTintColor(titleColor, renderingMode: .alwaysOriginal)
+        
+        updateTextPadding()
+    }
+    
+    private func updateTextPadding() {
+        if isPressed {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 12, trailing: 0)
+        } else {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        let leading: CGFloat = icon == nil ? 0 : 25
-        
         isPressed = true
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: leading, bottom: 12, trailing: 0)
         layoutIfNeeded()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let leading: CGFloat = icon == nil ? 0 : 25
         isPressed = false
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: leading, bottom: 16, trailing: 0)
         layoutIfNeeded()
         super.touchesEnded(touches, with: event)
     }
