@@ -51,7 +51,7 @@ class Onboarding3ViewController: UIViewController {
             UIAction { _ in
                 print("touched")
             },
-            for: .touchDown
+            for: .touchUpInside
         )
         view.addSubview(btn)
         return btn

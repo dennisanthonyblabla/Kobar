@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class UjiKodinganView: UIView {
     var onRunCode: ((String) -> Void)?
@@ -40,17 +41,17 @@ final class UjiKodinganView: UIView {
         
         button.addVoidAction({
             self.onRunCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()
 
     lazy var submitBtn: SmallButtonView = {
-        let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+        let button = SmallButtonView(variant: .variant2, title: "Submit")
         
         button.addVoidAction({
             self.onSubmitCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()
@@ -83,7 +84,7 @@ final class UjiKodinganView: UIView {
 
     private func setupAutoLayout() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(38)
+            make.top.equalToSuperview().offset(33)
             make.leading.equalToSuperview().offset(20)
         }
         titleLabel.snp.makeConstraints { make in
@@ -102,11 +103,12 @@ final class UjiKodinganView: UIView {
             make.height.equalToSuperview().multipliedBy(0.4)
         }
         playBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(40)
+            make.leading.equalToSuperview().offset(48)
             make.bottom.equalToSuperview().offset(-75)
         }
         submitBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-88)
+            make.width.equalTo(120)
+            make.centerY.equalTo(playBtn)
             make.leading.equalTo(playBtn.snp.trailing).offset(30)
         }
     }

@@ -46,7 +46,7 @@ class ReadyForBattlePageViewController: UIViewController {
     
     private lazy var backButtonView: SmallIconButtonView = {
         let button = SmallIconButtonView(variant: .variant2)
-        button.addVoidAction(onBack, for: .touchDown)
+        button.addVoidAction(onBack, for: .touchUpInside)
         return button
     }()
     
@@ -56,12 +56,13 @@ class ReadyForBattlePageViewController: UIViewController {
             UIAction { [self] _ in
                 updateButton()
                 self.onReady?()
-            }, for: .touchDown)
+            }, for: .touchUpInside)
         return button
     }()
     
     private lazy var waitButtonView: MedButtonView = {
-        let button = MedButtonView(variant: .variant3, title: "Tunggu Lawan")
+        let button = MedButtonView(variant: .variant3, title: "Tunggu Lawan", isPressed: true)
+        button.isEnabled = false
         button.isHidden = true
         return button
     }()
@@ -117,7 +118,7 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFit
+        view.contentMode = .scaleToFill
         view.image = UIImage(named: "background2")
         return view
     }()
@@ -148,7 +149,8 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupBackgroundConstraints() {
         backgroundView.snp.makeConstraints { make in
-            make.height.width.equalToSuperview().offset(20)
+            make.width.equalToSuperview().offset(15)
+            make.height.equalToSuperview().offset(19)
             make.center.equalToSuperview()
         }
     }
@@ -156,7 +158,7 @@ class ReadyForBattlePageViewController: UIViewController {
     private func setupDisplaysConstraint() {
         pageTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview().multipliedBy(0.16)
         }
         promptLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -170,7 +172,7 @@ class ReadyForBattlePageViewController: UIViewController {
         bottomTextLabel.snp.makeConstraints { make in
             make.width.height.equalTo(bottomTextLabel)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-50)
+            make.centerY.equalToSuperview().multipliedBy(1.8)
         }
         countdownLabel.snp.makeConstraints { make in
             make.top.equalTo(promptLabel.snp.bottom).offset(20)
@@ -180,15 +182,15 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupComponentsConstraint() {
         backButtonView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(86)
-            make.top.equalToSuperview().offset(70)
+            make.centerX.equalToSuperview().multipliedBy(0.18)
+            make.centerY.equalToSuperview().multipliedBy(0.25)
         }
         userProfileTandingView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(300)
+            make.leading.equalToSuperview().offset(200)
             make.centerY.equalToSuperview()
         }
         opponentProfileTandingView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-300)
+            make.trailing.equalToSuperview().offset(-200)
             make.centerY.equalToSuperview()
         }
         readyButtonView.snp.makeConstraints { make in
@@ -197,7 +199,9 @@ class ReadyForBattlePageViewController: UIViewController {
             make.width.equalTo(160)
         }
         waitButtonView.snp.makeConstraints { make in
-            make.height.centerX.centerY.equalTo(readyButtonView)
+            make.height.equalTo(readyButtonView)
+            make.width.equalTo(160)
+            make.center.equalTo(readyButtonView)
         }
     }
 }
@@ -207,7 +211,7 @@ struct ReadyForBattlePageViewControllerPreviews: PreviewProvider {
         UIViewControllerPreview {
             return UINavigationController(rootViewController: ReadyForBattlePageViewController())
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewDevice("iPad Pro (12.9-inch) (5th generation)")
         .previewInterfaceOrientation(.landscapeLeft)
         .ignoresSafeArea()
     }

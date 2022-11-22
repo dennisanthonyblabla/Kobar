@@ -17,7 +17,7 @@ class BattleDoneVC: UIViewController {
             variant: .variant2,
             title: "Test Case")
         
-        button.addVoidAction(onComplete, for: .touchDown)
+        button.addVoidAction(onComplete, for: .touchUpInside)
         
         return button
     }()

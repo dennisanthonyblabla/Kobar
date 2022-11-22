@@ -16,7 +16,7 @@ import SwiftUI
 final class BattlefieldPageViewController: UIViewController {
     private var statusDesc: String?
     
-    weak var runCodeViewModel: RunCodeViewModel!
+    weak var runCodeViewModel: RunCodeViewModel?
     private let disposeBag = DisposeBag()
     
     var onSubmitCode: ((SubmitCodeSubmission) -> Void)?
@@ -139,10 +139,10 @@ final class BattlefieldPageViewController: UIViewController {
         view.onRunCode = { [weak self, problem] input in
             guard let self = self else { return }
             let submission = RunCodeSubmission(code: self.code, input: input)
-            self.runCodeViewModel.runCode(submission: submission, problemId: problem.id)
+            self.runCodeViewModel?.runCode(submission: submission, problemId: problem.id)
         }
         
-        runCodeViewModel.runCodeResult
+        runCodeViewModel?.runCodeResult
             .subscribe { [weak view] result in
                 view?.updateCodeOutput(result: result)
             }
@@ -201,7 +201,7 @@ final class BattlefieldPageViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .clear
         textView.alpha = 0
-        return textView
+        return textView 
     }()
 
     private lazy var contohBGStackView: UIStackView = {
@@ -217,28 +217,8 @@ final class BattlefieldPageViewController: UIViewController {
     private lazy var ujiKodinganBtn: SmallButtonView = {
         let btn = SmallButtonView(
             variant: .variant2,
-            title: "Uji Kodingan",
-            btnType: .normal
-        )
-        btn.addAction(
-            UIAction { [self] _ in
-                backgroundFront.snp.remakeConstraints { make in
-                    make.leading.bottom.equalToSuperview()
-                    make.width.equalToSuperview().multipliedBy(0.75)
-                    make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
-                }
-                btn.snp.updateConstraints { make in
-                    make.trailing.equalTo(ngodingYukCard).offset(135)
-                }
-                animationTransparency(view: btn, alpha: 0)
-                animationLayout()
-            },
-            for: .touchUpInside
-        )
+            title: "Uji Kodingan")
+        
         return btn
     }()
     
@@ -404,8 +384,6 @@ extension BattlefieldPageViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-10)
         }
         statusLabel.snp.makeConstraints { make in
-            make.width.equalTo(statusLabel)
-            make.height.equalTo(statusLabel)
             make.center.equalToSuperview()
         }
         hourglass.snp.makeConstraints { make in
@@ -457,13 +435,13 @@ extension BattlefieldPageViewController {
             make.leading.equalTo(backgroundFront.snp.centerX).offset(8)
         }
         ujiKodinganBtn.snp.makeConstraints { make in
+            make.width.equalTo(135)
             make.trailing.equalTo(ngodingYukCard).offset(-30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(13)
-            make.bottom.equalTo(ngodingYukCard.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(40)
         }
         tipsBtn.snp.makeConstraints { make in
-            make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-40)
-            make.centerY.equalTo(ujiKodinganBtn).offset(2)
+            make.trailing.equalTo(ujiKodinganBtn.snp.leading).offset(-20)
+            make.centerY.equalTo(ujiKodinganBtn)
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
@@ -480,16 +458,28 @@ extension BattlefieldPageViewController {
     }
 
     private func setupButtonFunction() {
+        ujiKodinganBtn.addAction(
+            UIAction { [self] _ in
+                backgroundFront.snp.remakeConstraints { make in
+                    make.leading.bottom.equalToSuperview()
+                    make.width.equalToSuperview().multipliedBy(0.75)
+                    make.top.equalTo(background).offset(8)
+                }
+                ujiKodinganBtn.snp.updateConstraints { make in
+                    make.trailing.equalTo(ngodingYukCard).offset(135)
+                }
+                animationTransparency(view: ujiKodinganBtn, alpha: 0)
+                animationLayout()
+            },
+            for: .touchUpInside
+        )
+        
         ujiKodinganView.backBtn.addAction(
             UIAction { [self] _ in
                 backgroundFront.snp.remakeConstraints { make in
                     make.leading.bottom.equalToSuperview()
                     make.width.equalToSuperview()
                     make.top.equalTo(background).offset(8)
-                }
-                ujiKodinganView.submitBtn.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-88)
-                    make.leading.equalTo(ujiKodinganView.playBtn.snp.trailing).offset(30)
                 }
                 ujiKodinganBtn.snp.updateConstraints { make in
                     make.trailing.equalTo(ngodingYukCard).offset(-30)

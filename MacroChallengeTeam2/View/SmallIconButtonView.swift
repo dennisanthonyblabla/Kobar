@@ -16,6 +16,12 @@ final class SmallIconButtonView: UIButton {
         case variant3
     }
 
+    var isPressed = false {
+        didSet {
+            updateTextPadding()
+        }
+    }
+    
     var variant: Variants?
     var buttonIcon: UIImage?
 
@@ -52,6 +58,7 @@ final class SmallIconButtonView: UIButton {
         addSubview(frontBG)
         setupButtonVariant()
         setupAutoLayout()
+        setupButtonConfiguration()
     }
 
     required init?(coder: NSCoder) {
@@ -59,8 +66,6 @@ final class SmallIconButtonView: UIButton {
     }
 
     private func setupButtonVariant() {
-        configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         buttonIcon = buttonIcon?.withConfiguration(config)
         switch variant {
@@ -106,5 +111,41 @@ final class SmallIconButtonView: UIButton {
             make.bottom.equalToSuperview().offset(-4)
             make.centerX.equalToSuperview()
         }
+    }
+    
+    private func setupButtonConfiguration() {
+        configuration = .plain()
+        
+        updateTextPadding()
+    }
+    
+    private func updateTextPadding() {
+        if isPressed {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 8, trailing: 0)
+        } else {
+            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 12, trailing: 0)
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        isPressed = true
+        layoutIfNeeded()
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isPressed = false
+        layoutIfNeeded()
+        super.touchesEnded(touches, with: event)
+    }
+    
+    override func updateConstraints() {
+        frontBG.snp.updateConstraints { make in
+            make.top.equalToSuperview().offset(isPressed ? 4 : 0)
+            make.bottom.equalToSuperview().offset(isPressed ? 0 : -4)
+        }
+
+        // according to Apple super should be called at end of method
+        super.updateConstraints()
     }
 }

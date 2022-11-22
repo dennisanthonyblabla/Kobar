@@ -28,7 +28,7 @@ class OnboardingPVC: UIPageViewController {
                 pageControl.currentPage += 1
                 goToNextPage()
                 animateControlsIfNeeded()
-            }, for: .touchDown
+            }, for: .touchUpInside
         )
         view.addSubview(btn)
         return btn
@@ -46,7 +46,7 @@ class OnboardingPVC: UIPageViewController {
                 pageControl.currentPage = lastPageIndex
                 goToSpecificPage(index: lastPageIndex, ofViewControllers: pages)
                 animateControlsIfNeeded()
-            }, for: .touchDown)
+            }, for: .touchUpInside)
         return btn
     }()
 
@@ -164,7 +164,7 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
                 UIAction(identifier: UIAction.Identifier("finish")) { _ in
                     self.navigationController?.pushViewController(MainPageViewController(), animated: true)
                 },
-                for: .touchDown
+                for: .touchUpInside
             )
             hideControls()
         } else {
@@ -176,7 +176,7 @@ extension OnboardingPVC: UIPageViewControllerDelegate {
                     goToNextPage()
                     animateControlsIfNeeded()
                 },
-                for: .touchDown
+                for: .touchUpInside
             )
             showControls()
         }
