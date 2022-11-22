@@ -204,7 +204,8 @@ struct RuangTungguViewControllerPreviews: PreviewProvider {
         UIViewControllerPreview {
             return UINavigationController(rootViewController: InviteFriendPageViewController())
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
         .ignoresSafeArea()
         .previewInterfaceOrientation(.landscapeLeft)
     }
