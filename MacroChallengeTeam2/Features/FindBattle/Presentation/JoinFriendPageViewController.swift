@@ -18,18 +18,25 @@ class JoinFriendPageViewController: UIViewController {
     
     private var inviteCode: String = ""
     
-    // TODO: @salman ini imagenya kenapa ada whitespace gitu yak??
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "alertCardBackground")
+        view.image = UIImage(named: "notificationCard")
         view.contentMode = .scaleToFill
         return view
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Gabung Teman"
+        label.font = .semi28
+        label.textColor = .white
+        return label
     }()
     
     private lazy var promptLabel: UILabel = {
         let label = UILabel()
         label.text = "Masukin kodenya"
-        label.font = .medium22
+        label.font = .regular22
         return label
     }()
     
@@ -60,25 +67,31 @@ class JoinFriendPageViewController: UIViewController {
     private lazy var buttonsStackView: UIStackView = {
         let stack = UIStackView()
         
-        let cancelButton = SmallButtonView(
+        let cancelButton = MedButtonView(
             variant: .variant3,
-            title: "Batal",
-            btnType: .normal)
+            title: "Batal")
         
-        let confirmButton = SmallButtonView(
+        let confirmButton = MedButtonView(
             variant: .variant1,
-            title: "Gabung",
-            btnType: .normal)
+            title: "Gabung")
         
-        cancelButton.addVoidAction(onCancel, for: .touchDown)
+        cancelButton.snp.makeConstraints { make in
+            make.width.equalTo(132)
+        }
+        
+        confirmButton.snp.makeConstraints { make in
+            make.width.equalTo(132)
+        }
+        
+        cancelButton.addVoidAction(onCancel, for: .touchUpInside)
         confirmButton.addVoidAction({
             self.onConfirm?(self.inviteCode)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         stack.addArrangedSubview(cancelButton)
         stack.addArrangedSubview(confirmButton)
-        stack.alignment = .fill
-        stack.distribution = .fillEqually
+        stack.alignment = .center
+        stack.distribution = .equalCentering
         
         return stack
     }()
@@ -87,6 +100,7 @@ class JoinFriendPageViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(backgroundView)
+        view.addSubview(titleLabel)
         view.addSubview(promptLabel)
         view.addSubview(inviteCodeTextField)
         view.addSubview(buttonsStackView)
@@ -95,6 +109,7 @@ class JoinFriendPageViewController: UIViewController {
         inviteCodeTextField.delegate = self
         
         setupAutoLayout()
+        setupKeyboardObservers()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -106,25 +121,70 @@ class JoinFriendPageViewController: UIViewController {
     
     private func setupAutoLayout() {
         backgroundView.snp.makeConstraints { make in
-            make.height.equalToSuperview().multipliedBy(0.5)
-            make.width.equalToSuperview().multipliedBy(0.7)
+            make.height.equalTo(340)
+            make.width.equalTo(520)
             make.centerX.centerY.equalToSuperview()
         }
-        buttonsStackView.snp.makeConstraints { make in
-            make.bottom.equalTo(backgroundView).multipliedBy(0.85)
-            make.width.equalTo(backgroundView).multipliedBy(0.7)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(backgroundView).inset(25)
+            make.centerX.equalTo(backgroundView)
+        }
+        promptLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(inviteCodeTextField.snp.top).offset(-10)
             make.centerX.equalTo(backgroundView)
         }
         inviteCodeTextField.snp.makeConstraints { make in
             make.height.equalTo(70)
             make.width.equalTo(buttonsStackView)
-            make.bottom.equalTo(buttonsStackView.snp.top).offset(-18)
+            make.bottom.equalTo(buttonsStackView.snp.top).offset(-25)
             make.centerX.equalTo(backgroundView)
         }
-        promptLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(inviteCodeTextField.snp.top).offset(-20)
+        buttonsStackView.snp.makeConstraints { make in
+            make.bottom.equalTo(backgroundView).inset(45)
+            make.width.equalTo(300)
             make.centerX.equalTo(backgroundView)
         }
+    }
+    
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onShowKeyboard),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onHideKeyboard),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    @objc func onShowKeyboard(notification: NSNotification) {
+        backgroundView.snp.updateConstraints { make in
+            make.centerY.equalToSuperview().offset(-70)
+        }
+        animationLayout()
+    }
+    
+    @objc func onHideKeyboard(notification: NSNotification) {
+        backgroundView.snp.updateConstraints { make in
+            make.centerY.equalToSuperview()
+        }
+        animationLayout()
+    }
+    
+    private func animationLayout() {
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 }
 

@@ -32,7 +32,14 @@ class InviteFriendPageViewController: UIViewController {
         ProfileInviteView(inviteCode: inviteCode)
     }()
     
-    private lazy var shareBtn = SmallButtonView(variant: .variant2, title: "Bagikan", btnType: .share)
+    private lazy var shareBtn: SmallButtonView = {
+        let button = SmallButtonView(
+            variant: .variant2,
+            title: "Bagikan",
+            icon: UIImage(systemName: "paperplane.fill"))
+        
+        return button
+    }()
     
     private lazy var backBtn: SmallIconButtonView = {
         let button = SmallIconButtonView(variant: .variant2)
@@ -41,7 +48,7 @@ class InviteFriendPageViewController: UIViewController {
             UIAction { _ in
                 self.onBack?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -97,7 +104,7 @@ class InviteFriendPageViewController: UIViewController {
 
     private lazy var backgroundMotives: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleToFill
         view.image = UIImage(named: "background2")
         return view
     }()
@@ -128,7 +135,7 @@ class InviteFriendPageViewController: UIViewController {
         }
         backgroundMotives.snp.makeConstraints { make in
             make.width.equalToSuperview().offset(15)
-            make.height.equalToSuperview().offset(15)
+            make.height.equalToSuperview().offset(19)
             make.center.equalToSuperview()
         }
     }
@@ -136,7 +143,7 @@ class InviteFriendPageViewController: UIViewController {
     private func setupDisplays() {
         pageTitle.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview().multipliedBy(0.16)
         }
         pageDesc.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -150,32 +157,34 @@ class InviteFriendPageViewController: UIViewController {
         eloDesc.snp.makeConstraints { make in
             make.width.height.equalTo(eloDesc)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-25)
+            make.centerY.equalToSuperview().multipliedBy(1.8)
         }
     }
 
     private func setupComponents() {
         backBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(86)
-            make.top.equalToSuperview().offset(70)
+            make.centerX.equalToSuperview().multipliedBy(0.18)
+            make.centerY.equalToSuperview().multipliedBy(0.25)
         }
         profileUser.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(300)
+            make.leading.equalToSuperview().offset(200)
             make.centerY.equalToSuperview()
         }
         profileInvite.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-300)
+            make.trailing.equalToSuperview().offset(-200)
             make.centerY.equalToSuperview()
         }
         shareBtn.snp.makeConstraints { make in
-            make.centerX.equalTo(profileInvite).offset(10)
-            make.bottom.equalTo(profileInvite).offset(110)
+            make.width.equalTo(150)
+            make.centerX.equalTo(profileInvite)
+            make.centerY.equalTo(profileInvite.snp.bottom)
         }
     }
 
     @objc func share() {
         let shownItems: [Any] = [inviteCode]
         let activityController = UIActivityViewController(activityItems: shownItems, applicationActivities: nil)
+        activityController.modalPresentationStyle = .popover
         activityController.popoverPresentationController?.sourceView = shareBtn
         activityController.activityItemsConfiguration = [
             UIActivity.ActivityType.copyToPasteboard
@@ -193,8 +202,11 @@ class InviteFriendPageViewController: UIViewController {
 struct RuangTungguViewControllerPreviews: PreviewProvider {
     static var previews: some View {
         UIViewControllerPreview {
-            return InviteFriendPageViewController()
+            return UINavigationController(rootViewController: InviteFriendPageViewController())
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)").previewInterfaceOrientation(.landscapeLeft)
+        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewInterfaceOrientation(.landscapeLeft)
+        .ignoresSafeArea()
+        .previewInterfaceOrientation(.landscapeLeft)
     }
 }

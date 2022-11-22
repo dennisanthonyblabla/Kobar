@@ -117,9 +117,13 @@ final class ProfileTandingView: UIView {
     }
 
     private func setupAutoLayout() {
-        profileBG.snp.makeConstraints { make in
+        self.snp.makeConstraints { make in
             make.width.equalTo(233)
             make.height.equalTo(205)
+        }
+        
+        profileBG.snp.makeConstraints { make in
+            make.width.height.equalToSuperview()
             make.center.equalToSuperview()
         }
         ratingHolder.snp.makeConstraints { make in

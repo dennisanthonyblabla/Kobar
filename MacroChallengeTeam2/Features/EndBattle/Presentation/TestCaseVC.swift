@@ -18,7 +18,7 @@ class TestCaseViewController: UIPageViewController {
     
     private lazy var lanjutBtn: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Lanjut")
-        button.addVoidAction(onNext, for: .touchDown)
+        button.addVoidAction(onNext, for: .touchUpInside)
         return button
     }()
 

@@ -73,7 +73,7 @@ final class BattleResultViewModel {
     
     var descState: String {
         winner == .draw
-        ? "Seri ni"
+        ? "Wah, seri nih coy!\nPertandingan selanjutnya lo pasti bisa menang!"
         : winner == .user
         ? "Keren lo menang Coy!\nMantep banget!"
         : "Kalah itu biasa! Yang penting ada hal\nbaru yang didapet. Semangat!!"

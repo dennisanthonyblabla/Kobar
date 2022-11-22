@@ -8,10 +8,9 @@
 import UIKit
 import SwiftUI
 import SnapKit
-import AVKit
-import AVFoundation
+import WebKit
 
-class PembahasanViewController: UIViewController {
+class PembahasanViewController: UIViewController, WKUIDelegate {
     var onBack: (() -> Void)?
     
     var code: String = ""
@@ -20,7 +19,7 @@ class PembahasanViewController: UIViewController {
     
     private lazy var backBtn: SmallIconButtonView = {
         let button = SmallIconButtonView(variant: .variant2)
-        button.addVoidAction(onBack, for: .touchDown)
+        button.addVoidAction(onBack, for: .touchUpInside)
         return button
     }()
     
@@ -66,20 +65,19 @@ class PembahasanViewController: UIViewController {
         return textView
     }()
     
-    private lazy var videoPlayerViewController: AVPlayerViewController = {
-        let controller = AVPlayerViewController()
+    private lazy var videoPlayerView: WKWebView = {
+        let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.allowsInlineMediaPlayback = true
         
-        if let url = URL(string: reviewVideoURL) {
-            let player = AVPlayer(url: url)
-            controller.player = player
-        }
+        let view = WKWebView(frame: .zero, configuration: webConfiguration)
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.uiDelegate = self
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = 15
         
-        controller.view.backgroundColor = .white
-        controller.view.layer.cornerRadius = 15
-        
-        return controller
+        return view
     }()
-
+    
     private lazy var pembahasanBG: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -88,6 +86,7 @@ class PembahasanViewController: UIViewController {
         view.layer.cornerRadius = 15
         view.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         view.addSubview(pembahasanTextView)
+        view.addSubview(videoPlayerView)
         return view
     }()
 
@@ -130,20 +129,17 @@ class PembahasanViewController: UIViewController {
         view.addSubview(pembahasanBG)
         view.addSubview(pembahasanSV)
         
-        setupVideoPlayer()
-
         setupBackground()
         setupDisplays()
         setupComponents()
         buttonFunction()
+        
+        if let url = URL(string: reviewVideoURL) {
+            let request = URLRequest(url: url)
+            self.videoPlayerView.load(request)
+        }
     }
     
-    private func setupVideoPlayer() {
-        addChild(videoPlayerViewController)
-        pembahasanBG.addSubview(videoPlayerViewController.view)
-        videoPlayerViewController.didMove(toParent: self)
-    }
-
     private func setupBackground() {
         background.snp.makeConstraints { make in
             make.bottom.trailing.leading.top.equalToSuperview()
@@ -190,13 +186,10 @@ class PembahasanViewController: UIViewController {
             make.leading.equalTo(kodingan.snp.trailing).offset(50)
             make.trailing.equalToSuperview().offset(-50)
         }
-        videoPlayerViewController.view.snp.makeConstraints { make in
+        videoPlayerView.snp.makeConstraints { make in
             make.height.width.equalToSuperview()
+            make.center.equalToSuperview()
         }
-    }
-    
-    func embedViewController(_ viewController: UIViewController) {
-        viewController.view.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func buttonFunction() {
@@ -207,7 +200,7 @@ class PembahasanViewController: UIViewController {
                 animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
                     self.pembahasanTextView.isHidden = true
-                    self.videoPlayerViewController.view.isHidden = false
+                    self.videoPlayerView.isHidden = false
                 }.startAnimation()
             },
             for: .touchUpInside
@@ -219,7 +212,7 @@ class PembahasanViewController: UIViewController {
                 animationLayout()
                 UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
                     self.pembahasanTextView.isHidden = false
-                    self.videoPlayerViewController.view.isHidden = true
+                    self.videoPlayerView.isHidden = true
                 }.startAnimation()
             },
             for: .touchUpInside

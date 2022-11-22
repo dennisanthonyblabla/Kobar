@@ -40,7 +40,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onInviteFriend?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -48,13 +48,13 @@ class MainPageViewController: UIViewController {
     private lazy var gabungBtn: MedButtonView = {
         let button = MedButtonView(
             variant: .variant2,
-            title: "Gabung Sama Teman")
+            title: "Gabung Teman")
         
         button.addAction(
             UIAction { _ in
                 self.onJoinFriend?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -68,7 +68,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onJoinRandom?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -82,7 +82,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onLogout?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -195,7 +195,7 @@ class MainPageViewController: UIViewController {
     private func setupComponentsConstraint() {
         profileView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(89)
-            make.top.equalTo(logOutBtn).offset(30)
+            make.centerY.equalTo(logOutBtn)
         }
         buttonsStackView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -206,7 +206,7 @@ class MainPageViewController: UIViewController {
         }
         documentationBtn.snp.makeConstraints { make in
             make.trailing.equalTo(logOutBtn.snp.leading).offset(-20)
-            make.top.equalTo(logOutBtn)
+            make.centerY.equalTo(logOutBtn)
         }
     }
 
@@ -220,7 +220,7 @@ class MainPageViewController: UIViewController {
                 }
                
                 navigationController?.present(controller, animated: true)
-            }, for: .touchDown)
+            }, for: .touchUpInside)
     }
 }
 

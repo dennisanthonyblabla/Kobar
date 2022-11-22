@@ -40,6 +40,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var variabelBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Variabel", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -47,6 +48,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var operatorBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Operator & Aritmatika", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -54,6 +56,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var ioBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Input & Ouput", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -61,6 +64,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var selectionBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Selection (if-else)", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -68,6 +72,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var loopingBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Looping", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -75,6 +80,7 @@ final class DokumentasiPageVC: UIViewController {
 
     private lazy var arrayBtn: UIButton = {
         let btn = UIButton()
+        btn.configuration = .plain()
         btn.setTitle("Array", for: .normal)
         defaultBtnConf(btn: btn)
         return btn
@@ -141,28 +147,10 @@ final class DokumentasiPageVC: UIViewController {
             make.top.equalTo(background).offset(12)
         }
         leftBtnSV.snp.makeConstraints { make in
-            make.leading.equalTo(background).offset(19)
+            make.leading.equalTo(background).offset(16)
             make.top.equalTo(showHTML).offset(20)
-            make.width.equalTo(195)
+            make.width.equalTo(220)
             make.height.equalTo(370)
-        }
-        variabelBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-        operatorBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-        ioBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-        selectionBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-        loopingBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-        }
-        arrayBtn.snp.makeConstraints { make in
-            make.width.equalToSuperview()
         }
     }
 
@@ -210,8 +198,7 @@ final class DokumentasiPageVC: UIViewController {
     private func isSelectedTrue(btn: UIButton) {
         UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
             if btn.isSelected == true {
-                btn.setTitleColor(.white, for: .normal)
-                btn.setTitleColor(.white, for: .highlighted)
+                btn.setTitleColor(.white, for: .selected)
                 btn.backgroundColor = .kobarBlueActive
                 UIView.animate(
                     withDuration: 1.5,
@@ -231,8 +218,10 @@ final class DokumentasiPageVC: UIViewController {
     }
 
     private func defaultBtnConf(btn: UIButton) {
+        btn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
         btn.backgroundColor = .clear
         btn.setTitleColor(.kobarBlueActive, for: .normal)
+        btn.clipsToBounds = true
         btn.layer.cornerRadius = 22
         btn.addTarget(self, action: #selector(isBtnSelected(_: )), for: .touchUpInside)
     }

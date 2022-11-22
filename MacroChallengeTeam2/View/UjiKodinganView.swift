@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class UjiKodinganView: UIView {
     var onRunCode: ((String) -> Void)?
@@ -40,21 +41,21 @@ final class UjiKodinganView: UIView {
         
         button.addVoidAction({
             self.onRunCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()
-
+    
     lazy var submitBtn: SmallButtonView = {
-        let button = SmallButtonView(variant: .variant2, title: "Submit", btnType: .normal)
+        let button = SmallButtonView(variant: .variant2, title: "Submit")
         
         button.addVoidAction({
             self.onSubmitCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()
-
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Uji Kodingan"
@@ -63,7 +64,7 @@ final class UjiKodinganView: UIView {
         label.textAlignment = .center
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .kobarBlueUjiKodingan
@@ -73,17 +74,17 @@ final class UjiKodinganView: UIView {
         addSubview(outputCard)
         addSubview(playBtn)
         addSubview(submitBtn)
-
+        
         setupAutoLayout()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupAutoLayout() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(38)
+            make.top.equalToSuperview().offset(33)
             make.leading.equalToSuperview().offset(20)
         }
         titleLabel.snp.makeConstraints { make in
@@ -104,10 +105,11 @@ final class UjiKodinganView: UIView {
         playBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(40)
             make.bottom.equalToSuperview().offset(-95)
-        }
-        submitBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-108)
-            make.leading.equalTo(playBtn.snp.trailing).offset(30)
+            submitBtn.snp.makeConstraints { make in
+                make.width.equalTo(120)
+                make.centerY.equalTo(playBtn)
+                make.leading.equalTo(playBtn.snp.trailing).offset(30)
+            }
         }
     }
     

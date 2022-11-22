@@ -38,7 +38,7 @@ class SignInPageViewController: UIViewController {
             UIAction { _ in
                 self.onSignIn?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         return button
     }()
 
@@ -49,7 +49,7 @@ class SignInPageViewController: UIViewController {
             UIAction { _ in
                 self.onSignUp?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         return button
     }()
 

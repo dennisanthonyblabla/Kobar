@@ -33,7 +33,7 @@ class BattleContohViewController: UIViewController {
                         i.isItSelected = .selected
                     }
                     previousBtn = currentBtn
-                }, for: .touchDown)
+                }, for: .touchUpInside)
         }
 
         return contoh
