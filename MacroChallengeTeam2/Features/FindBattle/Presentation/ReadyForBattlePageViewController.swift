@@ -149,7 +149,8 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupBackgroundConstraints() {
         backgroundView.snp.makeConstraints { make in
-            make.height.width.equalToSuperview()
+            make.width.equalToSuperview().offset(15)
+            make.height.equalToSuperview().offset(19)
             make.center.equalToSuperview()
         }
     }
@@ -157,7 +158,7 @@ class ReadyForBattlePageViewController: UIViewController {
     private func setupDisplaysConstraint() {
         pageTitleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(25)
+            make.centerY.equalToSuperview().multipliedBy(0.16)
         }
         promptLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -171,7 +172,7 @@ class ReadyForBattlePageViewController: UIViewController {
         bottomTextLabel.snp.makeConstraints { make in
             make.width.height.equalTo(bottomTextLabel)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-50)
+            make.centerY.equalToSuperview().multipliedBy(1.8)
         }
         countdownLabel.snp.makeConstraints { make in
             make.top.equalTo(promptLabel.snp.bottom).offset(20)
@@ -181,8 +182,8 @@ class ReadyForBattlePageViewController: UIViewController {
 
     private func setupComponentsConstraint() {
         backButtonView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(86)
-            make.top.equalToSuperview().offset(70)
+            make.centerX.equalToSuperview().multipliedBy(0.18)
+            make.centerY.equalToSuperview().multipliedBy(0.25)
         }
         userProfileTandingView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(200)
@@ -210,7 +211,7 @@ struct ReadyForBattlePageViewControllerPreviews: PreviewProvider {
         UIViewControllerPreview {
             return UINavigationController(rootViewController: ReadyForBattlePageViewController())
         }
-        .previewDevice("iPad Pro (11-inch) (3rd generation)")
+        .previewDevice("iPad Pro (12.9-inch) (5th generation)")
         .previewInterfaceOrientation(.landscapeLeft)
         .ignoresSafeArea()
     }
