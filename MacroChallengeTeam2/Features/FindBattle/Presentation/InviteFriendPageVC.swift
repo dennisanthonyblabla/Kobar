@@ -48,7 +48,7 @@ class InviteFriendPageViewController: UIViewController {
             UIAction { _ in
                 self.onBack?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()

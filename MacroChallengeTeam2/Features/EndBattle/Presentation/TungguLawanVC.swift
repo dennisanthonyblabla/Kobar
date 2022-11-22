@@ -20,7 +20,7 @@ class TungguLawanViewController: UIViewController {
         let button = MedButtonView(
         variant: .variant3,
         title: "Tanding Baru")
-        button.addVoidAction(onNewBattle, for: .touchDown)
+        button.addVoidAction(onNewBattle, for: .touchUpInside)
         return button
     }()
     
@@ -28,7 +28,7 @@ class TungguLawanViewController: UIViewController {
         let button = MedButtonView(
         variant: .variant2,
         title: "Pembahasan")
-        button.addVoidAction(onShowReview, for: .touchDown)
+        button.addVoidAction(onShowReview, for: .touchUpInside)
         return button
     }()
 

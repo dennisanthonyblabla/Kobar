@@ -76,10 +76,10 @@ class JoinFriendPageViewController: UIViewController {
             make.width.equalTo(132)
         }
         
-        cancelButton.addVoidAction(onCancel, for: .touchDown)
+        cancelButton.addVoidAction(onCancel, for: .touchUpInside)
         confirmButton.addVoidAction({
             self.onConfirm?(self.inviteCode)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         stack.addArrangedSubview(cancelButton)
         stack.addArrangedSubview(confirmButton)

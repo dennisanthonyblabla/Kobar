@@ -47,50 +47,36 @@ final class MedButtonView: UIButton {
 
         addSubview(backBG)
         addSubview(frontBG)
-        setupButtonConfiguration()
+        
         setupVariants()
         setupAutoLayout()
-
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
-        gestureRecognizer.minimumPressDuration = 0.01
-        self.addGestureRecognizer(gestureRecognizer)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupButtonConfiguration() {
-        self.configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 32, bottom: 14, trailing: 32)
-        configuration?.titleTextAttributesTransformer =
-            UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = .semi17
-                return outgoing
-            }
-    }
-
     private func setupVariants() {
         setTitle(title, for: .normal)
+        
         switch variant {
         case .variant1:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
-            self.setTitleColor(.white, for: .normal)
+            setupButtonConfiguration(.white)
         case .variant2:
             self.frontBG.backgroundColor = .white
             self.backBG.backgroundColor = .white
             self.backBG.alpha = 0.7
-            self.setTitleColor(.kobarBlueActive, for: .normal)
+            setupButtonConfiguration(.kobarBlueActive)
         case .variant3:
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
-            self.setTitleColor(.kobarDarkGrayText, for: .normal)
+            setupButtonConfiguration(.kobarDarkGrayText)
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
-            self.setTitleColor(.white, for: .normal)
+            setupButtonConfiguration(.white)
         }
     }
 
@@ -110,17 +96,30 @@ final class MedButtonView: UIButton {
         }
     }
 
-    @objc func onLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            isPressed = true
-            configuration?.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 32, bottom: 8, trailing: 32)
-            layoutIfNeeded()
-            return
-        }
-        
-        isPressed = false
+    private func setupButtonConfiguration(_ titleColor: UIColor) {
+        configuration = .plain()
         configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 32, bottom: 14, trailing: 32)
+        configuration?.titleTextAttributesTransformer =
+            UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = .semi17
+                outgoing.foregroundColor = titleColor
+                return outgoing
+            }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        isPressed = true
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 12, trailing: 0)
         layoutIfNeeded()
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isPressed = false
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0)
+        layoutIfNeeded()
+        super.touchesEnded(touches, with: event)
     }
 
     override func updateConstraints() {

@@ -36,16 +36,27 @@ final class SmallButtonView: UIButton {
         view.isUserInteractionEnabled = false
         return view
     }()
-
+    
+    private lazy var iconImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isUserInteractionEnabled = false
+        let config = UIImage.SymbolConfiguration(pointSize: 17)
+        let profile = icon?.withConfiguration(config)
+        imageView.image = profile?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        return imageView
+    }()
+    
     init(variant: Variants, title: String, icon: UIImage? = nil) {
         super.init(frame: .zero)
         self.title = title
         self.variant = variant
         self.icon = icon
+        
         addSubview(backBG)
         addSubview(frontBG)
+        addSubview(iconImageView)
         
-        setupButtonConfiguration()
         setupVariants()
         setupAutoLayout()
     }
@@ -68,52 +79,71 @@ final class SmallButtonView: UIButton {
             make.top.width.equalToSuperview()
             make.bottom.equalToSuperview().offset(-5)
         }
-    }
-    
-    private func setupButtonConfiguration() {
-        configuration = .plain()
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0)
-        configuration?.titleTextAttributesTransformer =
-            UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = .semi17
-                return outgoing
-            }
+        
+        iconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(frontBG)
+            make.leading.equalTo(frontBG).offset(30)
+        }
     }
 
     private func setupVariants() {
         setTitle(title, for: .normal)
-        titleLabel?.font = .bold17
-        
         let config = UIImage.SymbolConfiguration(pointSize: 17)
         let icon = self.icon?.withConfiguration(config)
-        
         switch variant {
         case .variant1:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
-            self.setTitleColor(.white, for: .normal)
-            self.icon = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            setupButtonConfiguration(.white)
+            self.iconImageView.image = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
         case .variant2:
             self.frontBG.backgroundColor = .white
             self.backBG.backgroundColor = .white
             self.backBG.alpha = 0.7
-            self.setTitleColor(.kobarBlueActive, for: .normal)
-            self.icon = icon?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal)
+            setupButtonConfiguration(.kobarBlueActive)
+            self.iconImageView.image = icon?.withTintColor(.kobarBlueActive, renderingMode: .alwaysOriginal)
         case .variant3:
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
-            self.setTitleColor(.kobarDarkGrayText, for: .normal)
-            self.icon = icon?.withTintColor(.kobarDarkGrayText, renderingMode: .alwaysOriginal)
+            setupButtonConfiguration(.kobarDarkGrayText)
+            self.iconImageView.image = icon?.withTintColor(.kobarDarkGrayText, renderingMode: .alwaysOriginal)
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue
-            self.setTitleColor(.white, for: .normal)
-            self.icon = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
+            setupButtonConfiguration(.white)
+            self.iconImageView.image = icon?.withTintColor(.white, renderingMode: .alwaysOriginal)
         }
+    }
+    
+    private func setupButtonConfiguration(_ titleColor: UIColor) {
+        let leading: CGFloat = icon == nil ? 0 : 25
         
-        configuration?.imagePadding = 10
-        configuration?.image = self.icon
+        configuration = .plain()
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: leading, bottom: 16, trailing: 0)
+        configuration?.titleTextAttributesTransformer =
+            UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = .semi17
+                outgoing.foregroundColor = titleColor
+                return outgoing
+            }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        let leading: CGFloat = icon == nil ? 0 : 25
+        
+        isPressed = true
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: leading, bottom: 12, trailing: 0)
+        layoutIfNeeded()
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let leading: CGFloat = icon == nil ? 0 : 25
+        isPressed = false
+        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: leading, bottom: 16, trailing: 0)
+        layoutIfNeeded()
+        super.touchesEnded(touches, with: event)
     }
     
     override func updateConstraints() {
@@ -124,19 +154,5 @@ final class SmallButtonView: UIButton {
 
         // according to Apple super should be called at end of method
         super.updateConstraints()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        isPressed = true
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 12, trailing: 0)
-        layoutIfNeeded()
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        isPressed = false
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 16, trailing: 0)
-        layoutIfNeeded()
-        super.touchesEnded(touches, with: event)
     }
 }

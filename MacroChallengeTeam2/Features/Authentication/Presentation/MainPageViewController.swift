@@ -40,7 +40,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onInviteFriend?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -54,7 +54,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onJoinFriend?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -68,7 +68,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onJoinRandom?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -82,7 +82,7 @@ class MainPageViewController: UIViewController {
             UIAction { _ in
                 self.onLogout?()
             },
-            for: .touchDown)
+            for: .touchUpInside)
         
         return button
     }()
@@ -220,7 +220,7 @@ class MainPageViewController: UIViewController {
                 }
                
                 navigationController?.present(controller, animated: true)
-            }, for: .touchDown)
+            }, for: .touchUpInside)
     }
 }
 

@@ -19,13 +19,13 @@ class HasilTandingPageViewController: UIViewController {
     
     private lazy var udahanDehBtn: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Udahan Deh")
-        button.addVoidAction(onFinish, for: .touchDown)
+        button.addVoidAction(onFinish, for: .touchUpInside)
         return button
     }()
     
     private lazy var pembahasanBtn: MedButtonView = {
         let button = MedButtonView(variant: .variant2, title: "Pembahasan")
-        button.addVoidAction(onShowReview, for: .touchDown)
+        button.addVoidAction(onShowReview, for: .touchUpInside)
         return button
     }()
     

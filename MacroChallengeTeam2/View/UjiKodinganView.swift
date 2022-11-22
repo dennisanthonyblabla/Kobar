@@ -41,7 +41,7 @@ final class UjiKodinganView: UIView {
         
         button.addVoidAction({
             self.onRunCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()
@@ -51,7 +51,7 @@ final class UjiKodinganView: UIView {
         
         button.addVoidAction({
             self.onSubmitCode?(self.input)
-        }, for: .touchDown)
+        }, for: .touchUpInside)
         
         return button
     }()

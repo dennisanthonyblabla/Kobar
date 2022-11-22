@@ -20,7 +20,7 @@ class PembahasanViewController: UIViewController {
     
     private lazy var backBtn: SmallIconButtonView = {
         let button = SmallIconButtonView(variant: .variant2)
-        button.addVoidAction(onBack, for: .touchDown)
+        button.addVoidAction(onBack, for: .touchUpInside)
         return button
     }()
     
