@@ -84,7 +84,7 @@ final class UjiKodinganView: UIView {
 
     private func setupAutoLayout() {
         backBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(38)
+            make.top.equalToSuperview().offset(33)
             make.leading.equalToSuperview().offset(20)
         }
         titleLabel.snp.makeConstraints { make in
@@ -103,7 +103,7 @@ final class UjiKodinganView: UIView {
             make.height.equalToSuperview().multipliedBy(0.4)
         }
         playBtn.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(40)
+            make.leading.equalToSuperview().offset(48)
             make.bottom.equalToSuperview().offset(-75)
         }
         submitBtn.snp.makeConstraints { make in

@@ -28,7 +28,7 @@ final class SmallButtonView: UIButton {
     private lazy var frontBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 27
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -36,7 +36,7 @@ final class SmallButtonView: UIButton {
     private lazy var backBG: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 27
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -60,7 +60,7 @@ final class SmallButtonView: UIButton {
 
     private func setupAutoLayout() {
         self.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(54)
         }
         
         backBG.snp.makeConstraints { make in
