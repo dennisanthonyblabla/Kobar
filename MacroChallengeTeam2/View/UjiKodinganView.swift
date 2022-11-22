@@ -103,10 +103,10 @@ final class UjiKodinganView: UIView {
         }
         playBtn.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(40)
-            make.bottom.equalToSuperview().offset(-75)
+            make.bottom.equalToSuperview().offset(-95)
         }
         submitBtn.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-88)
+            make.bottom.equalToSuperview().offset(-108)
             make.leading.equalTo(playBtn.snp.trailing).offset(30)
         }
     }

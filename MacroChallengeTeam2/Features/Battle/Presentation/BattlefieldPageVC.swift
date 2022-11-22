@@ -64,7 +64,7 @@ final class BattlefieldPageViewController: UIViewController {
     
     private var statusDesc: String?
     
-    weak var runCodeViewModel: RunCodeViewModel!
+    weak var runCodeViewModel: RunCodeViewModel?
     private let disposeBag = DisposeBag()
     
     var onSubmitCode: ((SubmitCodeSubmission) -> Void)?
@@ -187,10 +187,10 @@ final class BattlefieldPageViewController: UIViewController {
         view.onRunCode = { [weak self, problem] input in
             guard let self = self else { return }
             let submission = RunCodeSubmission(code: self.code, input: input)
-            self.runCodeViewModel.runCode(submission: submission, problemId: problem.id)
+            self.runCodeViewModel?.runCode(submission: submission, problemId: problem.id)
         }
         
-        runCodeViewModel.runCodeResult
+        runCodeViewModel?.runCodeResult
             .subscribe { [weak view] result in
                 view?.updateCodeOutput(result: result)
             }
@@ -276,7 +276,7 @@ final class BattlefieldPageViewController: UIViewController {
                     make.top.equalTo(background).offset(8)
                 }
                 ujiKodinganView.submitBtn.snp.remakeConstraints { make in
-                    make.bottom.equalToSuperview().offset(-88)
+                    make.bottom.equalToSuperview().offset(-108)
                     make.leading.equalTo(ujiKodinganView.snp.centerX).offset(5)
                 }
                 btn.snp.updateConstraints { make in
@@ -530,7 +530,7 @@ extension BattlefieldPageViewController {
         }
         contohStackView.snp.makeConstraints { make in
             make.leading.equalTo(pertanyaanCard).offset(5)
-            make.bottom.equalTo(contohBGStackView.snp.top).offset(-13)
+            make.bottom.equalTo(contohBGStackView.snp.top).offset(-10)
             make.trailing.equalTo(pertanyaanCard).offset(-5)
         }
         contohBGStackView.snp.makeConstraints { make in
