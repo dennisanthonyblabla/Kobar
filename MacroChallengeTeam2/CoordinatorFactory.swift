@@ -47,6 +47,11 @@ final class CoordinatorFactory {
                         user: user)
                     authc.startNextCoordinator(jfc)
                 }
+                mvc.onJoinRandom = {
+                    guard authc.childCoordinators.isEmpty else { return }
+                    let jrc = self.makeJoinRandomCoordinator(navigationController, user: user)
+                    authc.startNextCoordinator(jrc)
+                }
                 mvc.onLogout = {
                     self.authService.logout()
                     self.socketDataSource.disconnect()
@@ -84,6 +89,33 @@ final class CoordinatorFactory {
             })
         
         return ifc
+    }
+    
+    func makeJoinRandomCoordinator(_ navigationController: UINavigationController, user: User) -> JoinRandomCoordinator {
+        let jrvm = JoinRandomViewModel(service: findBattleService, userId: user.id)
+        let jrc = JoinRandomCoordinator(
+            navigationController,
+            viewModel: jrvm,
+            makeJoinRandom: {
+                let jrvc = JoinRandomPageViewController()
+                jrvc.onConfirm = { [weak jrvm] inviteCode in
+                    jrvm?.joinFriend(inviteCode: inviteCode)
+                }
+                jrvc.onCancel = { [weak jrvm] in
+                    jrvm?.cancelJoinBattle()
+                }
+                return jrvc
+            },
+            makeReadyForBattle: { [unowned self, weak jrvm] battle in
+                self.makeReadyForBattlePageViewController(user: user, battle: battle) {
+                    jrvm?.cancelBattle()
+                }
+            },
+            makeBattle: { [unowned self] battle in
+                self.makeBattleCoordinator(navigationController, user: user, battle: battle)
+            })
+        
+        return jrc
     }
     
     func makeJoinFriendCoordinator(_ navigationController: UINavigationController, user: User) -> JoinFriendCoordinator {
