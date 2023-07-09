@@ -54,6 +54,7 @@ final class JoinFriendCoordinator: BaseCoordinator {
             dismiss()
             show(makeReadyForBattle(battle))
         case let .battleStarted(battle):
+            print(battle);
             dismiss()
             startAndReplaceNextCoordinator(makeBattle(battle))
         }
