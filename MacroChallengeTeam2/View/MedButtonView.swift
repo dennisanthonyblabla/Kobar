@@ -14,6 +14,7 @@ final class MedButtonView: UIButton {
         case variant1
         case variant2
         case variant3
+        case variant4
     }
 
     private var variant: Variants?
@@ -78,6 +79,10 @@ final class MedButtonView: UIButton {
             self.frontBG.backgroundColor = .kobarGray
             self.backBG.backgroundColor = .kobarDarkGray
             setupButtonConfiguration(.kobarDarkGrayText)
+        case .variant4:
+            self.frontBG.backgroundColor = .kobarRed
+            self.backBG.backgroundColor = .kobarRedBG
+            setupButtonConfiguration(.white)
         case .none:
             self.frontBG.backgroundColor = .kobarBlueActive
             self.backBG.backgroundColor = .kobarDarkBlue

@@ -48,6 +48,34 @@ final class AuthDataSource: AuthService {
         }
     }
     
+    func deleteAccount() {
+        dataSource.getUser { [weak self] user in
+            guard let user = user else {
+                return
+            }
+            
+            guard let url = URL(string: "http://kobar.up.railway.app/user") else {
+                return
+            }
+            var request = URLRequest(
+                url: url,
+                cachePolicy: .reloadIgnoringLocalCacheData
+            )
+            request.httpMethod = "DELETE"
+            request.addValue("Bearer \(user.bearerToken)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { data, response, _ in
+                guard let response = response as? HTTPURLResponse, (200 ..< 299) ~= response.statusCode else {
+                    return
+                }
+                
+                self?.authUserSubject.accept(nil)
+            }
+            
+            task.resume()
+        }
+    }
+    
     func login() {
         dataSource.login { [weak self] user in
             self?.authUserSubject.accept(user)

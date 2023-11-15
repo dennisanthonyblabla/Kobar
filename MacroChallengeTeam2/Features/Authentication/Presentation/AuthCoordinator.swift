@@ -43,13 +43,15 @@ final class AuthCoordinator: BaseCoordinator {
     }
     
     func onStateChanged(_ state: AuthViewModel.State) {
-        switch state {
-        case .loading:
-            setRootViewController(makeLoading())
-        case .unauthenticated:
-            setRootViewController(makeSignIn())
-        case let .authenticated(user):
-            setRootViewController(makeMain(self, user))
+        DispatchQueue.main.async {
+            switch state {
+            case .loading:
+                self.setRootViewController(self.makeLoading())
+            case .unauthenticated:
+                self.setRootViewController(self.makeSignIn())
+            case let .authenticated(user):
+                self.setRootViewController(self.makeMain(self, user))
+            }
         }
     }
     

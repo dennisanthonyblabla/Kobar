@@ -13,6 +13,7 @@ protocol AuthService {
 
     func fetchUser()
     func signUp()
+    func deleteAccount()
     func login()
     func logout()
 }
