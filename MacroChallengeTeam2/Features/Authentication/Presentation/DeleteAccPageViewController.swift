@@ -12,7 +12,7 @@ import SwiftUI
 
 class DeleteAccPageViewController: UIViewController {
     var onCancel: (() -> Void)?
-    var onConfirm: ((String) -> Void)?
+    var onConfirm: (() -> Void)?
 
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
@@ -58,6 +58,8 @@ class DeleteAccPageViewController: UIViewController {
         }
 
         cancelButton.addVoidAction(onCancel, for: .touchUpInside)
+    
+        deleteButton.addVoidAction(onConfirm, for: .touchUpInside)
 
         stack.addArrangedSubview(cancelButton)
         stack.addArrangedSubview(deleteButton)

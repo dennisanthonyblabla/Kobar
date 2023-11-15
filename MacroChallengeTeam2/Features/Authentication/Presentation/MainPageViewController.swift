@@ -14,7 +14,7 @@ class MainPageViewController: UIViewController {
     var onInviteFriend: (() -> Void)?
     var onJoinFriend: (() -> Void)?
     var onJoinRandom: (() -> Void)?
-    var onLogout: (() -> Void)?
+    var onLogout: (() -> UIViewController)?
     
     var picture: String = ""
     var rating: Int = 0
@@ -80,7 +80,10 @@ class MainPageViewController: UIViewController {
         
         button.addAction(
             UIAction { _ in
-                self.onLogout?()
+                guard let logoutVC = self.onLogout?() else {
+                    return
+                }
+                self.navigationController?.present(logoutVC, animated: true)
             },
             for: .touchUpInside)
         

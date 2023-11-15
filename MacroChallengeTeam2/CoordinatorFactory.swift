@@ -53,8 +53,29 @@ final class CoordinatorFactory {
                     authc.startNextCoordinator(jrc)
                 }
                 mvc.onLogout = {
-                    self.authService.logout()
-                    self.socketDataSource.disconnect()
+                    let lvc = LogoutPageViewController()
+                    lvc.onCancel = {
+                        lvc.dismiss(animated: true)
+                    }
+                    lvc.onLogout = {
+                        lvc.dismiss(animated: true)
+                        self.authService.logout()
+                        self.socketDataSource.disconnect()
+                    }
+                    lvc.onDeleteAccount = {
+                        lvc.dismiss(animated: true)
+                        let dvc = DeleteAccPageViewController()
+                        dvc.onCancel = {
+                            dvc.dismiss(animated: true)
+                        }
+                        dvc.onConfirm = {
+                            dvc.dismiss(animated: true)
+                            self.authService.deleteAccount()
+                            self.socketDataSource.disconnect()
+                        }
+                        navigationController.present(dvc, animated: true)
+                    }
+                    return lvc
                 }
                 return mvc
             })

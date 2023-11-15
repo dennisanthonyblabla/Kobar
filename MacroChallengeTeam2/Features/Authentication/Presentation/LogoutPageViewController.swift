@@ -11,7 +11,8 @@ import SwiftUI
 
 class LogoutPageViewController: UIViewController {
     var onCancel: (() -> Void)?
-    var onConfirm: ((String) -> Void)?
+    var onLogout: (() -> Void)?
+    var onDeleteAccount: (() -> Void)?
 
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
@@ -32,6 +33,14 @@ class LogoutPageViewController: UIViewController {
         let label = UILabel()
         label.text = "Lo yakin mau keluar akun?"
         label.font = .regular22
+        return label
+    }()
+    
+    private lazy var deleteAccLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Hapus Akun"
+        label.font = .regular17
+        label.textColor = .kobarRed
         return label
     }()
 
@@ -55,6 +64,8 @@ class LogoutPageViewController: UIViewController {
         }
 
         cancelButton.addVoidAction(onCancel, for: .touchUpInside)
+    
+        logoutButton.addVoidAction(onLogout, for: .touchUpInside)
 
         stack.addArrangedSubview(cancelButton)
         stack.addArrangedSubview(logoutButton)
@@ -62,14 +73,6 @@ class LogoutPageViewController: UIViewController {
         stack.distribution = .equalCentering
 
         return stack
-    }()
-
-    private lazy var deleteAccLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Hapus Akun"
-        label.font = .regular17
-        label.textColor = .kobarRed
-        return label
     }()
 
     override func viewDidLoad() {
@@ -80,6 +83,9 @@ class LogoutPageViewController: UIViewController {
         view.addSubview(promptLabel)
         view.addSubview(buttonsStackView)
         view.addSubview(deleteAccLabel)
+        
+        deleteAccLabel.isUserInteractionEnabled = true
+        deleteAccLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onDeleteAccountTapped)))
 
         // Do any additional setup after loading the view.
 
@@ -91,6 +97,10 @@ class LogoutPageViewController: UIViewController {
             onCancel?()
         }
         super.viewDidDisappear(animated)
+    }
+                                            
+    @objc func onDeleteAccountTapped() {
+        onDeleteAccount?()
     }
 
     private func setupAutoLayout() {
